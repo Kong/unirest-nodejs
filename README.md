@@ -282,7 +282,7 @@ Uses `Request.header()` to set header value.
 ```js
 Request.type('application/json') // Content-Type: application/json
 Request.type('json') // Content-Type: application/json
-Request.type('html) // Content-Type: text/html
+Request.type('html') // Content-Type: text/html
 …
 ```
 
