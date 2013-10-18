@@ -1,0 +1,39 @@
+{
+  "name": "unirest-nodejs",
+  "version": "0.0.1",
+  "description": "Lightweight HTTP Request library.",
+  "main": "index.js",
+  "directories": {
+    "test": "tests"
+  },
+  "dependencies": {
+    "mime": "~1.2.11",
+    "request": "~2.27.0",
+    "should": "~2.0.1"
+  },
+  "devDependencies": {
+    "mocha": "~1.13.0"
+  },
+  "scripts": {
+    "test": "make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:Mashape/unirest-nodejs.git"
+  },
+  "keywords": [
+    "request",
+    "http",
+    "library",
+    "superagent",
+    "simple",
+    "util",
+    "utility",
+    "method"
+  ],
+  "author": "Nijiko Yonskai <nijiko@mashape.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Mashape/unirest-nodejs/issues"
+  }
+}
