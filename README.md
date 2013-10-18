@@ -7,13 +7,13 @@ Unirest is a set of lightweight HTTP libraries available in multiple languages.
 To utilize unirest for node.js install the the `npm` module:
 
 ```js
-npm install unirest-nodejs
+npm install unirest
 ```
 
 After installing the `npm` package you can now start simplifying requests like so:
 
 ```js
-var unirest = require('unirest-nodejs');
+var unirest = require('unirest');
 ```
 
 ## Creating Requests
