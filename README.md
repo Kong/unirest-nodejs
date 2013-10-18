@@ -124,7 +124,7 @@ Provides simple and easy to use methods for manipulating the request prior to be
 Unirest Method is invoked. This object contains methods that are chainable like other libraries such as jQuery and popular 
 request module Superagent (which this library is modeled after slightly).
 
-** Example **
+**Example**
 
 ```js
 var Request = unirest.post('http://httpbin.org/post');
@@ -212,6 +212,64 @@ Request.part({
 }).part({
   'content-type': 'text/html'
 , body: '<strong>Hello World!</strong>'
+});
+```
+
+#### Request.query(Object) or (String)
+
+When `Object` is passed value is processed as a `querystring` representation, otherwise we directly use the `String` passed and append it to `Request.options.url`. If `Request.options.url` has a trailing `?` already, we append it with `& + value` otherwise we append as `? + value`
+
+```js
+unirest.post('http://httpbin.org/get')
+.query('name=nijiko')
+.query({
+  pet: 'spot'
+})
+.end(function (response) {
+  console.log(response);
+});
+```
+
+#### Request.send(Object | String)
+
+Ease of use method for setting the body without having to worry about processing the data for popular formats such as `JSON`, `Form Encoded`, otherwise the `body` is set on `Request.options` as the given value.
+
+By default sending strings with no `Content-Type` preset will set `Content-Type` to `application/x-www-form-urlencoded`, and multiple calls will be concatenated with `&`. Otherwise multiple calls will be appended to the previous `body` value.
+
+**JSON**
+
+```js
+unirest.post('http://httpbin.org/post')
+.send({
+  foo: 'bar',
+  hello: 3
+})
+.end(function (response) {
+  console.log(response.body);
+})
+```
+
+**FORM Encoded**
+
+```js
+// Body would be:
+// name=nijiko&pet=turtle
+unirest.post('http://httpbin.org/post')
+.send('name=nijiko')
+.send('pet=spot')
+.end(function (response) {
+  console.log(response.body);
+});
+```
+
+**HTML / Other**
+
+```js
+unirest.post('http://httpbin.org/post')
+.set('Content-Type', 'text/html')
+.send('<strong>Hello World!</strong>')
+.end(function (response) {
+  console.log(response.body);
 });
 ```
 
@@ -493,3 +551,19 @@ See `unirest.jar` for more information on how to use `Jar` argument.
 #### Request.ip
 
 **Alias** for `Request.localAddress()`
+
+### Request.complete
+
+**Alias** for `Request.end()`
+
+### Request.as.json
+
+**Alias** for `Request.end()`
+
+### Request.as.binary
+
+**Alias** for `Request.end()`
+
+### Request.as.string
+
+**Alias** for `Request.end()`

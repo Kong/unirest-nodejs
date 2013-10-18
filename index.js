@@ -175,7 +175,7 @@ Unirest = function (method, uri) {
        * @return {Object}
        */
       query: function (value) {
-        if (!is(value).a(String)) value = Unirest.serializers.form(value);
+        if (is(value).a(Object)) value = Unirest.serializers.form(value);
         if (!value.length) return $this;
 
         $this.options.url += (does($this.options.url).contain('?') ? '&' : '?') + value;
@@ -296,7 +296,7 @@ Unirest = function (method, uri) {
           // Handle pure error
           if (error && !response) {
             result.error = error;
-            
+
             (callback) && callback(result);
             return;
           }
@@ -449,12 +449,17 @@ Unirest = function (method, uri) {
     $this.complete = $this.end;
 
 
-
+    /**
+     * Aliases for _.end_
+     * 
+     * @type {Object}
+     */
+    
     $this.as = {
       json: $this.end,
       binary: $this.end,
       string: $this.end
-    }
+    };
     
     // Iterates over a list of option methods to generate the chaining
     // style of use you see in Superagent and jQuery.
