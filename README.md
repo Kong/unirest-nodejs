@@ -108,7 +108,7 @@ Returns a [Request](#Request) object with the `method` option set to `DELETE`
 var Request = unirest.delete('http://httpbin.org/delete');
 ```
 
-## unirest.jar
+## unirest.jar()
 
 Creates a container to store multiple cookies, i.e. a cookie jar.
 
@@ -117,6 +117,10 @@ var CookieJar = unirest.jar();
 CookieJar.add(unirest.cookie('some value'));
 unirest.get('http://httpbin.org/get').jar(CookieJar);
 ```
+
+## unirest.cookie(String)
+
+Creates a cookie, see above for example.
 
 # Request
 
@@ -136,17 +140,9 @@ Request.headers({
 });
 ```
 
-## Request.options
-
-The _options_ object is where almost all of the request settings live. Each option method sugars to a field on this object to allow for chaining and ease of use. If 
-you have trouble with an option method and wish to directly access the _options_ object
-you are free to do so.
-
-This object is modeled after the `request` libraries options that are passed along through its constructor.
-
 ## Request Methods
 
-Request Methods differ from Option Methods in that these methods transform, or handle the data in a sugared way, where as Option Methods require a more _hands on_ approach.
+Request Methods differ from Option Methods (See Below) in that these methods transform, or handle the data in a sugared way, where as Option Methods require a more _hands on_ approach.
 
 #### Request.auth(Object) or (user, pass, sendImmediately)
 
@@ -334,6 +330,37 @@ unirest.post('http://httpbin.org/post')
 `Object` should consist of `name: 'value'` otherwise use `name` and `value`
 
 See `Request.attach` for usage.
+
+## Request.options
+
+The _options_ `object` is where almost all of the request settings live. Each option method sugars to a field on this object to allow for chaining and ease of use. If 
+you have trouble with an option method and wish to directly access the _options_ object
+you are free to do so.
+
+This object is modeled after the `request` libraries options that are passed along through its constructor.
+
+* `url` (`String` | `Object`) - Url, or object parsed from `url.parse()`
+* `qs` (`Object`) - Object consisting of `querystring` values to append to `url` upon request.
+* `method` (`String`) - Default `GET`; HTTP Method.
+* `headers` (`Object`) - Default `{}`; HTTP Headers.
+* `body` (`String` | `Object`) - Entity body for certain requests.
+* `form` (`Object`) - Form data.
+* `auth` (`Object`) - See `Request.auth()` below.
+* `multipart` (`Object`) - _Experimental_; See documentation below.
+* `followRedirect` (`Boolean`) - Default `true`; Follow HTTP `3xx` responses as redirects.
+* `followAllRedirects` (`Boolean`) - Default `false`; Follow **Non**-GET HTTP `3xx` responses as redirects.
+* `maxRedirects` (`Number`) - Default `10`; Maximum number of redirects before aborting.
+* `encoding` (`String`) - Encoding to be used on `setEncoding` of response data.
+* `timeout` (`Number`) - Number of milliseconds to wait before aborting.
+* `proxy` (`String`) - See `Request.proxy()` below.
+* `oauth` (`Object`) - See `Request.oauth()` below.
+* `hawk` (`Object`) - See `Request.hawk()` below
+* `strictSSL` (`Boolean`) - Default `true`; See `Request.strictSSL()` below.
+* `jar` (`Boolean` | `Jar`) - See `Request.jar()` below.
+* `aws` (`Object`) - See `Request.aws()` below.
+* `httpSignature` (`Object`) - See `Request.httpSignature()` Below.
+* `localAddress` (`String`) - See `Request.localAddress()` Below.
+* `pool` && `pool.maxSockets` - Advanced agent technology, that is supported.
 
 ## Request Option Methods
 
@@ -567,3 +594,38 @@ See `unirest.jar` for more information on how to use `Jar` argument.
 ### Request.as.string
 
 **Alias** for `Request.end()`
+
+
+# Response
+
+Upon ending a request, and recieving a Response the object that is returned contains a number of helpful properties to ease coding pains.
+
+## General
+
+- `body` (`Mixed`) - Processed body data
+- `raw_body` (`Mixed`) - Unprocessed body data
+- `headers` (`Object`) - Header details
+- `response` (`Object`) - Original Response from `mikeal/request` library.
+
+## Status Information
+
+- `code` (`Number`) - Status Code, i.e. `200`
+- `status` (`Number`) - Status Code, same as above.
+- `statusType` (`Number`) - Status Code Range Type
+  - `1` - Info
+  - `2` - Ok
+  - `3` - Miscellaneous
+  - `4` - Client Error
+  - `5` - Server Error
+- `info` (`Boolean`) - Status Range Info?
+- `ok` (`Boolean`) - Status Range Ok?
+- `clientError` (`Boolean`) - Status Range Client Error?
+- `serverError` (`Boolean`) - Status Range Server Error?
+- `accepted` (`Boolean`) - Status Code `202`?
+- `noContent` (`Boolean`) - Status Code `204` or `1223`?
+- `badRequest` (`Boolean`) - Status Code `400`?
+- `unauthorized` (`Boolean`) - Status Code `401`?
+- `notAcceptable` (`Boolean`) - Status Code `406`?
+- `notFound` (`Boolean`) - Status Code `404`?
+- `forbidden` (`Boolean`) - Status Code `403`?
+- `error` (`Boolean` | `Object`) - Dependant on status code range.
