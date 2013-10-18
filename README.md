@@ -308,7 +308,7 @@ unirest.post('http://httpbin.org/post')
 .attach({
   'file': 'dog.png'
 , 'relative file': fs.createReadStream(path.join(__dirname, 'dog.png'),
-, 'remote file: unirest.request('http://google.com/doodle.png')
+, 'remote file': unirest.request('http://google.com/doodle.png')
 })
 .end(function (response) {
   console.log(response.body);
