@@ -13,7 +13,7 @@ npm install unirest-nodejs
 After installing the `npm` package you can now start simplifying requests like so:
 
 ```js
-var unirest = require('unirest');
+var unirest = require('unirest-nodejs');
 ```
 
 ## Creating Requests
