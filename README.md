@@ -73,21 +73,21 @@ A request can be initiated by invoking the appropriate method on the unirest obj
 
 ### get
 
-Returns a [Request](#Request) object with the `method` option set to `GET`
+Returns a [Request](#request) object with the `method` option set to `GET`
 
 ```js
 var Request = unirest.get('http://httpbin.org/get');
 ```
 
 ### head
-Returns a [Request](#Request) object with the `method` option set to `HEAD`
+Returns a [Request](#request) object with the `method` option set to `HEAD`
 
 ```js
 var Request = unirest.head('http://httpbin.org/get');
 ```
 
 ### post
-Returns a [Request](#Request) object with the `method` option set to `POST`
+Returns a [Request](#request) object with the `method` option set to `POST`
 
 ```js
 var Request = unirest.post('http://httpbin.org/post');
@@ -95,14 +95,14 @@ var Request = unirest.post('http://httpbin.org/post');
 
 ### patch
 
-Returns a [Request](#Request) object with the `method` option set to `PATCH`
+Returns a [Request](#request) object with the `method` option set to `PATCH`
 
 ```js
 var Request = unirest.patch('http://httpbin.org/patch');
 ```
 
 ### delete
-Returns a [Request](#Request) object with the `method` option set to `DELETE`
+Returns a [Request](#request) object with the `method` option set to `DELETE`
 
 ```js
 var Request = unirest.delete('http://httpbin.org/delete');
@@ -599,7 +599,6 @@ See `unirest.jar` for more information on how to use `Jar` argument.
 
 **Alias** for `Request.end()`
 
-
 # Response
 
 Upon ending a request, and recieving a Response the object that is returned contains a number of helpful properties to ease coding pains.
@@ -609,6 +608,7 @@ Upon ending a request, and recieving a Response the object that is returned cont
 - `body` (`Mixed`) - Processed body data
 - `raw_body` (`Mixed`) - Unprocessed body data
 - `headers` (`Object`) - Header details
+- `cookies` (`Object`) - Cookies from `set-cookies`, and `cookie` headers.
 - `response` (`Object`) - Original Response from `mikeal/request` library.
 
 ## Status Information
@@ -633,3 +633,18 @@ Upon ending a request, and recieving a Response the object that is returned cont
 - `notFound` (`Boolean`) - Status Code `404`?
 - `forbidden` (`Boolean`) - Status Code `403`?
 - `error` (`Boolean` | `Object`) - Dependant on status code range.
+
+## response.cookie(name)
+
+Sugar method for retrieving a cookie from the `response.cookies` object.
+
+
+```js
+var CookieJar = unirest.jar();
+CookieJar.add(unirest.cookie('another cookie=23'));
+
+unirest.get('http://google.com').jar(CookieJar).end(function (response) {
+  // Except google trims the value passed :/
+  console.log(response.cookie('another cookie'));
+});
+```

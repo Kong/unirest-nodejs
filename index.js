@@ -340,6 +340,38 @@ Unirest = function (method, uri) {
               }()
             : false;
 
+          // Cookie Holder
+          result.cookies = {};
+
+          // Cookie Sugar Method
+          result.cookie = function (name) {
+            return result.cookies[name];
+          };
+
+          // Set-Cookie Parsing
+          var cookies = response.headers['set-cookie'];
+          if (cookies && is(cookies).a(Array)) {
+            for (var index in cookies) {
+              var entry = cookies[index];
+
+              if (is(entry).a(String) && does(entry).contain(';')) {
+                entry.split(';').forEach(function (cookie) {
+                  var crumbs = cookie.split('=');
+                  result.cookies[Unirest.trim(crumbs[0])] = Unirest.trim(crumbs[1] || '');
+                });
+              }
+            }
+          }
+
+          // Cookie header parser... for some reason there are two...?
+          cookies = response.headers['cookie'];
+          if (cookies && is(cookies).a(String)) {
+            cookies.split(';').forEach(function (cookie) {
+              var crumbs = cookie.split('=');
+              result.cookies[Unirest.trim(crumbs[0])] = Unirest.trim(crumbs[1] || '');
+            });
+          }
+
           // Response
           result.response = response;
           result.raw_body = body;

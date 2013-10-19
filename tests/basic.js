@@ -42,6 +42,16 @@ describe('Unirest', function () {
         done();
       })
     });
+
+    it('should correctly handle cookie data.', function (done) {
+      var CookieJar = unirest.jar();
+      CookieJar.add(unirest.cookie('another cookie=23'));
+
+      unirest.get('http://google.com').jar(CookieJar).end(function (response) {
+        response.cookie('another cookie').should.exist;
+        done();
+      });
+    });
   });
 
   describe('POST request', function () {
