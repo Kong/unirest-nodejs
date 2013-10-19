@@ -122,6 +122,10 @@ unirest.get('http://httpbin.org/get').jar(CookieJar);
 
 Creates a cookie, see above for example.
 
+## unirest.request
+
+`mikeal/request` library (the underlying layer of unirest-nodejs) for direct use.
+
 # Request
 
 Provides simple and easy to use methods for manipulating the request prior to being sent. This object is created when a 
