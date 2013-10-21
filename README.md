@@ -583,19 +583,19 @@ See `unirest.jar` for more information on how to use `Jar` argument.
 
 **Alias** for `Request.localAddress()`
 
-### Request.complete
+#### Request.complete
 
 **Alias** for `Request.end()`
 
-### Request.as.json
+#### Request.as.json
 
 **Alias** for `Request.end()`
 
-### Request.as.binary
+#### Request.as.binary
 
 **Alias** for `Request.end()`
 
-### Request.as.string
+#### Request.as.string
 
 **Alias** for `Request.end()`
 
