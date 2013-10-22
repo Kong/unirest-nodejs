@@ -67,7 +67,7 @@ A request can be initiated by invoking the appropriate method on the unirest obj
 - `body` (`Mixed`) - _Optional_; Will be aliased to unirest\[method] `body` argument when `uri` is present.
 - `callback` (`Function`) - _Optional_; Will be aliased to unirest\[method] `callback` argument when `uri` is present.
 
-## unirest\[method](url [, callback])
+## unirest\[method](url [, headers, body, callback])
 
 - `method` - Request type, pre-defined methods, see below.
 - `url` - Request location.
@@ -77,6 +77,8 @@ A request can be initiated by invoking the appropriate method on the unirest obj
    otherwise when a `Function` it will be used as the `callback`.
 - `callback` (`Function`) - _Optional_; Calls end with given argument, otherwise `Request` is returned.
 
+All arguments above, with the exclusion of `url`, will accept a `Function` as the `callback`. 
+When no `callback` is present, the [Request](#request) object will be returned.
 
 ### get
 
