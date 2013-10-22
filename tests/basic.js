@@ -12,7 +12,7 @@ describe('Unirest', function () {
     });
 
     it('should correctly parse GZIPPED data.', function (done) {
-      unirest.get('http://httpbin.org/gzip').end(function (response) {
+      unirest.get('http://httpbin.org/gzip').set('Accept', 'gzip').end(function (response) {
         should(response.status).equal(200);
         should(response.body).have.type('object');
         done();
@@ -49,6 +49,14 @@ describe('Unirest', function () {
 
       unirest.get('http://google.com').jar(CookieJar).end(function (response) {
         response.cookie('another cookie').should.exist;
+        done();
+      });
+    });
+
+    it('should be able to look like unirest-php', function (done) {
+      unirest.get('http://httpbin.org/gzip', { 'Accept': 'gzip' }, 'Hello World', function (response) {
+        should(response.status).equal(200);
+        should(response.body).have.type('object');
         done();
       });
     });

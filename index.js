@@ -30,8 +30,8 @@ mime.define({
  * 
  * @type {Object}
  */
-Unirest = function (method, uri) {
-  var unirest = function (uri, callback) {
+Unirest = function (method, uri, headers, body) {
+  var unirest = function (uri, headers, body, callback) {
     var $this = {
       /**
        * Container to hold headers with lowercased field-names.
@@ -95,8 +95,10 @@ Unirest = function (method, uri) {
        * @return {Object}
        */
       field: function (name, value) {
-        if (is(name).a(Object)) for (var key in name) $this.attach(key, name[key]);
-        else {
+        if (is(name).a(Object)) {
+          for (var key in name) 
+            $this.attach(key, name[key]);
+        } else {
           $this._multipart.push({
             name: name,
             value: value,
@@ -115,8 +117,10 @@ Unirest = function (method, uri) {
        * @return {Object}
        */
       attach: function (name, path) {
-        if (is(name).a(Object)) for (var key in name) $this.attach(key, name[key]);
-        else {
+        if (is(name).a(Object)) {
+          for (var key in name) 
+            $this.attach(key, name[key]);
+        } else {
           $this._multipart.push({
             name: name,
             value: path,
@@ -158,7 +162,7 @@ Unirest = function (method, uri) {
       header: function (field, value) {
         if (is(field).a(Object)) {
           for (var key in field)
-            $this.header(field, value);
+            $this.header(key, field[key]);
 
           return $this;
         }
@@ -511,7 +515,15 @@ Unirest = function (method, uri) {
         }
       })(option, reference);
     }
-    
+
+    if (headers && typeof headers === 'function')
+      callback = headers, headers = null;
+    else if (body && typeof body === 'function')
+      callback = body, body = null;
+
+    if (headers) $this.set(headers);
+    if (body) $this.send(body);
+
     return callback ? $this.end(callback) : $this;
   };
 
