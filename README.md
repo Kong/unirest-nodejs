@@ -1,4 +1,4 @@
-# Unirest for Node.js [![Build Status](https://travis-ci.org/Mashape/unirest-java.png?branch=master)](https://travis-ci.org/Mashape/unirest-java)
+# Unirest for Node.js [![Build Status](https://travis-ci.org/Mashape/unirest-nodejs.png?branch=master)](https://travis-ci.org/Mashape/unirest-nodejs)
 
 Unirest is a set of lightweight HTTP libraries available in multiple languages.
 
