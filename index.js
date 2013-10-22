@@ -30,7 +30,7 @@ mime.define({
  * 
  * @type {Object}
  */
-Unirest = function (method, uri, headers, body) {
+Unirest = function (method, uri, headers, body, callback) {
   var unirest = function (uri, headers, body, callback) {
     var $this = {
       /**
@@ -527,7 +527,7 @@ Unirest = function (method, uri, headers, body) {
     return callback ? $this.end(callback) : $this;
   };
 
-  return uri ? unirest(uri) : unirest;
+  return uri ? unirest(uri, headers, body, callback) : unirest;
 };
 
 /**
