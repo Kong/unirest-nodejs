@@ -43,16 +43,6 @@ describe('Unirest', function () {
       })
     });
 
-    it('should correctly handle cookie data.', function (done) {
-      var CookieJar = unirest.jar();
-      CookieJar.add(unirest.cookie('another cookie=23'));
-
-      unirest.get('http://google.com').jar(CookieJar).end(function (response) {
-        response.cookie('another cookie').should.exist;
-        done();
-      });
-    });
-
     it('should be able to look like unirest-php', function (done) {
       unirest.get('http://httpbin.org/gzip', { 'Accept': 'gzip' }, 'Hello World', function (response) {
         should(response.status).equal(200);
