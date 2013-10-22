@@ -58,17 +58,24 @@ unirest.post('http://httpbin.org/post')
 
 A request can be initiated by invoking the appropriate method on the unirest object, then calling `.end()` to send the request. Alternatively you can send the request directly by providing a callback along with the url.
 
-## unirest(method [, uri])
+## unirest(method [, uri, headers, body, callback])
 
 - `method` - Request type (GET, PUT, POST, etc...)
 - `uri` - _Optional_; When declared the method will return a [Request](#request) object. 
           Otherwise it will return the method below with `method` set to the method given.
+- `headers` (`Object`) - _Optional_; Will be aliased to unirest\[method] `headers` argument when `uri` is present.
+- `body` (`Mixed`) - _Optional_; Will be aliased to unirest\[method] `body` argument when `uri` is present.
+- `callback` (`Function`) - _Optional_; Will be aliased to unirest\[method] `callback` argument when `uri` is present.
 
 ## unirest\[method](url [, callback])
 
 - `method` - Request type, pre-defined methods, see below.
 - `url` - Request location.
-- `callback` - _Optional_; 
+- `headers` (`Object` | `Function`) - _Optional_; When `Object` headers are passed along to the `Request.set()` method, 
+   when `Function` this argument is used as the `callback`.
+- `body` (`Mixed` | `Function`) - _Optional_; When `body` is not a `Function` it will be passed along to `Request.send()` method,
+   otherwise when a `Function` it will be used as the `callback`.
+- `callback` (`Function`) - _Optional_; Calls end with given argument, otherwise `Request` is returned.
 
 
 ### get
