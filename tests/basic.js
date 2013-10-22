@@ -28,7 +28,7 @@ describe('Unirest', function () {
     });
 
     it('should correctly handle timeouts.', function (done) {
-      unirest.get('http://httpbin.org/redirect/23').timeout(200).end(function (response) {
+      unirest.get('http://httpbin.org/redirect/3').timeout(20).end(function (response) {
         response.error.should.exist;
         response.error.code.should.equal('ETIMEDOUT');
         done();
