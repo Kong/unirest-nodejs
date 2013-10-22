@@ -422,7 +422,7 @@ Unirest = function (method, uri) {
             var decoder, _on = response.on;
 
             // Keeping node happy
-            stream.req = Request;
+            stream.req = Request.response;
 
             // Make sure we emit prior to processing
             unzip.on('error', function (error) {
@@ -440,7 +440,6 @@ Unirest = function (method, uri) {
             // Capture decompression and decode with captured encoding
             unzip.on('data', function (buffer) {
               if (!decoder) return stream.emit('data', buffer);
-
               var string = decoder.write(buffer);
               if (string.length) stream.emit('data', string);
             });
