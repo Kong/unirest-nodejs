@@ -393,17 +393,6 @@ Sets `method` value on `Request.options` to the given value.
 Request.method('HEAD');
 ```
 
-#### Request.headers(Object)
-
-Sets `headers` object on `Request.options` to the given object.
-
-```js
-Request.headers({
-  'Accepts': 'application/json',
-  'Content-Type': 'application/json'
-});
-```
-
 #### Request.form(Object)
 
 Sets `form` object on `Request.options` to the given object.
@@ -573,6 +562,10 @@ See `unirest.jar` for more information on how to use `Jar` argument.
 ## Request Aliases
 
 #### Request.set
+
+**Alias** for `Request.header()`
+
+#### Request.headers
 
 **Alias** for `Request.header()`
 
