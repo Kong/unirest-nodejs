@@ -471,6 +471,12 @@ Unirest = function (method, uri, headers, body, callback) {
 
     /**
      * Alias for _.header_
+     * @type {Function}
+     */
+    $this.headers = $this.header;
+
+    /**
+     * Alias for _.header_
      * 
      * @type {Function}
      */
@@ -675,6 +681,7 @@ Unirest.Response = {
 Unirest.request = require('request');
 Unirest.jar = Unirest.request.jar;
 Unirest.cookie = Unirest.request.cookie;
+Unirest.pipe = Unirest.request.pipe;
 
 /**
  * Enum Structures
@@ -702,7 +709,7 @@ Unirest.enum = {
   ],
 
   options: [ 
-    'uri:url', 'redirects:maxRedirects', 'redirect:followRedirect', 'url', 'headers', 'method', 'qs', 'form', 'json', 'multipart', 
+    'uri:url', 'redirects:maxRedirects', 'redirect:followRedirect', 'url', 'method', 'qs', 'form', 'json', 'multipart', 
     'followRedirect', 'followAllRedirects', 'maxRedirects', 'encoding', 'pool', 'timeout', 'proxy', 'oauth', 'hawk', 
     'ssl:strictSSL', 'strictSSL', 'jar', 'cookies:jar', 'aws', 'httpSignature', 'localAddress', 'ip:localAddress' 
   ]
