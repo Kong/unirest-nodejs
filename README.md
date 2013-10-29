@@ -2,6 +2,8 @@
 
 Unirest is a set of lightweight HTTP libraries available in multiple languages.
 
+Created with love by http://mashape.com
+
 ## Installing
 
 To utilize unirest for node.js install the the `npm` module:
