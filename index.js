@@ -609,11 +609,18 @@ Unirest.parsers = {
  * @type {Object}
  */
 Unirest.serializers = {
-  form: function (obj) {
+  form: function (obj, parent) {
     if (!is(obj).a(Object)) return obj;
-    var pairs = [];
-    for (var key in obj) pairs.push(encodeURIComponent(key) + '=' + encodeURIComponent(obj[key]));
-    return pairs.join('&');
+
+    var str = [];
+    for (var index in obj) {
+      var key = parent ? parent : index
+        , value = obj[index];
+
+      str.push(typeof value == "object" ? serialize(value, key) : encodeURIComponent(key) + "=" + encodeURIComponent(value));
+    }
+
+    return str.join("&");
   },
 
   json: function (obj) {
