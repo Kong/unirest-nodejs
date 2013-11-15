@@ -610,7 +610,8 @@ Unirest.parsers = {
  */
 Unirest.serializers = {
   form: function (obj, parent) {
-    if (!is(obj).a(Object)) return obj;
+    if (!is(obj).a(Object) && !is(obj).a(Array)) 
+      return obj;
 
     var str = [];
     for (var index in obj) {
