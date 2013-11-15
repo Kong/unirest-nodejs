@@ -617,7 +617,7 @@ Unirest.serializers = {
       var key = parent ? parent : index
         , value = obj[index];
 
-      str.push(typeof value == "object" ? serialize(value, key) : encodeURIComponent(key) + "=" + encodeURIComponent(value));
+      str.push(typeof value == "object" ? Unirest.serializers.form(value, key) : encodeURIComponent(key) + "=" + encodeURIComponent(value));
     }
 
     return str.join("&");
