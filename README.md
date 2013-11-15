@@ -2,7 +2,7 @@
 
 Unirest is a set of lightweight HTTP libraries available in multiple languages.
 
-Created with love by http://mashape.com
+Created with love by [nijikokun](http://github.com/nijikokun) @ [mashape.com](http://mashape.com)
 
 ## Installing
 
