@@ -406,9 +406,9 @@ Unirest = function (method, uri, headers, body, callback) {
             var item = $this._multipart[i];
 
             if (item.attachment && is(item.value).a(String)) {
-              if (does(value).contain('http://') || does(value).contain('https://')) {
+              if (does(item.value).contain('http://') || does(item.value).contain('https://')) {
                 item.value = Unirest.require(item.value);
-              } else if (does(value).contain('://')) {
+              } else if (does(item.value).contain('://')) {
                 item.value = fs.createReadStream(item.value);
               } else {
                 item.value = fs.createReadStream(path.join(__dirname, item.value));
