@@ -214,16 +214,25 @@ Unirest = function (method, uri, headers, body, callback) {
         var type = $this._headers['content-type'];
 
         if (is(data).a(Object)) {
-          $this.options.json = true;
+          if (!type || type != 'application/json') {
+            $this.type('form');
 
-          if ($this.options.body && is($this.options.body).a(Object)) {
-            for (var key in data) $this.options.body[key] = data[key];
-          } else {
-            $this.options.body = data;
+            type = $this._headers['content-type'];
+
+            $this.options.body = Unirest.serializers.form(data);
+          } else if (type == 'application/json') {
+            $this.options.json = true;
+
+            if ($this.options.body && is($this.options.body).a(Object)) {
+              for (var key in data) $this.options.body[key] = data[key];
+            } else {
+              $this.options.body = data;
+            }
           }
         } else if (is(data).a(String)) {
           if (!type) {
             $this.type('form');
+
             type = $this._headers['content-type'];
           }
 

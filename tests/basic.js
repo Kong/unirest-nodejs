@@ -53,20 +53,37 @@ describe('Unirest', function () {
   });
 
   describe('POST request', function () {
-    it('should correctly post JSON data.', function (done) {
+    it('should correctly post FORM data.', function (done) {
       var data = {
-        hello: 'world',
+        is: 'unirest',
         my: 'name',
-        is: 'unirest'
+        hello: 'world'
       };
 
       unirest.post('http://httpbin.org/post').send(data).end(function (response) {
         should(response.status).equal(200);
-        should(response.body.data).equal(JSON.stringify(data));
+        should(response.body.form).have.type('object');
+        should(response.body.headers['Content-Length']).equal('30');
+        should(response.body.headers['Content-Type']).equal('application/x-www-form-urlencoded');
+        done();
+      });
+    });
+
+    it('should correctly post JSON data.', function (done) {
+      var data = {
+        is: 'unirest',
+        my: 'name',
+        hello: 'world'
+      };
+
+      unirest.post('http://httpbin.org/post').header('content-type', 'application/json').send(data).end(function (response) {
+        should(response.status).equal(200);
+        should(response.body.data).have.type('string');
         should(response.body.headers['Content-Type']).equal('application/json');
         done();
       });
     });
+
 
     it('should check for buffers', function (done) {
       unirest.post('http://httpbin.org/post')
@@ -74,22 +91,6 @@ describe('Unirest', function () {
       .send(new Buffer([1,2,3]))
       .end(function (response) {
         should(response.body.json).exist;
-        done();
-      });
-    });
-
-    it('should correctly post FORM data.', function (done) {
-      var data = unirest.serializers.form({
-        hello: 'world',
-        my: 'name',
-        is: 'unirest'
-      });
-
-      unirest.post('http://httpbin.org/post').send(data).end(function (response) {
-        should(response.status).equal(200);
-        should(response.body.form).have.type('object');
-        should(response.body.headers['Content-Length']).equal('30');
-        should(response.body.headers['Content-Type']).equal('application/x-www-form-urlencoded');
         done();
       });
     });
