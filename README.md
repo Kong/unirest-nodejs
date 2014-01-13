@@ -251,6 +251,7 @@ By default sending strings with no `Content-Type` preset will set `Content-Type`
 
 ```js
 unirest.post('http://httpbin.org/post')
+.type('json')
 .send({
   foo: 'bar',
   hello: 3
