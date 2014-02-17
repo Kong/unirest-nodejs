@@ -372,6 +372,7 @@ This object is modeled after the `request` libraries options that are passed alo
 * `oauth` (`Object`) - See `Request.oauth()` below.
 * `hawk` (`Object`) - See `Request.hawk()` below
 * `strictSSL` (`Boolean`) - Default `true`; See `Request.strictSSL()` below.
+* `secureProtocol` (`String`) - See `Request.secureProtocol()` below.
 * `jar` (`Boolean` | `Jar`) - See `Request.jar()` below.
 * `aws` (`Object`) - See `Request.aws()` below.
 * `httpSignature` (`Object`) - See `Request.httpSignature()` Below.
@@ -479,6 +480,18 @@ Sets `proxy`, HTTP Proxy to be set on `Request.options` based on value.
 ```js
 Request.proxy('http://localproxy.com');
 ```
+
+#### Request.secureProtocol(String)
+
+Sets the secure protocol to use:
+
+```js
+Request.secureProtocol('SSLv2_method');
+// or 
+Request.secureProtocol('SSLv3_client_method');
+```
+
+See [openssl.org](https://www.openssl.org/docs/ssl/SSL_CTX_new.html) for all possible values.
 
 #### Request.aws(Object)
 
