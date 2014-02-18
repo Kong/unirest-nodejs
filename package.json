@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "mime": "~1.2.11",
-    "request": "~2.27.0",
+    "request": "~2.33.0",
     "should": "~2.0.1"
   },
   "devDependencies": {
