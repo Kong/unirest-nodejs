@@ -327,6 +327,9 @@ Unirest = function (method, uri, headers, body, callback) {
             return;
           }
 
+          // Handle References
+          result = response;
+
           // Handle Status
           var status = response.statusCode;
           var type = status / 100 | 0;
@@ -362,48 +365,49 @@ Unirest = function (method, uri, headers, body, callback) {
             return result.cookies[name];
           };
 
-          // Set-Cookie Parsing
-          var cookies = response.headers['set-cookie'];
-          if (cookies && is(cookies).a(Array)) {
-            for (var index in cookies) {
-              var entry = cookies[index];
+          if (response.cookies) {
+            result.cookies = response.cookies;
+          } else {
+            // Set-Cookie Parsing
+            var cookies = response.headers['set-cookie'];
 
-              if (is(entry).a(String) && does(entry).contain(';')) {
-                entry.split(';').forEach(function (cookie) {
-                  var crumbs = cookie.split('=');
-                  result.cookies[Unirest.trim(crumbs[0])] = Unirest.trim(crumbs[1] || '');
-                });
+            if (cookies && is(cookies).a(Array)) {
+              for (var index in cookies) {
+                var entry = cookies[index];
+
+                if (is(entry).a(String) && does(entry).contain(';')) {
+                  entry.split(';').forEach(function (cookie) {
+                    var crumbs = cookie.split('=');
+                    result.cookies[Unirest.trim(crumbs[0])] = Unirest.trim(crumbs[1] || '');
+                  });
+                }
               }
+            }
+
+            // Cookie header parser... for some reason there are two...?
+            cookies = response.headers['cookie'];
+
+            if (cookies && is(cookies).a(String)) {
+              cookies.split(';').forEach(function (cookie) {
+                var crumbs = cookie.split('=');
+                result.cookies[Unirest.trim(crumbs[0])] = Unirest.trim(crumbs[1] || '');
+              });
             }
           }
 
-          // Cookie header parser... for some reason there are two...?
-          cookies = response.headers['cookie'];
-          if (cookies && is(cookies).a(String)) {
-            cookies.split(';').forEach(function (cookie) {
-              var crumbs = cookie.split('=');
-              result.cookies[Unirest.trim(crumbs[0])] = Unirest.trim(crumbs[1] || '');
-            });
-          }
-
           // Response
-          result.response = response;
+          
           result.raw_body = body;
           result.headers = response.headers;
 
-          // Todo, handle cookies and parse ourselves from header.
-          // For now, check whether response has a cookies property and utilize it.
-          if (response.cookies)
-            result.cookies = response.cookies;
-
           // Handle Response Body
+          
           if (body) {
             type = Unirest.type(result.headers['content-type'], true);
             if (type) data = Unirest.Response.parse(body, type);
             else data = body;
           }
 
-          result.response.body = data;
           result.body = data;
 
           (callback) && callback(result);

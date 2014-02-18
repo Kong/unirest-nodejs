@@ -623,11 +623,21 @@ Upon ending a request, and recieving a Response the object that is returned cont
 
 ## General
 
+
 - `body` (`Mixed`) - Processed body data
 - `raw_body` (`Mixed`) - Unprocessed body data
 - `headers` (`Object`) - Header details
 - `cookies` (`Object`) - Cookies from `set-cookies`, and `cookie` headers.
-- `response` (`Object`) - Original Response from `mikeal/request` library.
+- `httpVersion` (`String`) - Server http version. (e.g. 1.1)
+- `httpVersionMajor` (`Number`) - Major number (e.g. 1)
+- `httpVersionMinor` (`Number`) - Minor number (e.g. 1)
+- `url` (`String`) - Dependant on input, can be empty.
+- `domain` (`String` | `null`) - Dependant on input, can be empty.
+- `method` (`String` | `null`) - Method used, dependant on input.
+- `client` (`Object`) - Client Object. Detailed information regarding the Connection and Byte throughput.
+- `connection` (`Object`) - Client Object. Specific connection object, useful for events such as errors. **Advanced**
+- `socket` (`Object`) Client Object. Socket specific object and information. Most throughput is same across all three client objects.
+- `request` (`Object`) - Initial request object.
 
 ## Status Information
 
