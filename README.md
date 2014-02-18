@@ -638,7 +638,7 @@ Upon ending a request, and recieving a Response the object that is returned cont
 - `connection` (`Object`) - Client Object. Specific connection object, useful for events such as errors. **Advanced**
 - `socket` (`Object`) Client Object. Socket specific object and information. Most throughput is same across all three client objects.
 - `request` (`Object`) - Initial request object.
-- `setEncoding` (`Function`) - Set encoding type
+- `setEncoding` (`Function`) - Set encoding type.
 
 ## Status Information
 
