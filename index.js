@@ -727,7 +727,8 @@ Unirest.enum = {
     'PUT', 
     'POST', 
     'PATCH', 
-    'DELETE' 
+    'DELETE',
+    'OPTIONS'
   ],
 
   options: [ 
