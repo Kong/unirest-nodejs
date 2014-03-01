@@ -365,7 +365,7 @@ Unirest = function (method, uri, headers, body, callback) {
             return result.cookies[name];
           };
 
-          if (response.cookies) {
+          if (response.cookies && is(response.cookies).a(Object) && Object.keys(response.cookies).length > 0) {
             result.cookies = response.cookies;
           } else {
             // Set-Cookie Parsing
