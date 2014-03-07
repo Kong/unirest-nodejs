@@ -701,9 +701,21 @@ Unirest.Response = {
  * Expose the underlying layer.
  */
 Unirest.request = require('request');
-Unirest.jar = Unirest.request.jar;
 Unirest.cookie = Unirest.request.cookie;
 Unirest.pipe = Unirest.request.pipe;
+
+/**
+ * Expose cookie store (tough-cookie)
+ * @return {Function} Cookie Store
+ */
+Unirest.jar = function () {
+  var jar = Unirest.request.jar();
+
+  jar.add = jar.setCookie;
+  jar.toString = jar.getCookieString;
+
+  return jar;
+};
 
 /**
  * Enum Structures
