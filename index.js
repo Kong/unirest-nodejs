@@ -403,7 +403,7 @@ Unirest = function (method, uri, headers, body, callback) {
           // Handle Response Body
           
           if (body) {
-            type = result.headers['content-type'] ? Unirest.type(result.headers['content-type'], true) : false;
+            type = Unirest.type(result.headers['content-type'], true);
             if (type) data = Unirest.Response.parse(body, type);
             else data = body;
           }
@@ -558,6 +558,7 @@ Unirest = function (method, uri, headers, body, callback) {
  * @return {String}
  */
 Unirest.type = function (type, parse) {
+  if (typeof type !== "string") return false;
   return parse ? type.split(/ *; */).shift() : (Unirest.types[type] || type);
 };
 
@@ -700,12 +701,14 @@ Unirest.Response = {
 /**
  * Expose the underlying layer.
  */
+
 Unirest.request = require('request');
 Unirest.cookie = Unirest.request.cookie;
 Unirest.pipe = Unirest.request.pipe;
 
 /**
  * Expose cookie store (tough-cookie)
+ * 
  * @return {Function} Cookie Store
  */
 Unirest.jar = function () {
@@ -767,7 +770,6 @@ for (var i in Unirest.enum.methods) {
  * @param  {Mixed}  value  Could be anything.
  * @return {Object}
  */
-
 function is (value) {
   return { 
     a: function (check) {
@@ -784,7 +786,6 @@ function is (value) {
  * @param  {Mixed}  value  Could be anything.
  * @return {Object}
  */
-
 function does (value) {
   var arrayIndexOf = (Array.indexOf ? function (arr, obj, from) { 
     return arr.indexOf(obj, from); 
