@@ -403,7 +403,7 @@ Unirest = function (method, uri, headers, body, callback) {
           // Handle Response Body
           
           if (body) {
-            type = Unirest.type(result.headers['content-type'], true);
+            type = result.headers['content-type'] ? Unirest.type(result.headers['content-type'], true) : false;
             if (type) data = Unirest.Response.parse(body, type);
             else data = body;
           }
