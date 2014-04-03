@@ -27,7 +27,7 @@ mime.define({
 
 /**
  * Initialize our Rest Container
- * 
+ *
  * @type {Object}
  */
 Unirest = function (method, uri, headers, body, callback) {
@@ -35,7 +35,7 @@ Unirest = function (method, uri, headers, body, callback) {
     var $this = {
       /**
        * Container to hold headers with lowercased field-names.
-       * 
+       *
        * @type {Object}
        * @private
        */
@@ -43,7 +43,7 @@ Unirest = function (method, uri, headers, body, callback) {
 
       /**
        * Container to hold multipart form data for processing upon request.
-       * 
+       *
        * @type {Array}
        * @private
        */
@@ -51,7 +51,7 @@ Unirest = function (method, uri, headers, body, callback) {
 
       /**
        * Container to hold form data for processing upon request.
-       * 
+       *
        * @type {Array}
        * @private
        */
@@ -59,27 +59,27 @@ Unirest = function (method, uri, headers, body, callback) {
 
       /**
        * Request option container for details about the request.
-       * 
+       *
        * @type {Object}
        */
       options: {
         /**
          * Url obtained from request method arguments.
-         * 
+         *
          * @type {String}
          */
         url: uri,
 
         /**
          * Method obtained from request method arguments.
-         * 
+         *
          * @type {String}
          */
         method: method,
 
         /**
          * List of headers with case-sensitive fields.
-         * 
+         *
          * @type {Object}
          */
         headers: {}
@@ -89,14 +89,14 @@ Unirest = function (method, uri, headers, body, callback) {
        * Attaches a field to the multipart-form request.
        *
        * Behaves much like form fields in HTML.
-       * 
-       * @param  {String} name 
+       *
+       * @param  {String} name
        * @param  {String} value
        * @return {Object}
        */
       field: function (name, value) {
         if (is(name).a(Object)) {
-          for (var key in name) 
+          for (var key in name)
             $this.attach(key, name[key]);
         } else {
           $this._multipart.push({
@@ -111,14 +111,14 @@ Unirest = function (method, uri, headers, body, callback) {
 
       /**
        * Attaches a file to the multipart-form request.
-       * 
+       *
        * @param  {String} name
        * @param  {String|Object} path
        * @return {Object}
        */
       attach: function (name, path) {
         if (is(name).a(Object)) {
-          for (var key in name) 
+          for (var key in name)
             $this.attach(key, name[key]);
         } else {
           $this._multipart.push({
@@ -136,7 +136,7 @@ Unirest = function (method, uri, headers, body, callback) {
        *
        * Supports user being an Object to reflect Request
        * Supports user, password to reflect SuperAgent
-       * 
+       *
        * @param  {String|Object} user
        * @param  {String} password
        * @param  {Boolean} sendImmediately
@@ -154,7 +154,7 @@ Unirest = function (method, uri, headers, body, callback) {
 
       /**
        * Sets header field to value
-       * 
+       *
        * @param  {String} field Header field
        * @param  {String} value Header field value
        * @return {Object}
@@ -174,7 +174,7 @@ Unirest = function (method, uri, headers, body, callback) {
 
       /**
        * Append query string to request uri.
-       * 
+       *
        * @param  {String|Object} value
        * @return {Object}
        */
@@ -188,26 +188,26 @@ Unirest = function (method, uri, headers, body, callback) {
 
       /**
        * Set _content-type_ header with type passed through `mime.lookup()` when necessary.
-       * 
+       *
        * @param  {String} type
        * @return {Object}
        */
       type: function (type) {
-        $this.header('Content-Type', does(type).contain('/') 
+        $this.header('Content-Type', does(type).contain('/')
           ? type
           : mime.lookup(type));
-        return $this; 
+        return $this;
       },
 
       /**
        * Set body and do some pre-sending transformations...
        *
-       * Determines type whether `form` or `json`. 
+       * Determines type whether `form` or `json`.
        * For other types use `.type()` to set the _content-type_.
        *
-       * If type is _application/x-www-form-urlencoded_ data will be appended to the 
+       * If type is _application/x-www-form-urlencoded_ data will be appended to the
        * previously set body data.
-       * 
+       *
        * @param  {Mixed} data
        * @return {Object}
        */
@@ -268,13 +268,13 @@ Unirest = function (method, uri, headers, body, callback) {
        *          phrase: 'World'
        *        }
        *      }).end(function (response) {});
-       * 
+       *
        * @param  {Object|String} options When an Object, headers should be placed directly on the object,
        *                                 not under a child property.
        * @return {Object}
        */
       part: function (options) {
-        if (!$this.options.multipart) 
+        if (!$this.options.multipart)
           $this.options.multipart = [];
 
         if (is(options).a(Object)) {
@@ -282,7 +282,7 @@ Unirest = function (method, uri, headers, body, callback) {
             var type = Unirest.type(options['content-type'], true);
             if (type) options.body = Unirest.Response.parse(options.body);
           } else {
-            if (is(options.body).a(Object)) 
+            if (is(options.body).a(Object))
               options.body = Request.serializers.json(options.body);
           }
 
@@ -295,12 +295,12 @@ Unirest = function (method, uri, headers, body, callback) {
 
         return $this;
       },
-      
+
       /**
        * Finalize and send the request, after a response has been recieved do some additional post-processing
        * that request fails to do (this section mimics superagent style response).
-       * 
-       * @param  {Function} callback 
+       *
+       * @param  {Function} callback
        * @return {Object}
        */
       end: function (callback) {
@@ -396,12 +396,12 @@ Unirest = function (method, uri, headers, body, callback) {
           }
 
           // Response
-          
+
           result.raw_body = body;
           result.headers = response.headers;
 
           // Handle Response Body
-          
+
           if (body) {
             type = Unirest.type(result.headers['content-type'], true);
             if (type) data = Unirest.Response.parse(body, type);
@@ -491,14 +491,14 @@ Unirest = function (method, uri, headers, body, callback) {
 
     /**
      * Alias for _.header_
-     * 
+     *
      * @type {Function}
      */
     $this.set = $this.header;
 
     /**
      * Alias for _.end_
-     * 
+     *
      * @type {Function}
      */
     $this.complete = $this.end;
@@ -506,28 +506,28 @@ Unirest = function (method, uri, headers, body, callback) {
 
     /**
      * Aliases for _.end_
-     * 
+     *
      * @type {Object}
      */
-    
+
     $this.as = {
       json: $this.end,
       binary: $this.end,
       string: $this.end
     };
-    
+
     // Iterates over a list of option methods to generate the chaining
     // style of use you see in Superagent and jQuery.
     for (var x in Unirest.enum.options) {
       var option = Unirest.enum.options[x];
       var reference = null;
-      
+
       if (option.indexOf(':') != -1) {
         option = option.split(':');
         reference = option[1];
         option = option[0];
       }
-      
+
       (function (name, ref) {
         $this[name] = function (arg) {
           $this.options[ref || name] = arg;
@@ -552,7 +552,7 @@ Unirest = function (method, uri, headers, body, callback) {
 
 /**
  * Mime-type lookup / parser.
- * 
+ *
  * @param  {String} type
  * @param  {Boolean} parse Should we parse?
  * @return {String}
@@ -564,7 +564,7 @@ Unirest.type = function (type, parse) {
 
 /**
  * Parse header parameters.
- * 
+ *
  * @param  {String} str
  * @return {Object}
  */
@@ -581,7 +581,7 @@ Unirest.params = function (str) {
 
 /**
  * Utility method to trim strings.
- * 
+ *
  * @type {String}
  */
 Unirest.trim = ''.trim
@@ -590,7 +590,7 @@ Unirest.trim = ''.trim
 
 /**
  * Parser methods for different data types.
- * 
+ *
  * @type {Object}
  */
 Unirest.parsers = {
@@ -620,12 +620,12 @@ Unirest.parsers = {
 
 /**
  * Serialization methods for different data types.
- * 
+ *
  * @type {Object}
  */
 Unirest.serializers = {
   form: function (obj, parent) {
-    if (!is(obj).a(Object) && !is(obj).a(Array)) 
+    if (!is(obj).a(Object) && !is(obj).a(Array))
       return obj;
 
     var str = [];
@@ -646,7 +646,7 @@ Unirest.serializers = {
 
 /**
  * Unirest Request Utility Methods
- * 
+ *
  * @type {Object}
  */
 Unirest.Request = {
@@ -666,7 +666,7 @@ Unirest.Request = {
 
 /**
  * Unirest Response Utility Methods
- * 
+ *
  * @type {Object}
  */
 Unirest.Response = {
@@ -682,7 +682,7 @@ Unirest.Response = {
       , line
       , field
       , val;
-    
+
     // Trailing CLRF
     lines.pop();
 
@@ -708,14 +708,15 @@ Unirest.pipe = Unirest.request.pipe;
 
 /**
  * Expose cookie store (tough-cookie)
- * 
+ *
  * @return {Function} Cookie Store
  */
 Unirest.jar = function (options) {
+  options = options || {};
+
   var jar = Unirest.request.jar();
 
   // Because Requests aliases toughcookie rather than returning.
-  options = options || {};
   if (options.store) {
     jar._jar.store = options.store;
   }
@@ -732,7 +733,7 @@ Unirest.jar = function (options) {
 
 /**
  * Enum Structures
- * 
+ *
  * @type {Object}
  */
 Unirest.enum = {
@@ -746,19 +747,19 @@ Unirest.enum = {
     'application/json': Unirest.parsers.json
   },
 
-  methods: [ 
+  methods: [
     'GET',
     'HEAD',
-    'PUT', 
-    'POST', 
-    'PATCH', 
+    'PUT',
+    'POST',
+    'PATCH',
     'DELETE',
     'OPTIONS'
   ],
 
-  options: [ 
-    'uri:url', 'redirects:maxRedirects', 'redirect:followRedirect', 'url', 'method', 'qs', 'form', 'json', 'multipart', 
-    'followRedirect', 'followAllRedirects', 'maxRedirects', 'encoding', 'pool', 'timeout', 'proxy', 'oauth', 'hawk', 
+  options: [
+    'uri:url', 'redirects:maxRedirects', 'redirect:followRedirect', 'url', 'method', 'qs', 'form', 'json', 'multipart',
+    'followRedirect', 'followAllRedirects', 'maxRedirects', 'encoding', 'pool', 'timeout', 'proxy', 'oauth', 'hawk',
     'ssl:strictSSL', 'strictSSL', 'jar', 'cookies:jar', 'aws', 'httpSignature', 'localAddress', 'ip:localAddress', 'secureProtocol'
   ]
 };
@@ -776,12 +777,12 @@ for (var i in Unirest.enum.methods) {
 
 /**
  * Simple Utility Methods for checking information about a value.
- * 
+ *
  * @param  {Mixed}  value  Could be anything.
  * @return {Object}
  */
 function is (value) {
-  return { 
+  return {
     a: function (check) {
       if (check.prototype) check = check.prototype.constructor.name;
       var type = Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
@@ -792,13 +793,13 @@ function is (value) {
 
 /**
  * Simple Utility Methods for checking information about a value.
- * 
+ *
  * @param  {Mixed}  value  Could be anything.
  * @return {Object}
  */
 function does (value) {
-  var arrayIndexOf = (Array.indexOf ? function (arr, obj, from) { 
-    return arr.indexOf(obj, from); 
+  var arrayIndexOf = (Array.indexOf ? function (arr, obj, from) {
+    return arr.indexOf(obj, from);
   } : function (arr, obj, from) {
     var l = arr.length, i = from ? parseInt((1*from) + (from<0 ? l:0), 10) : 0; i = i<0 ? 0 : i;
     for (; i<l; i++) if (i in arr  &&  arr[i] === obj) return i;
