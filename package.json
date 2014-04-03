@@ -1,6 +1,6 @@
 {
   "name": "unirest",
-  "version": "0.1.11",
+  "version": "0.1.12",
   "description": "Lightweight HTTP Request library.",
   "main": "index.js",
   "directories": {
