@@ -84,7 +84,6 @@ describe('Unirest', function () {
       });
     });
 
-
     it('should check for buffers', function (done) {
       unirest.post('http://httpbin.org/post')
       .headers({ 'Accept': 'application/json' })

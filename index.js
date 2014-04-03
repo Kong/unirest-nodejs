@@ -711,8 +711,18 @@ Unirest.pipe = Unirest.request.pipe;
  * 
  * @return {Function} Cookie Store
  */
-Unirest.jar = function (storage, rejectPublicSuffixes) {
-  var jar = Unirest.request.jar(storage, rejectPublicSuffixes);
+Unirest.jar = function (options) {
+  var jar = Unirest.request.jar();
+
+  // Because Requests aliases toughcookie rather than returning.
+  
+  if (options.store) {
+    jar._jar.store = options.store;
+  }
+
+  if (options.rejectPublicSuffixes) {
+    jar._jar.rejectPublicSuffixes = options.rejectPublicSuffixes
+  };
 
   jar.add = jar.setCookie;
   jar.toString = jar.getCookieString;
