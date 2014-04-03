@@ -715,7 +715,7 @@ Unirest.jar = function (options) {
   var jar = Unirest.request.jar();
 
   // Because Requests aliases toughcookie rather than returning.
-  
+  options = options || {};
   if (options.store) {
     jar._jar.store = options.store;
   }
