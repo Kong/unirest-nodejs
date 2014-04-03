@@ -711,8 +711,8 @@ Unirest.pipe = Unirest.request.pipe;
  * 
  * @return {Function} Cookie Store
  */
-Unirest.jar = function () {
-  var jar = Unirest.request.jar();
+Unirest.jar = function (storage, rejectPublicSuffixes) {
+  var jar = Unirest.request.jar(storage, rejectPublicSuffixes);
 
   jar.add = jar.setCookie;
   jar.toString = jar.getCookieString;
