@@ -369,6 +369,11 @@ Unirest = function (method, uri, headers, body, callback) {
           if (response.cookies && is(response.cookies).a(Object) && Object.keys(response.cookies).length > 0) {
             result.cookies = response.cookies;
           } else {
+            function setCookie (cookie) {
+              var crumbs = cookie.split('=');
+              result.cookies[Unirest.trim(crumbs[0])] = Unirest.trim(crumbs.slice(1).join('=') || '');
+            }
+
             // Set-Cookie Parsing
             var cookies = response.headers['set-cookie'];
 
@@ -377,22 +382,16 @@ Unirest = function (method, uri, headers, body, callback) {
                 var entry = cookies[index];
 
                 if (is(entry).a(String) && does(entry).contain(';')) {
-                  entry.split(';').forEach(function (cookie) {
-                    var crumbs = cookie.split('=');
-                    result.cookies[Unirest.trim(crumbs[0])] = Unirest.trim(crumbs[1] || '');
-                  });
+                  entry.split(';').forEach(setCookie);
                 }
               }
             }
 
-            // Cookie header parser... for some reason there are two...?
+            // Sometimes you get this header.
             cookies = response.headers['cookie'];
 
             if (cookies && is(cookies).a(String)) {
-              cookies.split(';').forEach(function (cookie) {
-                var crumbs = cookie.split('=');
-                result.cookies[Unirest.trim(crumbs[0])] = Unirest.trim(crumbs[1] || '');
-              });
+              cookies.split(';').forEach(setCookie);
             }
           }
 
