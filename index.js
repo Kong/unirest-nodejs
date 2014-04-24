@@ -370,10 +370,10 @@ Unirest = function (method, uri, headers, body, callback) {
             result.cookies = response.cookies;
           } else {
             function setCookie (cookie) {
-              var crumbs = cookie.split('=');
+              var crumbs = Unirest.trim(cookie).split('=');
 
-              if (crumbs[0]) {
-                result.cookies[Unirest.trim(crumbs[0])] = Unirest.trim(crumbs.slice(1).join('=') || '');
+              if (crumbs[0] && crumbs[0] != '') {
+                result.cookies[Unirest.trim(crumbs[0])] = Unirest.trim(crumbs.slice(1).join('=') || true);
               }
             }
 
