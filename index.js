@@ -305,9 +305,6 @@ Unirest = function (method, uri, headers, body, callback) {
        * @return {Object}
        */
       end: function (callback) {
-        console.log($this.options.uri);
-        console.log($this.options.headers);
-
         var Request = Unirest.request($this.options, function (error, response, body) {
           var data, type, result = {};
 
