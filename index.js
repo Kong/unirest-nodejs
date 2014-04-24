@@ -305,6 +305,9 @@ Unirest = function (method, uri, headers, body, callback) {
        * @return {Object}
        */
       end: function (callback) {
+        console.log($this.options.uri);
+        console.log($this.options.headers);
+
         var Request = Unirest.request($this.options, function (error, response, body) {
           var data, type, result = {};
 
@@ -371,7 +374,10 @@ Unirest = function (method, uri, headers, body, callback) {
           } else {
             function setCookie (cookie) {
               var crumbs = cookie.split('=');
-              result.cookies[Unirest.trim(crumbs[0])] = Unirest.trim(crumbs.slice(1).join('=') || '');
+              var key = crumbs[0];
+              var value = crumbs.splice(0, 1).join('=');
+
+              result.cookies[Unirest.trim(key)] = Unirest.trim(value || '');
             }
 
             // Set-Cookie Parsing
