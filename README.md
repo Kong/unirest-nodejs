@@ -204,7 +204,7 @@ Request.set({
 
 **Arguments**
 
-```
+```js
 Request.set('Accepts', 'application/json');
 ```
 
