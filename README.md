@@ -8,8 +8,8 @@ Created with love by [nijikokun](http://github.com/nijikokun) @ [mashape.com](ht
 
 To utilize unirest for node.js install the the `npm` module:
 
-```js
-npm install unirest
+```bash
+$ npm install unirest
 ```
 
 After installing the `npm` package you can now start simplifying requests like so:
@@ -197,8 +197,8 @@ or `field` and `value` arguments. Each entry is then stored in a two locations, 
 
 ```js
 Request.set({
-  'Accepts': 'application/json'
-, 'User-Agent': 'Unirest Node.js'
+  'Accepts': 'application/json',
+  'User-Agent': 'Unirest Node.js'
 })
 ```
 
@@ -218,11 +218,11 @@ Each object is then appended to the `Request.options.multipart` array.
 
 ```js
 Request.part({
-  'content-type': 'application/json'
-, body: { foo: 'bar' }
+  'content-type': 'application/json',
+  body: { foo: 'bar' }
 }).part({
-  'content-type': 'text/html'
-, body: '<strong>Hello World!</strong>'
+  'content-type': 'text/html',
+  body: '<strong>Hello World!</strong>'
 });
 ```
 
@@ -318,9 +318,9 @@ unirest.post('http://httpbin.org/post')
   'parameter': 'value'
 })
 .attach({
-  'file': 'dog.png'
-, 'relative file': fs.createReadStream(path.join(__dirname, 'dog.png'),
-, 'remote file': unirest.request('http://google.com/doodle.png')
+  'file': 'dog.png',
+  'relative file': fs.createReadStream(path.join(__dirname, 'dog.png'),
+  'remote file': unirest.request('http://google.com/doodle.png')
 })
 .end(function (response) {
   console.log(response.body);
@@ -419,13 +419,13 @@ Each objects property with the exclusion of `body` is treated as a header value.
 
 ```js
 Request.multipart([{
-  'content-type': 'application/json'
-, body: JSON.stringify({
+  'content-type': 'application/json',
+  body: JSON.stringify({
     foo: 'bar'
   })
 }, {
-  'content-type': 'text/html'
-, body: '<strong>Hello World!</strong>'
+  'content-type': 'text/html',
+  body: '<strong>Hello World!</strong>'
 }]);
 ```
 
@@ -499,9 +499,9 @@ Sets `aws`, AWS Signing Credentials, on `Request.options`
 
 ```js
 Request.aws({ 
-  key: 'AWS_S3_KEY'
-, secret: 'AWS_S3_SECRET'
-, bucket: 'BUCKET NAME'
+  key: 'AWS_S3_KEY',
+  secret: 'AWS_S3_SECRET',
+  bucket: 'BUCKET NAME'
 });
 ```
 
@@ -513,30 +513,30 @@ Sets `oauth`, list of oauth credentials, on `Request.options` based on given obj
 var Request = unirest.get('https://api.twitter.com/oauth/request_token');
 
 Request.oauth({
-  callback: 'http://mysite.com/callback/'
-, consumer_key: 'CONSUMER_KEY'
-, consumer_secret: 'CONSUMER_SECRET'
+  callback: 'http://mysite.com/callback/',
+  consumer_key: 'CONSUMER_KEY',
+  consumer_secret: 'CONSUMER_SECRET'
 }).end(function (response) {
   var access_token = response.body;
   
   Request = unirest.post('https://api.twitter.com/oauth/access_token');
   Request.oauth({
-    consumer_key: 'CONSUMER_KEY'
-  , consumer_secret: 'CONSUMER_SECRET'
-  , token: access_token.oauth_token
-  , verifier: token: access_token.oauth_verifier
+    consumer_key: 'CONSUMER_KEY',
+    consumer_secret: 'CONSUMER_SECRET',
+    token: access_token.oauth_token,
+    verifier: token: access_token.oauth_verifier
   }).end(function (response) {
     var token = response.body;
     
     Request = unirest.get('https://api.twitter.com/1/users/show.json');
     Request.oauth({
-      consumer_key: 'CONSUMER_KEY'
-    , consumer_secret: 'CONSUMER_SECRET'
-    , token: token.oauth_token
-    , token_secret: token.oauth_token_secret
+      consumer_key: 'CONSUMER_KEY',
+      consumer_secret: 'CONSUMER_SECRET',
+      token: token.oauth_token,
+      token_secret: token.oauth_token_secret
     }).query({
-      screen_name: token.screen_name
-    , user_id: token.user_id
+      screen_name: token.screen_name,
+      user_id: token.user_id
     }).end(function (response) {
       console.log(response.body);
     });
@@ -553,9 +553,9 @@ Hawk requires a field `credentials` as seen in their [documentation](https://git
 ```js
 Request.hawk({
   credentials: {
-    key: 'werxhqb98rpaxn39848xrunpaw3489ruxnpa98w4rxn'
-  , algorithm: 'sha256'
-  , user: 'Steve'
+    key: 'werxhqb98rpaxn39848xrunpaw3489ruxnpa98w4rxn',
+    algorithm: 'sha256',
+    user: 'Steve'
   }
 });
 ```
