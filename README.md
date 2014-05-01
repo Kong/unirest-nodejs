@@ -179,7 +179,7 @@ Request.auth({
 
 **Arguments**
 
-```
+```js
 Request.auth('Nijiko', 'insecure', true);
 ```
 
