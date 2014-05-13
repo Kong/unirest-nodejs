@@ -428,7 +428,7 @@ Unirest = function (method, uri, headers, body, callback) {
 
             if (item.attachment && is(item.value).a(String)) {
               if (does(item.value).contain('http://') || does(item.value).contain('https://')) {
-                item.value = Unirest.require(item.value);
+                item.value = Unirest.request(item.value);
               } else {
                 item.value = fs.createReadStream(path.resolve(item.value));
               }
