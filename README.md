@@ -63,7 +63,7 @@ A request can be initiated by invoking the appropriate method on the unirest obj
 ## unirest(method [, uri, headers, body, callback])
 
 - `method` - Request type (GET, PUT, POST, etc...)
-- `uri` - _Optional_; When declared the method will return a [Request](#request) object.
+- `uri` - _Optional_; When declared the method will return a [Request](#request) object. 
           Otherwise it will return the method below with `method` set to the method given.
 - `headers` (`Object`) - _Optional_; Will be aliased to unirest\[method] `headers` argument when `uri` is present.
 - `body` (`Mixed`) - _Optional_; Will be aliased to unirest\[method] `body` argument when `uri` is present.
@@ -73,13 +73,13 @@ A request can be initiated by invoking the appropriate method on the unirest obj
 
 - `method` - Request type, pre-defined methods, see below.
 - `url` - Request location.
-- `headers` (`Object` | `Function`) - _Optional_; When `Object` headers are passed along to the `Request.set()` method,
+- `headers` (`Object` | `Function`) - _Optional_; When `Object` headers are passed along to the `Request.set()` method, 
    when `Function` this argument is used as the `callback`.
 - `body` (`Mixed` | `Function`) - _Optional_; When `body` is not a `Function` it will be passed along to `Request.send()` method,
    otherwise when a `Function` it will be used as the `callback`.
 - `callback` (`Function`) - _Optional_; Calls end with given argument, otherwise `Request` is returned.
 
-All arguments above, with the exclusion of `url`, will accept a `Function` as the `callback`.
+All arguments above, with the exclusion of `url`, will accept a `Function` as the `callback`. 
 When no `callback` is present, the [Request](#request) object will be returned.
 
 ### get
@@ -139,8 +139,8 @@ Creates a cookie, see above for example.
 
 # Request
 
-Provides simple and easy to use methods for manipulating the request prior to being sent. This object is created when a
-Unirest Method is invoked. This object contains methods that are chainable like other libraries such as jQuery and popular
+Provides simple and easy to use methods for manipulating the request prior to being sent. This object is created when a 
+Unirest Method is invoked. This object contains methods that are chainable like other libraries such as jQuery and popular 
 request module Superagent (which this library is modeled after slightly).
 
 **Example**
@@ -191,7 +191,7 @@ Accepts either an `Object` containing `header-name: value` entries,
 or `field` and `value` arguments. Each entry is then stored in a two locations, one in the case-sensitive `Request.options.headers` and the other on a private `_headers` object that is case-insensitive for internal header lookup.
 
 - `field` (`String`) - Header name, such as `Accepts`
-- `value` (`String`) - Header value, such as `application/json`
+- `value` (`String`) - Header value, such as `application/json` 
 
 **Object**
 
@@ -287,7 +287,7 @@ unirest.post('http://httpbin.org/post')
 
 #### Request.type(String)
 
-Sets the header `Content-Type` through either lookup for extensions (`xml`, `png`, `json`, etc...) using `mime` or using the full value such as `application/json`.
+Sets the header `Content-Type` through either lookup for extensions (`xml`, `png`, `json`, etc...) using `mime` or using the full value such as `application/json`. 
 
 Uses `Request.header()` to set header value.
 
@@ -349,7 +349,7 @@ See `Request.attach` for usage.
 
 ## Request.options
 
-The _options_ `object` is where almost all of the request settings live. Each option method sugars to a field on this object to allow for chaining and ease of use. If
+The _options_ `object` is where almost all of the request settings live. Each option method sugars to a field on this object to allow for chaining and ease of use. If 
 you have trouble with an option method and wish to directly access the _options_ object
 you are free to do so.
 
@@ -467,11 +467,11 @@ Sets `strictSSL` flag to require that SSL certificates be valid on `Request.opti
 
 ```js
 Request.strictSSL(true);
-```
+``` 
 
 #### Request.httpSignature(Object)
 
-Sets `httpSignature`
+Sets `httpSignature` 
 
 #### Request.proxy(String)
 
@@ -487,7 +487,7 @@ Sets the secure protocol to use:
 
 ```js
 Request.secureProtocol('SSLv2_method');
-// or
+// or 
 Request.secureProtocol('SSLv3_client_method');
 ```
 
@@ -498,7 +498,7 @@ See [openssl.org](https://www.openssl.org/docs/ssl/SSL_CTX_new.html) for all pos
 Sets `aws`, AWS Signing Credentials, on `Request.options`
 
 ```js
-Request.aws({
+Request.aws({ 
   key: 'AWS_S3_KEY',
   secret: 'AWS_S3_SECRET',
   bucket: 'BUCKET NAME'
@@ -518,7 +518,7 @@ Request.oauth({
   consumer_secret: 'CONSUMER_SECRET'
 }).end(function (response) {
   var access_token = response.body;
-
+  
   Request = unirest.post('https://api.twitter.com/oauth/access_token');
   Request.oauth({
     consumer_key: 'CONSUMER_KEY',
@@ -527,7 +527,7 @@ Request.oauth({
     verifier: token: access_token.oauth_verifier
   }).end(function (response) {
     var token = response.body;
-
+    
     Request = unirest.get('https://api.twitter.com/1/users/show.json');
     Request.oauth({
       consumer_key: 'CONSUMER_KEY',
