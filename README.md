@@ -307,7 +307,7 @@ The following methods are sugar methods for attaching files, and form fields. In
 `Object` should consist of `name: 'path'` otherwise use `name` and `path`.
 
 - `name` (`String`) - File field name
-- `path` (`String` | `Object`) - File value, A `String` will be parsed based on its value. If `path` contains `http` or `https` Request will handle it as a `remote file`, otherwise if it contains `://` and not `http` or `https` it will consider it to be a `direct file path`. If no `://` is found it will be considered a `relative file path`. An `Object` is directly set, so you can do pre-processing if you want without worrying about the string value.
+- `path` (`String` | `Object`) - File value, A `String` will be parsed based on its value. If `path` contains `http` or `https` Request will handle it as a `remote file`.  If `path` does not contain `http` or `https` then unirest will assume that it is the path to a local file and attempt to find it using `path.resolve`. An `Object` is directly set, so you can do pre-processing if you want without worrying about the string value.
 
 **Object**
 
