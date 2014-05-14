@@ -44,14 +44,6 @@ Unirest = function (method, uri, headers, body, callback) {
       _stream: false,
 
       /**
-       * Container to hold headers with lowercased field-names.
-       *
-       * @type {Object}
-       * @private
-       */
-      _headers: {},
-
-      /**
        * Container to hold multipart form data for processing upon request.
        *
        * @type {Array}
@@ -95,6 +87,21 @@ Unirest = function (method, uri, headers, body, callback) {
         headers: {}
       },
 
+      hasHeader: function (name) {
+        var headers;
+        var lowercaseHeaders;
+
+        name = name.toLowerCase();
+        headers = Object.keys($this.options.headers);
+        lowercaseHeaders = headers.map(function (header) { return header.toLowerCase(); });
+
+        for (var i = 0; i < lowercaseHeaders.length; i++)
+          if (lowercaseHeaders[i] === name)
+            return headers[i];
+
+        return false;
+      },
+
       /**
        * Turn on multipart-form streaming
        *
@@ -124,7 +131,7 @@ Unirest = function (method, uri, headers, body, callback) {
             name: name,
             value: value,
             options: options,
-            attachment: false
+            attachment: false,
           });
         }
 
@@ -190,8 +197,9 @@ Unirest = function (method, uri, headers, body, callback) {
           return $this;
         }
 
-        $this.options.headers[field] = value;
-        $this._headers[field.toLowerCase()] = value;
+        var existingHeaderName = $this.hasHeader(field);
+        $this.options.headers[existingHeaderName || field] = value;
+
         return $this;
       },
 
@@ -234,14 +242,12 @@ Unirest = function (method, uri, headers, body, callback) {
        * @return {Object}
        */
       send: function (data) {
-        var type = $this._headers['content-type'];
+        var type = $this.options.headers[$this.hasHeader('content-type')];
 
         if (is(data).a(Object)) {
           if (!type || type != 'application/json') {
             $this.type('form');
-
-            type = $this._headers['content-type'];
-
+            type = $this.options.headers[$this.hasHeader('content-type')];
             $this.options.body = Unirest.serializers.form(data);
           } else if (type == 'application/json') {
             $this.options.json = true;
@@ -255,7 +261,7 @@ Unirest = function (method, uri, headers, body, callback) {
         } else if (is(data).a(String)) {
           if (!type) {
             $this.type('form');
-            type = $this._headers['content-type'];
+            type = $this.options.headers[$this.hasHeader('content-type')];
           }
 
           if ('application/x-www-form-urlencoded' == type) {
@@ -326,6 +332,7 @@ Unirest = function (method, uri, headers, body, callback) {
        */
       end: function (callback) {
         var Request;
+        var header;
         var parts;
         var form;
 
@@ -514,8 +521,15 @@ Unirest = function (method, uri, headers, body, callback) {
 
         if ($this._multipart.length && !$this._stream) {
           parts = URL.parse($this.options.url);
+          form = new FormData();
 
-          return handleFormData(new FormData()).submit({
+          if (header = $this.options.headers[$this.hasHeader('content-type')]) {
+            $this.options.headers[header] = $this.options.headers[header].split(';')[0] + '; boundary=' + form.getBoundary();
+          } else {
+            $this.options.headers['content-type'] = 'multipart/mixed; boundary=' + form.getBoundary();
+          }
+
+          return handleFormData(form).submit({
             host: parts.host,
             path: parts.path,
             method: $this.options.method,
