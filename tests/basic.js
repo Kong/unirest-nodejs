@@ -69,6 +69,26 @@ describe('Unirest', function () {
       });
     });
 
+    it('should correctly post MULTIFORM data.', function (done) {
+      var request = unirest.post('http://httpbin.org/post');
+      var file = __dirname + '/../README.md';
+      var data = {
+        a: 'foo',
+        b: 'bar'
+      };
+
+      request.attach('u', file);
+
+      for (var key in data) {
+        request.field(key, data[key]);
+      }
+
+      request.end(function (response) {
+        should(response.status).equal(200);
+        done();
+      });
+    });
+
     it('should correctly post JSON data.', function (done) {
       var data = {
         is: 'unirest',

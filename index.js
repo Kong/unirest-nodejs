@@ -11,11 +11,13 @@
  */
 
 var StringDecoder = require('string_decoder').StringDecoder;
-var querystring = require('querystring');
+var QueryString = require('querystring');
+var FormData = require('form-data');
 var Stream = require('stream');
 var mime = require('mime');
 var zlib = require('zlib');
 var path = require('path');
+var URL = require('url');
 var fs = require('fs');
 
 /**
@@ -34,6 +36,13 @@ mime.define({
 Unirest = function (method, uri, headers, body, callback) {
   var unirest = function (uri, headers, body, callback) {
     var $this = {
+      /**
+       * Stream Multipart form-data request
+       *
+       * @type {Boolean}
+       */
+      _stream: false,
+
       /**
        * Container to hold headers with lowercased field-names.
        *
@@ -84,6 +93,17 @@ Unirest = function (method, uri, headers, body, callback) {
          * @type {Object}
          */
         headers: {}
+      },
+
+      /**
+       * Turn on multipart-form streaming
+       *
+       * @return {Object}
+       */
+      stream: function () {
+        $this._stream = true;
+
+        return this;
       },
 
       /**
@@ -180,9 +200,8 @@ Unirest = function (method, uri, headers, body, callback) {
        * @return {Object}
        */
       query: function (value) {
-        if (is(value).a(Object)) value = querystring.stringify(value);
+        if (is(value).a(Object)) value = Unirest.serializers.form(value);
         if (!value.length) return $this;
-
         $this.options.url += (does($this.options.url).contain('?') ? '&' : '?') + value;
         return $this;
       },
@@ -234,7 +253,6 @@ Unirest = function (method, uri, headers, body, callback) {
         } else if (is(data).a(String)) {
           if (!type) {
             $this.type('form');
-
             type = $this._headers['content-type'];
           }
 
@@ -275,7 +293,7 @@ Unirest = function (method, uri, headers, body, callback) {
        * @return {Object}
        */
       part: function (options) {
-        if (!$this.options.multipart)
+        if (!$this._multipart)
           $this.options.multipart = [];
 
         if (is(options).a(Object)) {
@@ -305,8 +323,14 @@ Unirest = function (method, uri, headers, body, callback) {
        * @return {Object}
        */
       end: function (callback) {
-        var Request = Unirest.request($this.options, function (error, response, body) {
-          var data, type, result = {};
+        var Request;
+        var parts;
+        var form;
+
+        function handleRequestResponse (error, response, body) {
+          var result = {};
+          var data;
+          var type;
 
           // Handle pure error
           if (error && !response) {
@@ -404,6 +428,8 @@ Unirest = function (method, uri, headers, body, callback) {
 
           // Response
 
+          body = body || response.body;
+
           result.raw_body = body;
           result.headers = response.headers;
 
@@ -418,27 +444,9 @@ Unirest = function (method, uri, headers, body, callback) {
           result.body = data;
 
           (callback) && callback(result);
-        });
-
-        if ($this._multipart.length) {
-          var form = Request.form();
-
-          for (var i = 0; i < $this._multipart.length; i++) {
-            var item = $this._multipart[i];
-
-            if (item.attachment && is(item.value).a(String)) {
-              if (does(item.value).contain('http://') || does(item.value).contain('https://')) {
-                item.value = Unirest.request(item.value);
-              } else {
-                item.value = fs.createReadStream(path.resolve(item.value));
-              }
-            }
-
-            form.append(item.name, item.value);
-          }
         }
 
-        Request.on('response', function (response) {
+        function handleGZIPResponse (response) {
           if (/^(deflate|gzip)$/.test(response.headers['content-encoding'])) {
             var unzip = zlib.createUnzip();
             var stream = new Stream;
@@ -482,7 +490,70 @@ Unirest = function (method, uri, headers, body, callback) {
               }
             };
           }
-        });
+        }
+
+        function handleFormData (form) {
+          for (var i = 0; i < $this._multipart.length; i++) {
+            var item = $this._multipart[i];
+
+            if (item.attachment && is(item.value).a(String)) {
+              if (does(item.value).contain('http://') || does(item.value).contain('https://')) {
+                item.value = Unirest.request(item.value);
+              } else {
+                item.value = fs.createReadStream(path.resolve(item.value));
+              }
+            }
+
+            form.append(item.name, item.value);
+          }
+
+          return form;
+        }
+
+        if ($this._multipart.length && !$this._stream) {
+          parts = URL.parse($this.options.url);
+
+          return handleFormData(new FormData()).submit({
+            host: parts.host,
+            path: parts.path,
+            method: $this.options.method,
+            headers: $this.options.headers,
+            auth: $this.options.auth
+          }, function (error, response) {
+            var decoder = new StringDecoder('utf8');
+
+            if (error) {
+              return handleRequestResponse(error, response);
+            }
+
+            if (!response.body) {
+              response.body = "";
+            }
+
+            // Node 10+
+            response.resume();
+
+            // GZIP, Feel me?
+            handleGZIPResponse(response);
+
+            // Fallback
+            response.on('data', function (chunk) {
+              if (typeof chunk === 'string') response.body += chunk;
+              else response.body += decoder.write(chunk);
+            });
+
+            // After all, we end up here
+            response.on('end', function () {
+              return handleRequestResponse(error, response);
+            });
+          });
+        }
+
+        Request = Unirest.request($this.options, handleRequestResponse);
+        Request.on('response', handleGZIPResponse);
+
+        if ($this._multipart.length && $this._stream)
+          handleFormData(Request.form());
 
         return Request;
       }
@@ -507,7 +578,6 @@ Unirest = function (method, uri, headers, body, callback) {
      * @type {Function}
      */
     $this.complete = $this.end;
-
 
     /**
      * Aliases for _.end_
@@ -630,7 +700,7 @@ Unirest.parsers = {
  */
 Unirest.serializers = {
   form: function (obj) {
-    return querystring.stringify(obj);
+    return QueryString.stringify(obj);
   },
 
   json: function (obj) {
