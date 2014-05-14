@@ -115,7 +115,7 @@ Unirest = function (method, uri, headers, body, callback) {
        * @param  {String} value
        * @return {Object}
        */
-      field: function (name, value) {
+      field: function (name, value, options) {
         if (is(name).a(Object)) {
           for (var key in name)
             $this.attach(key, name[key]);
@@ -123,6 +123,7 @@ Unirest = function (method, uri, headers, body, callback) {
           $this._multipart.push({
             name: name,
             value: value,
+            options: options,
             attachment: false
           });
         }
@@ -137,7 +138,7 @@ Unirest = function (method, uri, headers, body, callback) {
        * @param  {String|Object} path
        * @return {Object}
        */
-      attach: function (name, path) {
+      attach: function (name, path, options) {
         if (is(name).a(Object)) {
           for (var key in name)
             $this.attach(key, name[key]);
@@ -145,6 +146,7 @@ Unirest = function (method, uri, headers, body, callback) {
           $this._multipart.push({
             name: name,
             value: path,
+            options: options,
             attachment: true
           });
         }
@@ -504,7 +506,7 @@ Unirest = function (method, uri, headers, body, callback) {
               }
             }
 
-            form.append(item.name, item.value);
+            form.append(item.name, item.value, item.options);
           }
 
           return form;
