@@ -113,5 +113,15 @@ describe('Unirest', function () {
         done();
       });
     });
+
+    it('should correctly post a buffer with mime-type', function (done) {
+      unirest.post('http://httpbin.org/post')
+      .headers({ 'Content-Type': 'img/svg+xml' })
+      .send(new Buffer("<svg></svg>"))
+      .end(function (response) {
+        should(response.body.headers['Content-Type']).equal('img/svg+xml');
+        done();
+      });
+    });
   });
 });
