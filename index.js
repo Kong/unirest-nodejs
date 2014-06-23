@@ -244,7 +244,7 @@ Unirest = function (method, uri, headers, body, callback) {
       send: function (data) {
         var type = $this.options.headers[$this.hasHeader('content-type')];
 
-        if (is(data).a(Object)) {
+        if (is(data).a(Object) && !Buffer.isBuffer(data)) {
           if (!type || type != 'application/json') {
             $this.type('form');
             type = $this.options.headers[$this.hasHeader('content-type')];
