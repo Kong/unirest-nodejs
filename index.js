@@ -732,7 +732,7 @@ Unirest.serializers = {
 Unirest.Request = {
   serialize: function (string, type) {
     var serializer = Unirest.enum.serialize[type];
-    return seralizer ? serializer(string) : string;
+    return serializer ? serializer(string) : string;
   },
 
   uid: function (len) {
