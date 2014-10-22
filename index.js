@@ -530,11 +530,13 @@ Unirest = function (method, uri, headers, body, callback) {
           }
 
           return handleFormData(form).submit({
+            protocol: parts.protocol,
+            port: parts.port,
             host: parts.host,
             path: parts.path,
             method: $this.options.method,
             headers: $this.options.headers,
-            auth: $this.options.auth
+            auth: $this.options.auth || parts.auth
           }, function (error, response) {
             var decoder = new StringDecoder('utf8');
 
