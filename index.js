@@ -524,7 +524,7 @@ Unirest = function (method, uri, headers, body, callback) {
           form = new FormData();
 
           if (header = $this.options.headers[$this.hasHeader('content-type')]) {
-            $this.options.headers[header] = $this.options.headers[header].split(';')[0] + '; boundary=' + form.getBoundary();
+            $this.options.headers['content-type'] = header.split(';')[0] + '; boundary=' + form.getBoundary();
           } else {
             $this.options.headers['content-type'] = 'multipart/mixed; boundary=' + form.getBoundary();
           }
