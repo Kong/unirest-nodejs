@@ -125,7 +125,7 @@ Creates a container to store multiple cookies, i.e. a cookie jar.
 
 ```js
 var CookieJar = unirest.jar();
-CookieJar.add(unirest.cookie('some value'));
+CookieJar.add('key=value', '/'); // Cookie string, pathname / url
 unirest.get('http://httpbin.org/get').jar(CookieJar);
 ```
 

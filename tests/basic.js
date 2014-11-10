@@ -2,6 +2,19 @@ var should = require("should");
 var unirest = require('../index');
 
 describe('Unirest', function () {
+  describe('Cookie Jar', function () {
+    it('should contain both add and getCookieString methods', function (done) {
+      var jar = unirest.jar();
+
+      jar.should.have.property('add');
+      jar.should.have.property('getCookieString');
+      jar.add.should.be.a.Function;
+      jar.getCookieString.should.be.a.Function;
+
+      done();
+    });
+  });
+
   describe('GET request', function () {
     it('should correctly parse JSON.', function (done) {
       unirest.get('http://httpbin.org/get').end(function (response) {
@@ -24,7 +37,7 @@ describe('Unirest', function () {
         should(response.status).equal(200);
         should(response.body.url).equal('http://httpbin.org/get');
         done();
-      })
+      });
     });
 
     it('should correctly handle timeouts.', function (done) {
@@ -32,7 +45,7 @@ describe('Unirest', function () {
         response.error.should.exist;
         response.error.code.should.equal('ETIMEDOUT');
         done();
-      })
+      });
     });
 
     it('should correctly handle refused connections.', function (done) {
@@ -40,10 +53,10 @@ describe('Unirest', function () {
         response.error.should.exist;
         response.error.code.should.equal('ECONNREFUSED');
         done();
-      })
+      });
     });
 
-    it('should be able to look like unirest-php', function (done) {
+    it('should be able to work like other unirest libraries', function (done) {
       unirest.get('http://httpbin.org/gzip', { 'Accept': 'gzip' }, 'Hello World', function (response) {
         should(response.status).equal(200);
         should(response.body).have.type('object');
@@ -63,6 +76,9 @@ describe('Unirest', function () {
       unirest.post('http://httpbin.org/post').send(data).end(function (response) {
         should(response.status).equal(200);
         should(response.body.form).have.type('object');
+        should(response.body.form).have.property('is', data.is);
+        should(response.body.form).have.property('my', data.my);
+        should(response.body.form).have.property('hello', data.hello);
         should(response.body.headers['Content-Length']).equal('30');
         should(response.body.headers['Content-Type']).equal('application/x-www-form-urlencoded');
         done();
@@ -85,6 +101,7 @@ describe('Unirest', function () {
 
       request.end(function (response) {
         should(response.status).equal(200);
+        should(response.body.headers['Content-Type']).startWith('multipart/mixed');
         done();
       });
     });
@@ -99,6 +116,7 @@ describe('Unirest', function () {
       unirest.post('http://httpbin.org/post').header('content-type', 'application/json').send(data).end(function (response) {
         should(response.status).equal(200);
         should(response.body.data).have.type('string');
+        should(response.body.data).equal(JSON.stringify(data));
         should(response.body.headers['Content-Type']).equal('application/json');
         done();
       });

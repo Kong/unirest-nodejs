@@ -93,11 +93,15 @@ Unirest = function (method, uri, headers, body, callback) {
 
         name = name.toLowerCase();
         headers = Object.keys($this.options.headers);
-        lowercaseHeaders = headers.map(function (header) { return header.toLowerCase(); });
+        lowercaseHeaders = headers.map(function (header) {
+          return header.toLowerCase();
+        });
 
-        for (var i = 0; i < lowercaseHeaders.length; i++)
-          if (lowercaseHeaders[i] === name)
+        for (var i = 0; i < lowercaseHeaders.length; i++) {
+          if (lowercaseHeaders[i] === name) {
             return headers[i];
+          }
+        }
 
         return false;
       },
@@ -124,8 +128,11 @@ Unirest = function (method, uri, headers, body, callback) {
        */
       field: function (name, value, options) {
         if (is(name).a(Object)) {
-          for (var key in name)
-            $this.attach(key, name[key]);
+          for (var key in name) {
+            if (name.hasOwnProperty(key)) {
+              $this.attach(key, name[key]);
+            }
+          }
         } else {
           $this._multipart.push({
             name: name,
@@ -147,8 +154,11 @@ Unirest = function (method, uri, headers, body, callback) {
        */
       attach: function (name, path, options) {
         if (is(name).a(Object)) {
-          for (var key in name)
-            $this.attach(key, name[key]);
+          for (var key in name) {
+            if (name.hasOwnProperty(key)) {
+              $this.attach(key, name[key]);
+            }
+          }
         } else {
           $this._multipart.push({
             name: name,
@@ -191,8 +201,11 @@ Unirest = function (method, uri, headers, body, callback) {
        */
       header: function (field, value) {
         if (is(field).a(Object)) {
-          for (var key in field)
-            $this.header(key, field[key]);
+          for (var key in field) {
+            if (field.hasOwnProperty(key)) {
+              $this.header(key, field[key]);
+            }
+          }
 
           return $this;
         }
@@ -253,7 +266,11 @@ Unirest = function (method, uri, headers, body, callback) {
             $this.options.json = true;
 
             if ($this.options.body && is($this.options.body).a(Object)) {
-              for (var key in data) $this.options.body[key] = data[key];
+              for (var key in data) {
+                if (data.hasOwnProperty(key)) {
+                  $this.options.body[key] = data[key];
+                }
+              }
             } else {
               $this.options.body = data;
             }
@@ -338,6 +355,7 @@ Unirest = function (method, uri, headers, body, callback) {
 
         function handleRequestResponse (error, response, body) {
           var result = {};
+          var status;
           var data;
           var type;
 
@@ -365,8 +383,8 @@ Unirest = function (method, uri, headers, body, callback) {
           result = response;
 
           // Handle Status
-          var status = response.statusCode;
-          var type = status / 100 | 0;
+          status = response.statusCode;
+          type = status / 100 | 0;
 
           result.code = status;
           result.status = status;
@@ -399,26 +417,26 @@ Unirest = function (method, uri, headers, body, callback) {
             return result.cookies[name];
           };
 
+          function setCookie (cookie) {
+            var crumbs = Unirest.trim(cookie).split('=');
+            var key = Unirest.trim(crumbs[0]);
+            var value = Unirest.trim(crumbs.slice(1).join('='));
+
+            if (crumbs[0] && crumbs[0] != '') {
+              result.cookies[key] = value === ''
+                ? true
+                : value;
+            }
+          }
+
           if (response.cookies && is(response.cookies).a(Object) && Object.keys(response.cookies).length > 0) {
             result.cookies = response.cookies;
           } else {
-            function setCookie (cookie) {
-              var crumbs = Unirest.trim(cookie).split('=');
-              var key = Unirest.trim(crumbs[0]);
-              var value = Unirest.trim(crumbs.slice(1).join('='));
-
-              if (crumbs[0] && crumbs[0] != '') {
-                result.cookies[key] = value === ''
-                  ? true
-                  : value;
-              }
-            }
-
             // Set-Cookie Parsing
             var cookies = response.headers['set-cookie'];
 
             if (cookies && is(cookies).a(Array)) {
-              for (var index in cookies) {
+              for (var index = 0; index < cookies.length; index++) {
                 var entry = cookies[index];
 
                 if (is(entry).a(String) && does(entry).contain(';')) {
@@ -458,7 +476,7 @@ Unirest = function (method, uri, headers, body, callback) {
         function handleGZIPResponse (response) {
           if (/^(deflate|gzip)$/.test(response.headers['content-encoding'])) {
             var unzip = zlib.createUnzip();
-            var stream = new Stream;
+            var stream = new Stream();
             var decoder, _on = response.on;
 
             // Keeping node happy
@@ -609,24 +627,28 @@ Unirest = function (method, uri, headers, body, callback) {
       string: $this.end
     };
 
+    function setupOption (name, ref) {
+      $this[name] = function (arg) {
+        $this.options[ref || name] = arg;
+        return $this;
+      };
+    }
+
     // Iterates over a list of option methods to generate the chaining
     // style of use you see in Superagent and jQuery.
     for (var x in Unirest.enum.options) {
-      var option = Unirest.enum.options[x];
-      var reference = null;
+      if (Unirest.enum.options.hasOwnProperty(x)) {
+        var option = Unirest.enum.options[x];
+        var reference = null;
 
-      if (option.indexOf(':') != -1) {
-        option = option.split(':');
-        reference = option[1];
-        option = option[0];
-      }
-
-      (function (name, ref) {
-        $this[name] = function (arg) {
-          $this.options[ref || name] = arg;
-          return $this;
+        if (option.indexOf(':') != -1) {
+          option = option.split(':');
+          reference = option[1];
+          option = option[0];
         }
-      })(option, reference);
+
+        setupOption(option, reference);
+      }
     }
 
     if (headers && typeof headers === 'function')
@@ -638,7 +660,7 @@ Unirest = function (method, uri, headers, body, callback) {
     if (body) $this.send(body);
 
     return callback ? $this.end(callback) : $this;
-  };
+  }
 
   return uri ? unirest(uri, headers, body, callback) : unirest;
 };
@@ -804,8 +826,8 @@ Unirest.jar = function (options) {
   }
 
   if (options.rejectPublicSuffixes) {
-    jar._jar.rejectPublicSuffixes = options.rejectPublicSuffixes
-  };
+    jar._jar.rejectPublicSuffixes = options.rejectPublicSuffixes;
+  }
 
   jar.add = jar.setCookie;
   jar.toString = jar.getCookieString;
@@ -851,10 +873,13 @@ Unirest.enum = {
  *
  * This allows us to mock super-agent chaining style while using request library under the hood.
  */
+function setupMethod (method) {
+  Unirest[method] = Unirest(method);
+}
 
-for (var i in Unirest.enum.methods) {
+for (var i = 0; i < Unirest.enum.methods.length; i++) {
   var method = Unirest.enum.methods[i].toLowerCase();
-  (function (type) { Unirest[type] = Unirest(type); })(method);
+  setupMethod(method);
 }
 
 /**
@@ -907,8 +932,8 @@ function does (value) {
       if (is(value).a(Array)) return !!~arrayIndexOf(value, field);
       return false;
     }
-  }
-};
+  };
+}
 
 /**
  * Expose the Unirest Container
