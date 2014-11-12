@@ -383,7 +383,8 @@ This object is modeled after the `request` libraries options that are passed alo
 * `aws` (`Object`) - See `Request.aws()` below.
 * `httpSignature` (`Object`) - See `Request.httpSignature()` Below.
 * `localAddress` (`String`) - See `Request.localAddress()` Below.
-* `pool` && `pool.maxSockets` - Advanced agent technology, that is supported.
+* `pool` (`Object`) - See `Reuqest.pool()` Below.
+* `forever` (`Boolean`) - Default `undefined`; See `Request.forever()` Below
 
 ## Request Option Methods
 
@@ -580,6 +581,28 @@ Request.localAddress('1.2.3.4');
 Sets `jar`, cookie container, on `Request.options`. When set to `true` it stores cookies for future usage.
 
 See `unirest.jar` for more information on how to use `Jar` argument.
+
+#### Request.pool(Object)
+
+Sets `pool` object on `Request.options` to the given object.
+
+A maxSockets property can also be provided on the pool object to set the max number of sockets for all agents created.
+
+Note that if you are sending multiple requests in a loop and creating multiple new pool objects, maxSockets will not work as intended. To work around this, create the pool object with the maxSockets property outside of the loop.
+
+```js
+poolOption = { maxSockets: 100 }
+
+Request.pool poolOption
+```
+
+#### Request.forever(Boolean)
+
+Sets `forever` flag to use `forever-agent` module. When set to `true`,  default http agent will be replaced by `forever-agent`, which keeps socket connections alive between keep-alive requests.
+
+```js
+Request.forever(true);
+```
 
 ## Request Aliases
 
