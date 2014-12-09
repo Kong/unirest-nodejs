@@ -130,13 +130,13 @@ Unirest = function (method, uri, headers, body, callback) {
         if (is(name).a(Object)) {
           for (var key in name) {
             if (name.hasOwnProperty(key)) {
-              $this.attach(key, name[key]);
+              $this.attach(key, name[key] instanceof Buffer ? name[key] : name[key].toString());
             }
           }
         } else {
           $this._multipart.push({
             name: name,
-            value: value,
+            value: value instanceof Buffer ? value : value.toString(),
             options: options,
             attachment: false,
           });

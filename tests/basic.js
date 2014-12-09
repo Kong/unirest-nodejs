@@ -85,6 +85,31 @@ describe('Unirest', function () {
       });
     });
 
+    it('should correctly transform FORM data.', function (done) {
+      var data = {
+        lebron: false,
+        jordan: 23
+      };
+
+      try {
+        var request = unirest.post('http://httpbin.org/post');
+
+        for (var key in data) {
+          request.field(key, data[key]);
+        }
+
+        request.end(function (response) {
+          should(response.status).equal(200);
+          response.body.data.should.containEql('name="lebron"\r\n\r\n' + data.lebron.toString());
+          response.body.data.should.containEql('name="jordan"\r\n\r\n' + data.jordan.toString());
+        });
+      } catch (e) {
+        done(e);
+      } finally {
+        done();
+      }
+    });
+
     it('should correctly post MULTIFORM data.', function (done) {
       var request = unirest.post('http://httpbin.org/post');
       var file = __dirname + '/../README.md';
