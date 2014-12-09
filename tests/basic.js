@@ -88,7 +88,15 @@ describe('Unirest', function () {
     it('should correctly transform FORM data.', function (done) {
       var data = {
         lebron: false,
-        jordan: 23
+        jordan: 23,
+        testing: {key:'value'},
+        scores: [
+          1,
+          3,
+          2,
+          1,
+          3
+        ]
       };
 
       try {

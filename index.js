@@ -118,31 +118,14 @@ Unirest = function (method, uri, headers, body, callback) {
       },
 
       /**
-       * Attaches a field to the multipart-form request.
-       *
-       * Behaves much like form fields in HTML.
+       * Attaches a field to the multipart-form request, with pre-processing.
        *
        * @param  {String} name
        * @param  {String} value
        * @return {Object}
        */
       field: function (name, value, options) {
-        if (is(name).a(Object)) {
-          for (var key in name) {
-            if (name.hasOwnProperty(key)) {
-              $this.attach(key, name[key] instanceof Buffer ? name[key] : name[key].toString());
-            }
-          }
-        } else {
-          $this._multipart.push({
-            name: name,
-            value: value instanceof Buffer ? value : value.toString(),
-            options: options,
-            attachment: false,
-          });
-        }
-
-        return $this;
+        return handleField(name, value, options);
       },
 
       /**
@@ -153,22 +136,26 @@ Unirest = function (method, uri, headers, body, callback) {
        * @return {Object}
        */
       attach: function (name, path, options) {
-        if (is(name).a(Object)) {
-          for (var key in name) {
-            if (name.hasOwnProperty(key)) {
-              $this.attach(key, name[key]);
-            }
-          }
-        } else {
-          $this._multipart.push({
-            name: name,
-            value: path,
-            options: options,
-            attachment: true
-          });
-        }
+        options = options || {};
+        options.attachment = true;
+        return handleField(name, path, options);
+      },
 
-        return $this;
+      /**
+       * Attaches field to the multipart-form request, with no pre-processing.
+       *
+       * @param  {String} name
+       * @param  {String|Object} path
+       * @param  {Object} options
+       * @return {Object}
+       */
+      rawField: function (name, value, options) {
+        $this._multipart.push({
+          name: name,
+          value: value,
+          options: options,
+          attachment: options.attachment || false
+        });
       },
 
       /**
@@ -456,7 +443,6 @@ Unirest = function (method, uri, headers, body, callback) {
           // Response
 
           body = body || response.body;
-
           result.raw_body = body;
           result.headers = response.headers;
 
@@ -626,6 +612,58 @@ Unirest = function (method, uri, headers, body, callback) {
       binary: $this.end,
       string: $this.end
     };
+
+    /**
+     * Handles Multipart Field Processing
+     *
+     * @param {String} name
+     * @param {Mixed} value
+     * @param {Object} options
+     */
+    function handleField (name, value, options) {
+      var serialized;
+      var length;
+      var key;
+      var i;
+
+      options = options || {
+        attachment: false
+      };
+
+      if (is(name).a(Object)) {
+        for (key in name) {
+          if (name.hasOwnProperty(key)) {
+            handleField(key, name[key], options);
+          }
+        }
+      } else {
+        if (is(value).a(Array)) {
+          for (i = 0, length = value.length; i < length; i++) {
+            if (serialized = handleFieldValue(value[i]))
+              $this.rawField(name, serialized, options);
+          }
+        } else {
+          $this.rawField(name, handleFieldValue(value), options);
+        }
+      }
+
+      return $this;
+    }
+
+    /**
+     * Handles Multipart Value Processing
+     *
+     * @param {Mixed} value
+     */
+    function handleFieldValue (value) {
+      if (!(value instanceof Buffer || typeof value === 'string')) {
+        if (is(value).a(Object)) {
+          return Unirest.serializers.json(value)
+        } else {
+          return value.toString();
+        }
+      } else return value;
+    }
 
     function setupOption (name, ref) {
       $this[name] = function (arg) {
