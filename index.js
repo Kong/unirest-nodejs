@@ -642,7 +642,7 @@ Unirest = function (method, uri, headers, body, callback) {
             if (serialized = handleFieldValue(value[i]))
               $this.rawField(name, serialized, options);
           }
-        } else {
+        } else if (value !== null && value !== undefined) {
           $this.rawField(name, handleFieldValue(value), options);
         }
       }
