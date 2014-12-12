@@ -459,6 +459,52 @@ Unirest = function (method, uri, headers, body, callback) {
           (callback) && callback(result);
         }
 
+        function handleGZIPResponse (response) {
+          if (/^(deflate|gzip)$/.test(response.headers['content-encoding'])) {
+            var unzip = zlib.createUnzip();
+            var stream = new Stream();
+            var decoder, _on = response.on;
+
+            // Keeping node happy
+            stream.req = response.req;
+
+            // Make sure we emit prior to processing
+            unzip.on('error', function (error) {
+              stream.emit('error', error);
+            });
+
+            // Start the processing
+            response.pipe(unzip);
+
+            // Ensure encoding is captured
+            response.setEncoding = function (type) {
+              decoder = new StringDecoder(type);
+            };
+
+            // Capture decompression and decode with captured encoding
+            unzip.on('data', function (buffer) {
+              if (!decoder) return stream.emit('data', buffer);
+              var string = decoder.write(buffer);
+              if (string.length) stream.emit('data', string);
+            });
+
+            // Emit yoself
+            unzip.on('end', function () {
+              stream.emit('end');
+            });
+
+            response.on = function (type, next) {
+              if ('data' == type || 'end' == type) {
+                stream.on(type, next);
+              } else if ('error' == type) {
+                _on.call(response, type, next);
+              } else {
+                _on.call(response, type, next);
+              }
+            };
+          }
+        }
+
         function handleFormData (form) {
           for (var i = 0; i < $this._multipart.length; i++) {
             var item = $this._multipart[i];
