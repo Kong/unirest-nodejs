@@ -123,7 +123,8 @@ describe('Unirest', function () {
       var file = __dirname + '/../README.md';
       var data = {
         a: 'foo',
-        b: 'bar'
+        b: 'bar',
+        c: undefined
       };
 
       request.attach('u', file);
