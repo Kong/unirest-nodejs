@@ -593,10 +593,11 @@ Unirest = function (method, uri, headers, body, callback) {
       } else {
         if (is(value).a(Array)) {
           for (i = 0, length = value.length; i < length; i++) {
-            if (serialized = handleFieldValue(value[i]))
+            if (serialized = handleFieldValue(value[i])) {
               $this.rawField(name, serialized, options);
+            }
           }
-        } else if (value !== null && value !== undefined) {
+        } else if (value != null) {
           $this.rawField(name, handleFieldValue(value), options);
         }
       }
@@ -652,7 +653,7 @@ Unirest = function (method, uri, headers, body, callback) {
     if (body) $this.send(body);
 
     return callback ? $this.end(callback) : $this;
-  }
+  };
 
   return uri ? unirest(uri, headers, body, callback) : unirest;
 };
@@ -885,7 +886,7 @@ function is (value) {
     a: function (check) {
       if (check.prototype) check = check.prototype.constructor.name;
       var type = Object.prototype.toString.call(value).slice(8, -1).toLowerCase();
-      return value !== undefined && value !== null && type === check.toLowerCase();
+      return value != null && type === check.toLowerCase();
     },
   };
 }
