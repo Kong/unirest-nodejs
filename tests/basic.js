@@ -108,8 +108,10 @@ describe('Unirest', function () {
 
         request.end(function (response) {
           should(response.status).equal(200);
-          response.body.data.should.containEql('name="lebron"\r\n\r\n' + data.lebron.toString());
-          response.body.data.should.containEql('name="jordan"\r\n\r\n' + data.jordan.toString());
+          should(response.body.form).have.property('jordan', data.jordan.toString());
+          should(response.body.form).have.property('lebron', data.lebron.toString());
+          should(response.body.form).have.property('testing', JSON.stringify(data.testing));
+          should(response.body.form).have.property('scores', ["1","3","2","1","3"]);
         });
       } catch (e) {
         done(e);
@@ -135,7 +137,7 @@ describe('Unirest', function () {
 
       request.end(function (response) {
         should(response.status).equal(200);
-        should(response.body.headers['Content-Type']).startWith('multipart/mixed');
+        should(response.body.headers['Content-Type']).startWith('multipart/form-data');
         done();
       });
     });
