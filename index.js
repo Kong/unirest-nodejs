@@ -433,7 +433,7 @@ Unirest = function (method, uri, headers, body, callback) {
             }
 
             // Sometimes you get this header.
-            cookies = response.headers['cookie'];
+            cookies = response.headers.cookie;
 
             if (cookies && is(cookies).a(String)) {
               cookies.split(';').forEach(setCookie);
