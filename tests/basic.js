@@ -142,6 +142,28 @@ describe('Unirest', function () {
       });
     });
 
+    it('should correctly post MULTIFORM data with port number', function (done) {
+      var request = unirest.post('http://httpbin.org:80/post');
+      var file = __dirname + '/../README.md';
+      var data = {
+        a: 'foo',
+        b: 'bar',
+        c: undefined
+      };
+
+      request.attach('u', file);
+
+      for (var key in data) {
+        request.field(key, data[key]);
+      }
+
+      request.end(function (response) {
+        should(response.status).equal(200);
+        should(response.body.headers['Content-Type']).startWith('multipart/form-data');
+        done();
+      });
+    });
+
     it('should correctly post JSON data.', function (done) {
       var data = {
         is: 'unirest',

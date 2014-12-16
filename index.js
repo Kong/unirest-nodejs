@@ -525,6 +525,11 @@ Unirest = function (method, uri, headers, body, callback) {
 
         if ($this._multipart.length && !$this._stream) {
           parts = URL.parse($this.options.url);
+          //URL.parse will include the port number in the
+          //host information. FormData doesn't expect this
+          //URL parse will include port information in parts.port
+          parts.host = parts.host.replace(parts.host.match(/:\d+/), '');
+
           form = new FormData();
 
           if (header = $this.options.headers[$this.hasHeader('content-type')]) {
