@@ -24,7 +24,7 @@ You're probably wondering how by using **Unirest** makes creating requests easie
 
 ```js
 unirest.post('http://httpbin.org/post')
-.headers({ 'Accept': 'application/json' })
+.header('Accept': 'application/json')
 .send({ "parameter": 23, "foo": "bar" })
 .end(function (response) {
   console.log(response.body);
@@ -37,7 +37,7 @@ Transferring file data has been simplified:
 
 ```js
 unirest.post('http://httpbin.org/post')
-.headers({ 'Accept': 'application/json' })
+.headers('Accept': 'application/json')
 .field('parameter', 'value') // Form field
 .attach('file', '/tmp/file') // Attachment
 .end(function (response) {
@@ -49,7 +49,7 @@ unirest.post('http://httpbin.org/post')
 
 ```js
 unirest.post('http://httpbin.org/post')
-.headers({ 'Accept': 'application/json' })
+.headers('Accept': 'application/json')
 .send(new Buffer([1,2,3]))
 .end(function (response) {
   console.log(response.body);
@@ -63,17 +63,16 @@ A request can be initiated by invoking the appropriate method on the unirest obj
 ## unirest(method [, uri, headers, body, callback])
 
 - `method` - Request type (GET, PUT, POST, etc...)
-- `uri` - _Optional_; When declared the method will return a [Request](#request) object.
-          Otherwise it will return the method below with `method` set to the method given.
-- `headers` (`Object`) - _Optional_; Will be aliased to unirest\[method] `headers` argument when `uri` is present.
-- `body` (`Mixed`) - _Optional_; Will be aliased to unirest\[method] `body` argument when `uri` is present.
-- `callback` (`Function`) - _Optional_; Will be aliased to unirest\[method] `callback` argument when `uri` is present.
+- `uri` - _Optional_; When passed will return a [Request](#request) object. Otherwise returns generated function with `method` pre-defined (e.g. `unirest.get`)
+- `headers` (`Object`) - _Optional_; HTTP Request headers
+- `body` (`Mixed`) - _Optional_; HTTP Request body
+- `callback` (`Function`) - _Optional_; Invoked when Request has finalized with arguments, `error` and [Response](#response)
 
 ## unirest\[method](url [, headers, body, callback])
 
 - `method` - Request type, pre-defined methods, see below.
 - `url` - Request location.
-- `headers` (`Object` | `Function`) - _Optional_; When `Object` headers are passed along to the `Request.set()` method,
+- `headers` (`Object` | `Function`) - _Optional_; When `Object` headers are passed along to the [`Request.header`](#requestheaderobject-or-field-value) method,
    when `Function` this argument is used as the `callback`.
 - `body` (`Mixed` | `Function`) - _Optional_; When `body` is not a `Function` it will be passed along to `Request.send()` method,
    otherwise when a `Function` it will be used as the `callback`.
@@ -135,7 +134,7 @@ Creates a cookie, see above for example.
 
 ## unirest.request
 
-`mikeal/request` library (the underlying layer of unirest-nodejs) for direct use.
+`mikeal/request` library (the underlying layer of unirest) for direct use.
 
 # Request
 
@@ -148,9 +147,7 @@ request module Superagent (which this library is modeled after slightly).
 ```js
 var Request = unirest.post('http://httpbin.org/post');
 
-Request.headers({
-  'Accepts': 'application/json'
-}).end(function (response) {
+Request.header('Accepts': 'application/json').end(function (response) {
   ...
 });
 ```
@@ -196,16 +193,18 @@ or `field` and `value` arguments. Each entry is then stored in a two locations, 
 **Object**
 
 ```js
-Request.set({
+Request.headers({
   'Accepts': 'application/json',
   'User-Agent': 'Unirest Node.js'
 })
 ```
 
+Note the usage of [`Request.headers`](#requestheaders) which is simply an alias to the `Request.header` method, you can also use [`Request.set`](#requestset) to set headers.
+
 **Arguments**
 
 ```js
-Request.set('Accepts', 'application/json');
+Request.header('Accepts', 'application/json');
 ```
 
 #### Request.part(Object)
@@ -289,7 +288,7 @@ unirest.post('http://httpbin.org/post')
 
 Sets the header `Content-Type` through either lookup for extensions (`xml`, `png`, `json`, etc...) using `mime` or using the full value such as `application/json`.
 
-Uses `Request.header()` to set header value.
+Uses [`Request.header`](#requestheaderobject-or-field-value) to set header value.
 
 ```js
 Request.type('application/json') // Content-Type: application/json
@@ -313,7 +312,7 @@ The following methods are sugar methods for attaching files, and form fields. In
 
 ```js
 unirest.post('http://httpbin.org/post')
-.headers({ 'Accept': 'application/json' })
+.header('Accept': 'application/json')
 .field({
   'parameter': 'value'
 })
@@ -331,7 +330,7 @@ unirest.post('http://httpbin.org/post')
 
 ```js
 unirest.post('http://httpbin.org/post')
-.headers({ 'Accept': 'application/json' })
+.header('Accept': 'application/json')
 .field('parameter', 'value') // Form field
 .attach('file', 'dog.png') // Attachment
 .attach('remote file', fs.createReadStream(path.join(__dirname, 'dog.png')) // Same as above.
