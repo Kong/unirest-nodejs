@@ -1,6 +1,6 @@
 # Unirest for Node.js [![Build Status](http://img.shields.io/travis/Mashape/unirest-nodejs/master.svg)](https://travis-ci.org/Mashape/unirest-nodejs) [![NPM Version](http://img.shields.io/npm/v/unirest.svg)](https://www.npmjs.com/package/unirest)
 
-Unirest is a set of lightweight HTTP libraries available in multiple languages.
+Unirest is a set of lightweight HTTP clients available in multiple languages.
 
 Developed with love by [nijikokun](http://github.com/nijikokun) @ [mashape.com](http://mashape.com)
 
