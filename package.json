@@ -9,7 +9,7 @@
   "dependencies": {
     "form-data": "^0.2.0",
     "mime": "~1.2.11",
-    "request": "~2.47.0"
+    "request": "~2.51.0"
   },
   "devDependencies": {
     "mocha": "~1.13.0",
