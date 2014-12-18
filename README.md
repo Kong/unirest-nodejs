@@ -66,7 +66,7 @@ A request can be initiated by invoking the appropriate method on the unirest obj
 - `uri` - _Optional_; When passed will return a [Request](#request) object. Otherwise returns generated function with `method` pre-defined (e.g. `unirest.get`)
 - `headers` (`Object`) - _Optional_; HTTP Request headers
 - `body` (`Mixed`) - _Optional_; HTTP Request body
-- `callback` (`Function`) - _Optional_; Invoked when Request has finalized with arguments, `error` and [Response](#response)
+- `callback` (`Function`) - _Optional_; Invoked when Request has finalized with the argument [Response](#response)
 
 ## unirest\[method](url [, headers, body, callback])
 
@@ -227,7 +227,9 @@ Request.part({
 
 #### Request.query(Object) or (String)
 
-When `Object` is passed value is processed as a `querystring` representation, otherwise we directly use the `String` passed and append it to `Request.options.url`. If `Request.options.url` has a trailing `?` already, we append it with `& + value` otherwise we append as `? + value`
+Serializes argument passed to a querystring representation.
+
+Should `url` already contain a querystring, the representation will be appended to the `url`.
 
 ```js
 unirest.post('http://httpbin.org/get')
@@ -242,9 +244,12 @@ unirest.post('http://httpbin.org/get')
 
 #### Request.send(Object | String)
 
-Ease of use method for setting the body without having to worry about processing the data for popular formats such as `JSON`, `Form Encoded`, otherwise the `body` is set on `Request.options` as the given value.
+Data marshalling for HTTP request body data
 
-By default sending strings with no `Content-Type` preset will set `Content-Type` to `application/x-www-form-urlencoded`, and multiple calls will be concatenated with `&`. Otherwise multiple calls will be appended to the previous `body` value.
+Determines whether data mime-type is `form` or `json`.
+For irregular mime-types the `.type()` method is used to infer the `content-type` header.
+
+When mime-type is `application/x-www-form-urlencoded` data is appended rather than overwritten.
 
 **JSON**
 
@@ -603,47 +608,58 @@ Sets `forever` flag to use `forever-agent` module. When set to `true`,  default 
 Request.forever(true);
 ```
 
+#### Request.end(Function callback)
+
+Sends HTTP Request and awaits Response finalization. Request compression and Response decompression occurs here.
+Upon HTTP Response post-processing occurs and invokes `callback` with a single argument, the `[Response](#response)` object.
+
+```js
+unirest.get('http://httpbin.org/get').end(function (response) {
+  ...
+});
+```
+
 ## Request Aliases
 
 #### Request.set
 
-**Alias** for `Request.header()`
+**Alias** for [`Request.header()`](#requestheaderobject-or-field-value)
 
 #### Request.headers
 
-**Alias** for `Request.header()`
+**Alias** for [`Request.header()`](#requestheaderobject-or-field-value)
 
 #### Request.redirects
 
-**Alias** for `Request.maxRedirects()`
+**Alias** for [`Request.maxRedirects()`](#requestmaxredirectsnumber)
 
 #### Request.redirect
 
-**Alias** for `Request.followRedirect()`
+**Alias** for [`Request.followRedirect()`](#requestfollowredirectboolean)
 
 #### Request.ssl
 
-**Alias** for `Request.strictSSL()`
+**Alias** for [`Request.strictSSL()`](#requeststrictsslboolean)
 
 #### Request.ip
 
-**Alias** for `Request.localAddress()`
+**Alias** for [`Request.localAddress()`](#requestlocaladdressstring)
 
 #### Request.complete
 
-**Alias** for `Request.end()`
+**Alias** for [`Request.end()`](#requestlocaladdressstring)
 
 #### Request.as.json
 
-**Alias** for `Request.end()`
+**Alias** for [`Request.end()`](#requestendfunction-callback)
 
 #### Request.as.binary
 
-**Alias** for `Request.end()`
+**Alias** for [`Request.end()`](#requestendfunction-callback)
 
 #### Request.as.string
 
-**Alias** for `Request.end()`
+**Alias** for [`Request.end()`](#requestendfunction-callback)
 
 # Response
 

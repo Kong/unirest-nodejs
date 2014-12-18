@@ -204,7 +204,7 @@ Unirest = function (method, uri, headers, body, callback) {
       },
 
       /**
-       * Append query string to request uri.
+       * Serialize value as querystring representation, and append or set on `Request.options.url`
        *
        * @param  {String|Object} value
        * @return {Object}
@@ -230,13 +230,12 @@ Unirest = function (method, uri, headers, body, callback) {
       },
 
       /**
-       * Set body and do some pre-sending transformations...
+       * Data marshalling for HTTP request body data
        *
-       * Determines type whether `form` or `json`.
-       * For other types use `.type()` to set the _content-type_.
+       * Determines whether type is `form` or `json`.
+       * For irregular mime-types the `.type()` method is used to infer the `content-type` header.
        *
-       * If type is _application/x-www-form-urlencoded_ data will be appended to the
-       * previously set body data.
+       * When mime-type is `application/x-www-form-urlencoded` data is appended rather than overwritten.
        *
        * @param  {Mixed} data
        * @return {Object}
@@ -328,8 +327,8 @@ Unirest = function (method, uri, headers, body, callback) {
       },
 
       /**
-       * Finalize and send the request, after a response has been recieved do some additional post-processing
-       * that request fails to do (this section mimics superagent style response).
+       * Sends HTTP Request and awaits Response finalization. Request compression and Response decompression occurs here.
+       * Upon HTTP Response post-processing occurs and invokes `callback` with a single argument, the `[Response](#response)` object.
        *
        * @param  {Function} callback
        * @return {Object}
