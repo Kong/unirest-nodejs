@@ -358,6 +358,7 @@ Unirest = function (method, uri, headers, body, callback) {
           // This is weird.
           if (!response) {
             console.log('This is odd, report this action / request to: http://github.com/mashape/unirest-nodejs');
+
             result.error = {
               message: 'No response found.'
             };
@@ -525,11 +526,6 @@ Unirest = function (method, uri, headers, body, callback) {
 
         if ($this._multipart.length && !$this._stream) {
           parts = URL.parse($this.options.url);
-          //URL.parse will include the port number in the
-          //host information. FormData doesn't expect this
-          //URL parse will include port information in parts.port
-          parts.host = parts.host.replace(parts.host.match(/:\d+/), '');
-
           form = new FormData();
 
           if (header = $this.options.headers[$this.hasHeader('content-type')]) {
@@ -541,7 +537,9 @@ Unirest = function (method, uri, headers, body, callback) {
           return handleFormData(form).submit({
             protocol: parts.protocol,
             port: parts.port,
-            host: parts.host,
+            // Formdata doesn't expect port to be included with host
+            // so we use hostname rather than host
+            host: parts.hostname,
             path: parts.path,
             method: $this.options.method,
             headers: $this.options.headers,
