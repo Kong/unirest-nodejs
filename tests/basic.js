@@ -1,5 +1,5 @@
-var should = require("should");
 var fs = require("fs");
+var should = require("should");
 var unirest = require('../index');
 
 describe('Unirest', function () {
