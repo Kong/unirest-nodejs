@@ -661,7 +661,11 @@ Unirest = function (method, uri, headers, body, callback) {
     function handleFieldValue (value) {
       if (!(value instanceof Buffer || typeof value === 'string')) {
         if (is(value).a(Object)) {
-          return Unirest.serializers.json(value)
+          if (value instanceof fs.FileReadStream) {
+            return value.path;
+          } else {
+            return Unirest.serializers.json(value)
+          }
         } else {
           return value.toString();
         }
