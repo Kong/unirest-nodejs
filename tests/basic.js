@@ -1,3 +1,4 @@
+var fs = require("fs");
 var should = require("should");
 var unirest = require('../index');
 
@@ -130,6 +131,28 @@ describe('Unirest', function () {
       };
 
       request.attach('u', file);
+
+      for (var key in data) {
+        request.field(key, data[key]);
+      }
+
+      request.end(function (response) {
+        should(response.status).equal(200);
+        should(response.body.headers['Content-Type']).startWith('multipart/form-data');
+        done();
+      });
+    });
+
+    it('should correctly post MULTIFORM data using fs.createReadStream.', function (done) {
+      var request = unirest.post('http://httpbin.org/post');
+      var file = __dirname + '/../README.md';
+      var data = {
+        a: 'foo',
+        b: 'bar',
+        c: undefined
+      };
+
+      request.attach({'u': fs.createReadStream(file)});
 
       for (var key in data) {
         request.field(key, data[key]);
