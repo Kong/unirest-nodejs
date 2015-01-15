@@ -1,5 +1,7 @@
 # Unirest for Node.js [![Build Status](http://img.shields.io/travis/Mashape/unirest-nodejs/master.svg?style=flat)](https://travis-ci.org/Mashape/unirest-nodejs) [![NPM Version](https://badge.fury.io/js/unirest.svg)](https://www.npmjs.com/package/unirest)
 
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Mashape/unirest-nodejs?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://raw.githubusercontent.com/Mashape/unirest-nodejs/master/LICENSE)
 [![Downloads](https://img.shields.io/npm/dm/unirest.svg?style=flat)](https://www.npmjs.com/package/unirest)
 ![David](https://img.shields.io/david/mashape/unirest-nodejs.svg?style=flat)
