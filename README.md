@@ -1,4 +1,9 @@
-# Unirest for Node.js [![Build Status](http://img.shields.io/travis/Mashape/unirest-nodejs/master.svg)](https://travis-ci.org/Mashape/unirest-nodejs) [![NPM Version](http://img.shields.io/npm/v/unirest.svg)](https://www.npmjs.com/package/unirest)
+# Unirest for Node.js [![Build Status](http://img.shields.io/travis/Mashape/unirest-nodejs/master.svg?style=flat)](https://travis-ci.org/Mashape/unirest-nodejs) [![NPM Version](https://badge.fury.io/js/unirest.svg)](https://www.npmjs.com/package/unirest)
+
+[![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://raw.githubusercontent.com/Mashape/unirest-nodejs/master/LICENSE)
+[![Downloads](https://img.shields.io/npm/dm/unirest.svg?style=flat)](https://www.npmjs.com/package/unirest)
+![David](https://img.shields.io/david/mashape/unirest-nodejs.svg)
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/Mashape/unirest-php?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
 
 Unirest is a set of lightweight HTTP clients available in multiple languages.
 
@@ -721,3 +726,15 @@ unirest.get('http://google.com').jar(CookieJar).end(function (response) {
   console.log(response.cookie('another cookie'));
 });
 ```
+
+## License
+
+Licensed under the MIT license.
+
+## Contributing
+
+1. Fork it
+2. Create your feature branch (`git checkout -b my-new-feature`)
+3. Commit your changes (`git commit -am 'Add some feature'`)
+4. Push to the branch (`git push origin my-new-feature`)
+5. Create new Pull Request
