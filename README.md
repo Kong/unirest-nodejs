@@ -1,13 +1,13 @@
-# Unirest for Node.js [![Build Status](http://img.shields.io/travis/Mashape/unirest-nodejs/master.svg?style=flat)](https://travis-ci.org/Mashape/unirest-nodejs) [![NPM Version](https://badge.fury.io/js/unirest.svg)](https://www.npmjs.com/package/unirest)
+# Unirest for Node.js [![Build Status][travis-image]][travis-url] [![version][npm-version]][npm-url]
 
-[![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://raw.githubusercontent.com/Mashape/unirest-nodejs/master/LICENSE)
-[![Downloads](https://img.shields.io/npm/dm/unirest.svg?style=flat)](https://www.npmjs.com/package/unirest)
-![David](https://img.shields.io/david/mashape/unirest-nodejs.svg?style=flat)
-[![Gitter](https://img.shields.io/badge/%E2%8A%AA%20GITTER%20-JOIN%20CHAT%20%E2%86%92-brightgreen.svg?style=flat)](https://gitter.im/Mashape/unirest-nodejs?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge)
+[![License][npm-license]][license-url]
+[![Downloads][npm-downloads]][npm-url]
+[![Code Climate][codeclimate-quality]][codeclimate-url]
+[![Coverage Status][codeclimate-coverage]][codeclimate-url]
+[![Dependencies][david-image]][david-url]
+[![Gitter][gitter-image]][gitter-url]
 
-Unirest is a set of lightweight HTTP clients available in multiple languages.
-
-Developed with love by [nijikokun](http://github.com/nijikokun) @ [mashape.com](http://mashape.com)
+Unirest is a set of lightweight HTTP libraries available in [multiple languages](http://unirest.io).
 
 ## Installing
 
@@ -727,10 +727,6 @@ unirest.get('http://google.com').jar(CookieJar).end(function (response) {
 });
 ```
 
-## License
-
-Licensed under the MIT license.
-
 ## Contributing
 
 1. Fork it
@@ -738,3 +734,28 @@ Licensed under the MIT license.
 3. Commit your changes (`git commit -am 'Add some feature'`)
 4. Push to the branch (`git push origin my-new-feature`)
 5. Create new Pull Request
+
+
+----
+
+Made with &#9829; from the [Mashape](https://www.mashape.com/) team
+
+[license-url]: https://github.com/Mashape/unirest-nodejs/blob/master/LICENSE
+
+[gitter-url]: https://gitter.im/Mashape/unirest-nodejs
+[gitter-image]: https://img.shields.io/badge/Gitter-Join%20Chat-blue.svg?style=flat-square
+
+[travis-url]: https://travis-ci.org/Mashape/unirest-nodejs
+[travis-image]: https://img.shields.io/travis/Mashape/unirest-nodejs.svg?style=flat-square
+
+[npm-url]: https://www.npmjs.com/package/unirest
+[npm-license]: https://img.shields.io/npm/l/unirest.svg?style=flat-square
+[npm-version]: https://img.shields.io/npm/v/unirest.svg?style=flat-square
+[npm-downloads]: https://img.shields.io/npm/dm/unirest.svg?style=flat-square
+
+[codeclimate-url]: https://codeclimate.com/github/Mashape/unirest-nodejs
+[codeclimate-quality]: https://img.shields.io/codeclimate/github/Mashape/unirest-nodejs.svg?style=flat-square
+[codeclimate-coverage]: https://img.shields.io/codeclimate/coverage/github/Mashape/unirest-nodejs.svg?style=flat-square
+
+[david-url]: https://david-dm.org/mashape/unirest-nodejs
+[david-image]: https://img.shields.io/david/mashape/unirest-nodejs.svg?style=flat-square
