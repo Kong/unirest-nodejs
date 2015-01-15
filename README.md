@@ -2,8 +2,6 @@
 
 [![License][npm-license]][license-url]
 [![Downloads][npm-downloads]][npm-url]
-[![Code Climate][codeclimate-quality]][codeclimate-url]
-[![Coverage Status][codeclimate-coverage]][codeclimate-url]
 [![Dependencies][david-image]][david-url]
 [![Gitter][gitter-image]][gitter-url]
 
