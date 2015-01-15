@@ -741,19 +741,19 @@ Made with &#9829; from the [Mashape](https://www.mashape.com/) team
 [license-url]: https://github.com/Mashape/unirest-nodejs/blob/master/LICENSE
 
 [gitter-url]: https://gitter.im/Mashape/unirest-nodejs
-[gitter-image]: https://img.shields.io/badge/Gitter-Join%20Chat-blue.svg?style=flat-square
+[gitter-image]: https://img.shields.io/badge/Gitter-Join%20Chat-blue.svg?style=flat
 
 [travis-url]: https://travis-ci.org/Mashape/unirest-nodejs
-[travis-image]: https://img.shields.io/travis/Mashape/unirest-nodejs.svg?style=flat-square
+[travis-image]: https://img.shields.io/travis/Mashape/unirest-nodejs.svg?style=flat
 
 [npm-url]: https://www.npmjs.com/package/unirest
-[npm-license]: https://img.shields.io/npm/l/unirest.svg?style=flat-square
-[npm-version]: https://img.shields.io/npm/v/unirest.svg?style=flat-square
-[npm-downloads]: https://img.shields.io/npm/dm/unirest.svg?style=flat-square
+[npm-license]: https://img.shields.io/npm/l/unirest.svg?style=flat
+[npm-version]: https://badge.fury.io/js/unirest.svg
+[npm-downloads]: https://img.shields.io/npm/dm/unirest.svg?style=flat
 
 [codeclimate-url]: https://codeclimate.com/github/Mashape/unirest-nodejs
-[codeclimate-quality]: https://img.shields.io/codeclimate/github/Mashape/unirest-nodejs.svg?style=flat-square
-[codeclimate-coverage]: https://img.shields.io/codeclimate/coverage/github/Mashape/unirest-nodejs.svg?style=flat-square
+[codeclimate-quality]: https://img.shields.io/codeclimate/github/Mashape/unirest-nodejs.svg?style=flat
+[codeclimate-coverage]: https://img.shields.io/codeclimate/coverage/github/Mashape/unirest-nodejs.svg?style=flat
 
 [david-url]: https://david-dm.org/mashape/unirest-nodejs
-[david-image]: https://img.shields.io/david/mashape/unirest-nodejs.svg?style=flat-square
+[david-image]: https://img.shields.io/david/mashape/unirest-nodejs.svg?style=flat
