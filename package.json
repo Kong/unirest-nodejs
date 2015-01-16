@@ -1,7 +1,7 @@
 {
   "name": "unirest",
   "version": "0.4.0",
-  "description": "Simple HTTP Request client.",
+  "description": "Simplified, lightweight HTTP client library",
   "main": "index.js",
   "directories": {
     "test": "tests"
@@ -32,7 +32,7 @@
     "utility",
     "method"
   ],
-  "author": "Nijiko Yonskai <nijiko@mashape.com>",
+  "author": "Mashape <opensource@mashape.com> (https://www.mashape.com)",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/Mashape/unirest-nodejs/issues"
