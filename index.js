@@ -3,7 +3,7 @@
  *
  * @author Nijko Yonskai
  * @copyright 2013
- * @license MIT
+ * @license MIsT
  */
 
 /**
@@ -33,7 +33,7 @@ mime.define({
  *
  * @type {Object}
  */
-Unirest = function (method, uri, headers, body, callback) {
+var Unirest = function (method, uri, headers, body, callback) {
   var unirest = function (uri, headers, body, callback) {
     var $this = {
       /**
