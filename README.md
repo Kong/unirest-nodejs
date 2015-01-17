@@ -27,7 +27,7 @@ You're probably wondering how by using **Unirest** makes creating requests easie
 
 ```js
 unirest.post('http://httpbin.org/post')
-.header('Accept': 'application/json')
+.header('Accept', 'application/json')
 .send({ "parameter": 23, "foo": "bar" })
 .end(function (response) {
   console.log(response.body);
@@ -40,7 +40,7 @@ Transferring file data has been simplified:
 
 ```js
 unirest.post('http://httpbin.org/post')
-.headers('Accept': 'application/json')
+.headers({'Accept': 'application/json'})
 .field('parameter', 'value') // Form field
 .attach('file', '/tmp/file') // Attachment
 .end(function (response) {
@@ -52,7 +52,7 @@ unirest.post('http://httpbin.org/post')
 
 ```js
 unirest.post('http://httpbin.org/post')
-.headers('Accept': 'application/json')
+.headers({'Accept': 'application/json'})
 .send(new Buffer([1,2,3]))
 .end(function (response) {
   console.log(response.body);
