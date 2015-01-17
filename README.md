@@ -150,7 +150,7 @@ request module Superagent (which this library is modeled after slightly).
 ```js
 var Request = unirest.post('http://httpbin.org/post');
 
-Request.header('Accepts': 'application/json').end(function (response) {
+Request.header('Accept', 'application/json').end(function (response) {
   ...
 });
 ```
@@ -197,7 +197,7 @@ or `field` and `value` arguments. Each entry is then stored in a two locations, 
 
 ```js
 Request.headers({
-  'Accepts': 'application/json',
+  'Accept': 'application/json',
   'User-Agent': 'Unirest Node.js'
 })
 ```
@@ -207,7 +207,7 @@ Note the usage of [`Request.headers`](#requestheaders) which is simply an alias 
 **Arguments**
 
 ```js
-Request.header('Accepts', 'application/json');
+Request.header('Accept', 'application/json');
 ```
 
 #### Request.part(Object)
@@ -320,7 +320,7 @@ The following methods are sugar methods for attaching files, and form fields. In
 
 ```js
 unirest.post('http://httpbin.org/post')
-.header('Accept': 'application/json')
+.header('Accept', 'application/json')
 .field({
   'parameter': 'value'
 })
@@ -338,7 +338,7 @@ unirest.post('http://httpbin.org/post')
 
 ```js
 unirest.post('http://httpbin.org/post')
-.header('Accept': 'application/json')
+.header('Accept', 'application/json')
 .field('parameter', 'value') // Form field
 .attach('file', 'dog.png') // Attachment
 .attach('remote file', fs.createReadStream(path.join(__dirname, 'dog.png')))  // Same as above.
