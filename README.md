@@ -183,7 +183,7 @@ Request.auth({
 Request.auth('Nijiko', 'insecure', true);
 ```
 
-#### Request.header(Object) or (field, value)
+#### Request.header(header[, value])
 
 **Suggested Method for setting Headers**
 
