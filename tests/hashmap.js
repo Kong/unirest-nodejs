@@ -1,5 +1,7 @@
 var should = require("should");
 var HashMap = require('../lib/classes/hashmap');
+var HashMapMarshal = require('../lib/marshals/json');
+
 var fixture = {
   'Content-Type': 'application/json',
   'Authorization': 'Bearer 9208s09gDRyGs9Sg2UNIRESTjt2ioVsWERkswioJ2e8'
@@ -14,8 +16,22 @@ describe('HashMap.js', function () {
     hashmap.map.should.be.empty;
   });
 
-  it('new HashMap(collection)', function () {
+  it('new HashMap(Object collection)', function () {
     var hashmap = new HashMap(fixture);
+    var keys = Object.keys(fixture);
+
+    // Check setup
+    hashmap.map.should.be.a.Object;
+    hashmap.map.should.have.keys(keys);
+    Object.keys(hashmap.map).should.have.length(keys.length);
+
+    // Value Check
+    hashmap.map[keys[0]].should.equal(fixture[keys[0]]);
+    hashmap.map[keys[1]].should.equal(fixture[keys[1]]);
+  });
+
+  it('new HashMap(String collection)', function () {
+    var hashmap = new HashMap(HashMapMarshal.unmarshal(fixture));
     var keys = Object.keys(fixture);
 
     // Check setup
