@@ -1,7 +1,11 @@
 var should = require("should");
+
+// Classes
 var Headers = require('../lib/classes/headers');
 var HashMap = require('../lib/classes/hashmap');
-var HeadersMarshal = require('../lib/marshals/header');
+
+// Marshals
+var HeadersMarshal = require('../lib/marshals/headers');
 
 // Fixtures
 var fixture = require('./fixtures/hashmap');

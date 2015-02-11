@@ -1,5 +1,9 @@
 var should = require("should");
+
+// Classes
 var HashMap = require('../lib/classes/hashmap');
+
+// Marshals
 var HashMapMarshal = require('../lib/marshals/json');
 
 // Fixtures

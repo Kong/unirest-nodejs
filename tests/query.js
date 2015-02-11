@@ -1,6 +1,10 @@
 var should = require("should");
+
+// Classes
 var Query = require('../lib/classes/query');
 var HashMap = require('../lib/classes/hashmap');
+
+// Marshals
 var QueryMarshal = require('../lib/marshals/query');
 
 // Fixtures

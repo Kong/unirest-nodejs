@@ -1,7 +1,13 @@
 var should = require("should");
-var Query = require('../lib/classes/request');
+
+// Classes
+var Query = require('../lib/classes/query');
+var Headers = require('../lib/classes/headers');
 var Request = require('../lib/classes/request');
+
+// Marshals
 var QueryMarshal = require('../lib/marshals/query');
+var HeadersMarshal = require('../lib/marshals/headers');
 
 // Fixtures
 var fixtureQuery = require('./fixtures/query');
@@ -49,7 +55,7 @@ describe('request.js', function () {
     request._query.isEmpty().should.be.true;
 
     // Check collection insertion
-    request.query(fixtureQuery);
+    request.query(new Query(fixtureQuery));
     request._query.should.not.be.empty;
     request._query.map.should.have.keys(keys);
   });
@@ -80,5 +86,62 @@ describe('request.js', function () {
     request.query(QueryMarshal.unmarshal(fixtureQuery));
     request._query.should.not.be.empty;
     request._query.map.should.have.keys(keys);
+  });
+
+  it('#header(key, value)', function () {
+    var request = new Request();
+    var keys = Object.keys(fixtureHashMap);
+
+    // Check class instantiations
+    request._headers.should.be.a.Object;
+    request._headers.isEmpty().should.be.true;
+
+    // Check collection insertion
+    request.header(keys[0], fixtureHashMap[keys[0]]);
+    request._headers.containsKey(keys[0]).should.be.ok;
+    request._headers.get(keys[0]).should.equal(fixtureHashMap[keys[0]]);
+    request._headers.containsKey(keys[1]).should.not.be.ok;
+  });
+
+  it('#header(Header collection)', function () {
+    var request = new Request();
+    var keys = Object.keys(fixtureHashMap);
+
+    // Check class instantiations
+    request._headers.should.be.a.Object;
+    request._headers.isEmpty().should.be.true;
+
+    // Check collection insertion
+    request.header(fixtureHashMap);
+    request._headers.should.not.be.empty;
+    request._headers.map.should.have.keys(keys);
+  });
+
+  it('#header(Object collection)', function () {
+    var request = new Request();
+    var keys = Object.keys(fixtureHashMap);
+
+    // Check class instantiations
+    request._headers.should.be.a.Object;
+    request._headers.isEmpty().should.be.true;
+
+    // Check collection insertion
+    request.header(fixtureHashMap);
+    request._headers.should.not.be.empty;
+    request._headers.map.should.have.keys(keys);
+  });
+
+  it('#header(String collection)', function () {
+    var request = new Request();
+    var keys = Object.keys(fixtureHashMap);
+
+    // Check class instantiations
+    request._headers.should.be.a.Object;
+    request._headers.isEmpty().should.be.true;
+
+    // Check collection insertion
+    request.header(HeadersMarshal.unmarshal(fixtureHashMap));
+    request._headers.should.not.be.empty;
+    request._headers.map.should.have.keys(keys);
   });
 });
