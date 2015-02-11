@@ -2,12 +2,11 @@ var should = require("should");
 var HashMap = require('../lib/classes/hashmap');
 var HashMapMarshal = require('../lib/marshals/json');
 
-var fixture = {
-  'Content-Type': 'application/json',
-  'Authorization': 'Bearer 9208s09gDRyGs9Sg2UNIRESTjt2ioVsWERkswioJ2e8'
-};
+// Fixtures
+var fixture = require('./fixtures/hashmap');
 
-describe('HashMap.js', function () {
+// Tests
+describe('hashmap.js', function () {
   it('new HashMap()', function () {
     var hashmap = new HashMap();
 
@@ -26,8 +25,25 @@ describe('HashMap.js', function () {
     Object.keys(hashmap.map).should.have.length(keys.length);
 
     // Value Check
-    hashmap.map[keys[0]].should.equal(fixture[keys[0]]);
-    hashmap.map[keys[1]].should.equal(fixture[keys[1]]);
+    for (var index in keys) {
+      hashmap.map[keys[index]].should.equal(fixture[keys[index]]);
+    }
+  });
+
+  it('new HashMap(HashMap collection)', function () {
+    var fixtureHashMap = new HashMap(fixture)
+    var hashmap = new HashMap(fixtureHashMap);
+    var keys = Object.keys(fixture);
+
+    // Check setup
+    hashmap.map.should.be.a.Object;
+    hashmap.map.should.have.keys(keys);
+    Object.keys(hashmap.map).should.have.length(keys.length);
+
+    // Value Check
+    for (var index in keys) {
+      hashmap.map[keys[index]].should.equal(fixture[keys[index]]);
+    }
   });
 
   it('new HashMap(String collection)', function () {
@@ -40,8 +56,9 @@ describe('HashMap.js', function () {
     Object.keys(hashmap.map).should.have.length(keys.length);
 
     // Value Check
-    hashmap.map[keys[0]].should.equal(fixture[keys[0]]);
-    hashmap.map[keys[1]].should.equal(fixture[keys[1]]);
+    for (var index in keys) {
+      hashmap.map[keys[index]].should.equal(fixture[keys[index]]);
+    }
   });
 
   it('#put(key, value)', function () {
@@ -88,8 +105,34 @@ describe('HashMap.js', function () {
     Object.keys(hashmap.map).should.have.length(keys.length);
 
     // Value Check
-    hashmap.map[keys[0]].should.equal(fixture[keys[0]]);
-    hashmap.map[keys[1]].should.equal(fixture[keys[1]]);
+    for (var index in keys) {
+      hashmap.map[keys[index]].should.equal(fixture[keys[index]]);
+    }
+  });
+
+  it('#get(key, value)', function () {
+    var hashmap = new HashMap();
+
+    // Check setup
+    hashmap.map.should.be.a.Object;
+    hashmap.map.should.be.empty;
+
+    // Initial Value Check
+    hashmap.put("a", 1);
+    hashmap.get("a").should.equal(1);
+
+    // Overwriting Check
+    hashmap.put("a", 2);
+    hashmap.get("a").should.equal(2);
+
+    // Case Insensitive Check
+    hashmap.put("A", 3);
+    hashmap.get("A").should.equal(3);
+
+    // Type Check
+    hashmap.put("b", "1");
+    hashmap.get("b").should.be.a.String;
+    hashmap.get("b").should.equal("1");
   });
 
   it('#containsKey(key)', function () {
@@ -197,10 +240,11 @@ describe('HashMap.js', function () {
     Object.keys(hashmap.map).should.have.length(keys.length);
 
     // Value Check
-    hashmap.map[keys[0]].should.equal(fixture[keys[0]]);
-    hashmap.map[keys[1]].should.equal(fixture[keys[1]]);
+    for (var index in keys) {
+      hashmap.map[keys[index]].should.equal(fixture[keys[index]]);
+    }
 
     // String Check
-    hashmap.toString().should.equal(JSON.stringify(fixture));
+    hashmap.toString().should.equal(HashMapMarshal.unmarshal(fixture));
   });
 });

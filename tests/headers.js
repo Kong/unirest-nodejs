@@ -1,13 +1,14 @@
 var should = require("should");
 var Headers = require('../lib/classes/headers');
+var HashMap = require('../lib/classes/hashmap');
 var HeadersMarshal = require('../lib/marshals/header');
 
-var fixture = {
-  'Content-Type': 'application/json',
-  'Authorization': 'Bearer 9208s09gDRyGs9Sg2UNIRESTjt2ioVsWERkswioJ2e8'
-};
+// Fixtures
+var fixture = require('./fixtures/hashmap');
+var fixtureErroneous = require('./fixtures/hashmap.erroneous');
 
-describe('Headers.js', function () {
+// Tests
+describe('headers.js', function () {
   it('new Headers()', function () {
     var headers = new Headers();
 
@@ -26,8 +27,40 @@ describe('Headers.js', function () {
     Object.keys(headers.map).should.have.length(keys.length);
 
     // Value Check
-    headers.map[keys[0]].should.equal(fixture[keys[0]]);
-    headers.map[keys[1]].should.equal(fixture[keys[1]]);
+    for (var index in keys) {
+      headers.map[keys[index]].should.equal(fixture[keys[index]]);
+    }
+  });
+
+  it('new Headers(Headers collection)', function () {
+    var headersFixture = new Headers(fixture);
+    var headers = new Headers(headersFixture);
+    var keys = Object.keys(fixture);
+
+    // Check setup
+    headers.map.should.be.a.Object;
+    headers.map.should.have.keys(keys);
+    Object.keys(headers.map).should.have.length(keys.length);
+
+    // Value Check
+    for (var index in keys) {
+      headers.map[keys[index]].should.equal(fixture[keys[index]]);
+    }
+  });
+
+  it('new Headers(HashMap collection)', function () {
+    var headersFixture = new HashMap(fixtureErroneous);
+    var headers = new Headers(headersFixture);
+    var keys = Object.keys(fixtureErroneous);
+
+    // Check setup
+    headers.map.should.be.a.Object;
+    headers.map.should.have.keys(keys[0], keys[2]);
+    Object.keys(headers.map).should.have.length(2);
+
+    // Value Check
+    headers.map[keys[0]].should.equal(fixtureErroneous[keys[1]]);
+    headers.map[keys[2]].should.equal(fixtureErroneous[keys[3]]);
   });
 
   it('new Headers(String collection)', function () {
@@ -40,8 +73,9 @@ describe('Headers.js', function () {
     Object.keys(headers.map).should.have.length(keys.length);
 
     // Value Check
-    headers.map[keys[0]].should.equal(fixture[keys[0]]);
-    headers.map[keys[1]].should.equal(fixture[keys[1]]);
+    for (var index in keys) {
+      headers.map[keys[index]].should.equal(fixture[keys[index]]);
+    }
   });
 
   it('#put(key, value)', function () {
@@ -64,7 +98,6 @@ describe('Headers.js', function () {
     // Case Insensitive Check
     headers.put("A", 3);
     headers.map.should.have.keys("a");
-    (headers.map.A === undefined).should.be.true;
     headers.map.a.should.equal(3);
 
     // Type Check
@@ -88,8 +121,36 @@ describe('Headers.js', function () {
     Object.keys(headers.map).should.have.length(keys.length);
 
     // Value Check
-    headers.map[keys[0]].should.equal(fixture[keys[0]]);
-    headers.map[keys[1]].should.equal(fixture[keys[1]]);
+    for (var index in keys) {
+      headers.map[keys[index]].should.equal(fixture[keys[index]]);
+    }
+  });
+
+  it('#get(key, value)', function () {
+    var headers = new Headers();
+
+    // Check setup
+    headers.map.should.be.a.Object;
+    headers.map.should.be.empty;
+
+    // Initial Value Check
+    headers.put("a", 1);
+    headers.get("a").should.equal(1);
+
+    // Overwriting Check
+    headers.put("a", 2);
+    headers.get("a").should.equal(2);
+
+    // Case Insensitive Check
+    headers.put("A", 3);
+    headers.map.should.not.have.keys("A");
+    headers.get("a").should.equal(3);
+    headers.get("A").should.equal(3);
+
+    // Type Check
+    headers.put("b", "1");
+    headers.get("b").should.be.a.String;
+    headers.get("b").should.equal("1");
   });
 
   it('#containsKey(key)', function () {
@@ -101,13 +162,11 @@ describe('Headers.js', function () {
     headers.map.should.have.keys(keys);
     Object.keys(headers.map).should.have.length(keys.length);
 
-    // Proper reporting
-    headers.containsKey(keys[0]).should.equal(keys[0]);
-    headers.containsKey(keys[1]).should.equal(keys[1]);
-
-    // Case Insensitive Check
-    headers.containsKey(keys[0].toLowerCase()).should.equal(keys[0]);
-    headers.containsKey(keys[1].toUpperCase()).should.equal(keys[1]);
+    // Value Checks
+    for (var index in keys) {
+      headers.containsKey(keys[index]).should.equal(keys[index]);
+      headers.containsKey(keys[index].toLowerCase()).should.equal(keys[index]);
+    }
   });
 
   it('#containsValue(value)', function () {
@@ -119,13 +178,11 @@ describe('Headers.js', function () {
     headers.map.should.have.keys(keys);
     Object.keys(headers.map).should.have.length(keys.length);
 
-    // Proper reporting
-    headers.containsValue(fixture[keys[0]]).should.equal(fixture[keys[0]]);
-    headers.containsValue(fixture[keys[1]]).should.equal(fixture[keys[1]]);
-
-    // Case Insensitive Check
-    headers.containsValue(fixture[keys[0]].toUpperCase()).should.equal(fixture[keys[0]]);
-    headers.containsValue(fixture[keys[1]].toUpperCase()).should.equal(fixture[keys[1]]);
+    // Value Checks
+    for (var index in keys) {
+      headers.containsKey(keys[index]).should.equal(keys[index]);
+      headers.containsKey(keys[index].toUpperCase()).should.equal(keys[index]);
+    }
   });
 
   it('#remove(key)', function () {
@@ -197,8 +254,9 @@ describe('Headers.js', function () {
     Object.keys(headers.map).should.have.length(keys.length);
 
     // Value Check
-    headers.map[keys[0]].should.equal(fixture[keys[0]]);
-    headers.map[keys[1]].should.equal(fixture[keys[1]]);
+    for (var index in keys) {
+      headers.map[keys[index]].should.equal(fixture[keys[index]]);
+    }
 
     // String Check
     headers.toString().should.equal(HeadersMarshal.unmarshal(fixture));
