@@ -13,11 +13,13 @@
     "request": "~2.51.0"
   },
   "devDependencies": {
+    "minami": "git+https://github.com/nijikokun/minami.git#master",
     "mocha": "~1.13.0",
     "should": "~4.3.1"
   },
   "scripts": {
-    "test": "make test"
+    "test": "make test",
+    "docs": "jsdoc -c .jsdoc.json -r"
   },
   "repository": {
     "type": "git",

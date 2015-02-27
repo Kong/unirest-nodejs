@@ -1,3 +1,5 @@
+/*jshint expr: true, unused: false*/
+
 var should = require("should");
 
 // Classes

@@ -1,4 +1,6 @@
-var should = require("should");
+/*jshint expr: true, unused: false*/
+
+var should = require('should');
 
 // Classes
 var Query = require('../lib/classes/query');
@@ -28,7 +30,14 @@ describe('request.js', function () {
   });
 
   it('new Request(Object defaults)', function () {
+    var request = new Request();
 
+    // Check class instantiations
+    request._headers.should.be.a.Object;
+    request._headers.isEmpty().should.be.true;
+
+    request._query.should.be.a.Object;
+    request._query.isEmpty().should.be.true;
   });
 
   it('#query(key, value)', function () {
