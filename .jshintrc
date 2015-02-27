@@ -2,7 +2,8 @@
   "node" : true,
   "browser" : true,
 
-  "boss" : true,
+  "asi": true,
+  "boss": true,
   "curly": false,
   "debug": false,
   "devel": false,
