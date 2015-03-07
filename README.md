@@ -26,7 +26,7 @@ var unirest = require('unirest');
 You're probably wondering how by using **Unirest** makes creating requests easier. Besides automatically supporting gzip, and parsing responses, lets start with a basic working example:
 
 ```js
-unirest.post('http://httpbin.org/post')
+unirest.post('http://mockbin.com/request')
 .header('Accept', 'application/json')
 .send({ "parameter": 23, "foo": "bar" })
 .end(function (response) {
@@ -39,7 +39,7 @@ unirest.post('http://httpbin.org/post')
 Transferring file data has been simplified:
 
 ```js
-unirest.post('http://httpbin.org/post')
+unirest.post('http://mockbin.com/request')
 .headers({'Accept': 'application/json'})
 .field('parameter', 'value') // Form field
 .attach('file', '/tmp/file') // Attachment
@@ -51,7 +51,7 @@ unirest.post('http://httpbin.org/post')
 ## Custom Entity Body
 
 ```js
-unirest.post('http://httpbin.org/post')
+unirest.post('http://mockbin.com/request')
 .headers({'Accept': 'application/json'})
 .send(new Buffer([1,2,3]))
 .end(function (response) {
@@ -89,21 +89,21 @@ When no `callback` is present, the [Request](#request) object will be returned.
 Returns a [Request](#request) object with the `method` option set to `GET`
 
 ```js
-var Request = unirest.get('http://httpbin.org/get');
+var Request = unirest.get('http://mockbin.com/request');
 ```
 
 ### head
 Returns a [Request](#request) object with the `method` option set to `HEAD`
 
 ```js
-var Request = unirest.head('http://httpbin.org/get');
+var Request = unirest.head('http://mockbin.com/request');
 ```
 
 ### post
 Returns a [Request](#request) object with the `method` option set to `POST`
 
 ```js
-var Request = unirest.post('http://httpbin.org/post');
+var Request = unirest.post('http://mockbin.com/request');
 ```
 
 ### patch
@@ -111,14 +111,14 @@ var Request = unirest.post('http://httpbin.org/post');
 Returns a [Request](#request) object with the `method` option set to `PATCH`
 
 ```js
-var Request = unirest.patch('http://httpbin.org/patch');
+var Request = unirest.patch('http://mockbin.com/request');
 ```
 
 ### delete
 Returns a [Request](#request) object with the `method` option set to `DELETE`
 
 ```js
-var Request = unirest.delete('http://httpbin.org/delete');
+var Request = unirest.delete('http://mockbin.com/request');
 ```
 
 ## unirest.jar()
@@ -128,7 +128,7 @@ Creates a container to store multiple cookies, i.e. a cookie jar.
 ```js
 var CookieJar = unirest.jar();
 CookieJar.add('key=value', '/'); // Cookie string, pathname / url
-unirest.get('http://httpbin.org/get').jar(CookieJar);
+unirest.get('http://mockbin.com/request').jar(CookieJar);
 ```
 
 ## unirest.cookie(String)
@@ -148,7 +148,7 @@ request module Superagent (which this library is modeled after slightly).
 **Example**
 
 ```js
-var Request = unirest.post('http://httpbin.org/post');
+var Request = unirest.post('http://mockbin.com/request');
 
 Request.header('Accept', 'application/json').end(function (response) {
   ...
@@ -235,7 +235,7 @@ Serializes argument passed to a querystring representation.
 Should `url` already contain a querystring, the representation will be appended to the `url`.
 
 ```js
-unirest.post('http://httpbin.org/get')
+unirest.post('http://mockbin.com/request')
 .query('name=nijiko')
 .query({
   pet: 'spot'
@@ -257,7 +257,7 @@ When mime-type is `application/x-www-form-urlencoded` data is appended rather th
 **JSON**
 
 ```js
-unirest.post('http://httpbin.org/post')
+unirest.post('http://mockbin.com/request')
 .type('json')
 .send({
   foo: 'bar',
@@ -273,7 +273,7 @@ unirest.post('http://httpbin.org/post')
 ```js
 // Body would be:
 // name=nijiko&pet=turtle
-unirest.post('http://httpbin.org/post')
+unirest.post('http://mockbin.com/request')
 .send('name=nijiko')
 .send('pet=spot')
 .end(function (response) {
@@ -284,7 +284,7 @@ unirest.post('http://httpbin.org/post')
 **HTML / Other**
 
 ```js
-unirest.post('http://httpbin.org/post')
+unirest.post('http://mockbin.com/request')
 .set('Content-Type', 'text/html')
 .send('<strong>Hello World!</strong>')
 .end(function (response) {
@@ -319,7 +319,7 @@ The following methods are sugar methods for attaching files, and form fields. In
 **Object**
 
 ```js
-unirest.post('http://httpbin.org/post')
+unirest.post('http://mockbin.com/request')
 .header('Accept', 'application/json')
 .field({
   'parameter': 'value'
@@ -337,7 +337,7 @@ unirest.post('http://httpbin.org/post')
 **Arguments**
 
 ```js
-unirest.post('http://httpbin.org/post')
+unirest.post('http://mockbin.com/request')
 .header('Accept', 'application/json')
 .field('parameter', 'value') // Form field
 .attach('file', 'dog.png') // Attachment
@@ -400,7 +400,7 @@ This object is modeled after the `request` libraries options that are passed alo
 Sets `url` location of the current request on `Request.options` to the given `String`
 
 ```js
-Request.url('http://httpbin.org/get');
+Request.url('http://mockbin.com/request');
 ```
 
 #### Request.method(String)
@@ -617,7 +617,7 @@ Sends HTTP Request and awaits Response finalization. Request compression and Res
 Upon HTTP Response post-processing occurs and invokes `callback` with a single argument, the `[Response](#response)` object.
 
 ```js
-unirest.get('http://httpbin.org/get').end(function (response) {
+unirest.get('http://mockbin.com/request').end(function (response) {
   ...
 });
 ```
