@@ -25,6 +25,22 @@ describe('Unirest', function () {
       });
     });
 
+    it('should be able to call requests .then method to get a promise of the result.', function (done) {
+      unirest.get('http://mockbin.com/request').set('Accept', 'application/json').then(function (response) {
+        should(response.status).equal(200);
+        should(response.body).have.type('object');
+        done();
+      });
+    });
+
+    it('should be able to call alternative promise methods on a request.', function (done) {
+      unirest.get('http://mockbin.com/request').set('Accept', 'application/json').tap(function (response) {
+        should(response.status).equal(200);
+        should(response.body).have.type('object');
+        done();
+      });
+    });
+
     it('should correctly parse GZIPPED data.', function (done) {
       unirest.get('http://mockbin.com/gzip').set('Accept', 'gzip').end(function (response) {
         should(response.status).equal(200);

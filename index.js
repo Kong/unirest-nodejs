@@ -19,6 +19,7 @@ var zlib = require('zlib');
 var path = require('path');
 var URL = require('url');
 var fs = require('fs');
+var Promise = require('bluebird');
 
 /**
  * Define form mime type
@@ -580,8 +581,36 @@ var Unirest = function (method, uri, headers, body, callback) {
           handleFormData(Request.form());
 
         return Request;
+      },
+
+
+      /**
+       * Alternative to using `end`. Sends HTTP Request and returns a promise for the response.
+       *
+       * @param  {Function} successHandler
+       * @return {Promise}
+       */
+      then: function then() {
+        //Create a promise containing the response.
+        var promise = new Promise($this.end.bind($this));
+        //Call `then` on the promise with the arguments we were passed.
+        return promise.then.apply(promise, arguments);
       }
     };
+
+    /**
+     * Add alternative promise methods to `then` to start of the promise chain.
+     */
+    var PROMISE_METHODS = ['bind', 'catch', 'spread', 'otherwise', 'map', 'reduce', 'tap', 'thenReturn', 'return',
+      'yield', 'ensure', 'nodeify', 'exec'];
+    PROMISE_METHODS.forEach(function addPromiseMethod(promiseMethod) {
+      $this[promiseMethod] = function returnPromise() {
+        //First, get a promise containing the response by calling `then`.
+        var then = $this.then();
+        //Now, apply the promise method to the promise with the arguments we were passed.
+        return then[promiseMethod].apply(then, arguments);
+      };
+    });
 
     /**
      * Alias for _.header_
