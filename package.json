@@ -10,7 +10,7 @@
     "form-data": "^0.2.0",
     "mime": "~1.2.11",
     "qs": "^2.3.3",
-    "request": "~2.51.0"
+    "request": "~2.55.0"
   },
   "devDependencies": {
     "istanbul": "^0.3.11",
