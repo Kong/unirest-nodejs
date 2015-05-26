@@ -244,11 +244,11 @@ var Unirest = function (method, uri, headers, body, callback) {
         var type = $this.options.headers[$this.hasHeader('content-type')];
 
         if (is(data).a(Object) && !Buffer.isBuffer(data)) {
-          if (!type || type != 'application/json') {
+          if (!type) {
             $this.type('form');
             type = $this.options.headers[$this.hasHeader('content-type')];
             $this.options.body = Unirest.serializers.form(data);
-          } else if (type == 'application/json') {
+          } else if (type.indexOf('json')) {
             $this.options.json = true;
 
             if ($this.options.body && is($this.options.body).a(Object)) {
@@ -260,6 +260,8 @@ var Unirest = function (method, uri, headers, body, callback) {
             } else {
               $this.options.body = data;
             }
+          } else {
+            $this.options.body = Unirest.Request.serialize(data, type);
           }
         } else if (is(data).a(String)) {
           if (!type) {
@@ -800,7 +802,7 @@ Unirest.serializers = {
  */
 Unirest.Request = {
   serialize: function (string, type) {
-    var serializer = Unirest.enum.serialize[type];
+    var serializer = Unirest.firstMatch(type, Unirest.enum.serialize);
     return serializer ? serializer(string) : string;
   },
 
@@ -820,7 +822,7 @@ Unirest.Request = {
  */
 Unirest.Response = {
   parse: function (string, type) {
-    var parser = Unirest.enum.parse[type];
+    var parser = Unirest.firstMatch(type, Unirest.enum.parse);
     return parser ? parser(string) : string;
   },
 
@@ -888,12 +890,14 @@ Unirest.jar = function (options) {
 Unirest.enum = {
   serialize: {
     'application/x-www-form-urlencoded': Unirest.serializers.form,
-    'application/json': Unirest.serializers.json
+    'application/json': Unirest.serializers.json,
+    '+json': Unirest.serializers.json
   },
 
   parse: {
     'application/x-www-form-urlencoded': Unirest.parsers.string,
-    'application/json': Unirest.parsers.json
+    'application/json': Unirest.parsers.json,
+    '+json': Unirest.parsers.json
   },
 
   methods: [
@@ -911,6 +915,44 @@ Unirest.enum = {
     'followRedirect', 'followAllRedirects', 'maxRedirects', 'encoding', 'pool', 'timeout', 'proxy', 'oauth', 'hawk',
     'ssl:strictSSL', 'strictSSL', 'jar', 'cookies:jar', 'aws', 'httpSignature', 'localAddress', 'ip:localAddress', 'secureProtocol', 'forever'
   ]
+};
+
+/**
+ * Returns a list of values obtained by checking the specified string
+ * whether it contains array value or object key, when true the value
+ * is appended to the list to be returned.
+ *
+ * @param  {String} string String to be tested
+ * @param  {Object|Array} map    Values / Keys to test against string.
+ * @return {Array} List of values truthfully matched against string.
+ */
+Unirest.matches = function matches (string, map) {
+  var results = [];
+  var value;
+
+  for (var key in map) {
+    if (typeof map.length !== 'undefined') {
+      key = map[key];
+    }
+
+    if (string.indexOf(key) !== -1) {
+      results.push(map[key]);
+    }
+  }
+
+  return results;
+};
+
+/**
+ * Returns the first value obtained through #matches
+ *
+ * @see #matches
+ * @param  {String} string String to be tested
+ * @param  {Object|Array} map Values / Keys to test against string.
+ * @return {Mixed} First match value
+ */
+Unirest.firstMatch = function firstMatch (string, map) {
+  return Unirest.matches(string, map)[0];
 };
 
 /**

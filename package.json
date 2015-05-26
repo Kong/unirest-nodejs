@@ -1,6 +1,6 @@
 {
   "name": "unirest",
-  "version": "0.4.1",
+  "version": "0.4.2",
   "description": "Simplified, lightweight HTTP client library",
   "main": "index.js",
   "directories": {
@@ -12,8 +12,10 @@
     "request": "~2.51.0"
   },
   "devDependencies": {
+    "body-parser": "^1.12.3",
     "mocha": "~1.13.0",
-    "should": "~4.3.1"
+    "should": "~4.3.1",
+    "express": "^4.12.3"
   },
   "scripts": {
     "test": "make test"

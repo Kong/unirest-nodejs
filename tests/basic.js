@@ -1,6 +1,12 @@
 var fs = require("fs");
 var should = require("should");
 var unirest = require('../index');
+var express = require("express");
+var bodyParser = require("body-parser");
+
+// Mock Server
+var app = express();
+var server;
 
 describe('Unirest', function () {
   describe('Cookie Jar', function () {
@@ -26,7 +32,7 @@ describe('Unirest', function () {
     });
 
     it('should correctly parse GZIPPED data.', function (done) {
-      unirest.get('http://mockbin.com/gzip').set('Accept', 'gzip').end(function (response) {
+      unirest.get('http://mockbin.com/gzip/request').set('Accept-Encoding', 'gzip').end(function (response) {
         should(response.status).equal(200);
         should(response.body).have.type('object');
         done();
@@ -58,9 +64,47 @@ describe('Unirest', function () {
     });
 
     it('should be able to work like other unirest libraries', function (done) {
-      unirest.get('http://mockbin.com/gzip', { 'Accept': 'gzip' }, 'Hello World', function (response) {
+      unirest.get('http://mockbin.com/gzip/request', { 'Accept-Encoding': 'gzip' }, 'Hello World', function (response) {
         should(response.status).equal(200);
         should(response.body).have.type('object');
+        done();
+      });
+    });
+  });
+
+  describe('GET request', function () {
+    var host, port, url;
+    var fixture = {
+      message: "some message under a json object"
+    };
+
+    before(function(done) {
+      app.use(bodyParser.json({
+        type: "application/vnd.api+json"
+      }));
+
+      app.get("/", function handleRoot(req, res) {
+        res.set("content-type", "application/vnd.api+json");
+        res.send(fixture);
+      });
+
+      server = app.listen(3000, function liftServer () {
+        host = server.address().address;
+        port = server.address().port;
+        url = "http://localhost:3000";
+        done();
+      });
+    });
+
+    after(function afterAll(done) {
+      server.close(function closeCallback () {
+        done();
+      });
+    });
+
+    it("should get a json from the main route", function jsonTest (done) {
+      unirest.get(url).type("json").end(function endJsonTest(response) {
+        response.body.should.eql(fixture);
         done();
       });
     });
@@ -222,6 +266,62 @@ describe('Unirest', function () {
         should(response.body.headers['content-type']).equal('img/svg+xml');
         done();
       });
+    });
+  });
+
+  describe("bodyparser", function unirestDescribe () {
+    var host, port, url;
+    var postCall, exampleRequest;
+
+    before(function beforeAll(done) {
+      exampleRequest = {
+        data: {
+          id: 1,
+          type: "Person",
+          name: "Nico"
+        }
+      };
+
+      app.use(bodyParser.json({ type: "application/vnd.api+json" }));
+
+      app.post("/", function handleRoot(req, res) {
+        res.send(req.body);
+      });
+
+      server = app.listen(3000, function liftServer () {
+        host = server.address().address;
+        port = server.address().port;
+        url = "http://localhost:3000";
+        done();
+      });
+    });
+
+    after(function afterAll(done) {
+      server.close(function closeCallback () {
+        done();
+      });
+    });
+
+    it("should send a custom content type as a header using the type function", function jsonTest (done) {
+      unirest
+        .post(url + "/")
+        .type("application/vnd.api+json")
+        .send(exampleRequest)
+        .end(function endJsonTest(response) {
+          response.body.should.eql(exampleRequest);
+          done();
+        });
+    });
+
+    it("should send a custom header with the header function", function jsonTest (done) {
+      unirest
+        .post(url + "/")
+        .header("Content-Type", "application/vnd.api+json")
+        .send(exampleRequest)
+        .end(function endJsonTest(response) {
+          response.body.should.eql(exampleRequest);
+          done();
+        });
     });
   });
 });
