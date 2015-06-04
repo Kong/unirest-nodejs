@@ -248,7 +248,7 @@ var Unirest = function (method, uri, headers, body, callback) {
             $this.type('form');
             type = $this.options.headers[$this.hasHeader('content-type')];
             $this.options.body = Unirest.serializers.form(data);
-          } else if (type.indexOf('json')) {
+          } else if (~type.indexOf('json')) {
             $this.options.json = true;
 
             if ($this.options.body && is($this.options.body).a(Object)) {
