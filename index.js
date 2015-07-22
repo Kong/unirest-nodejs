@@ -19,6 +19,7 @@ var zlib = require('zlib');
 var path = require('path');
 var URL = require('url');
 var fs = require('fs');
+var Promise = require('node-promise').Promise;
 
 /**
  * Define form mime type
@@ -335,11 +336,17 @@ var Unirest = function (method, uri, headers, body, callback) {
        * @param  {Function} callback
        * @return {Object}
        */
-      end: function (callback) {
+      end: function (cb) {
         var Request;
         var header;
         var parts;
         var form;
+        var promise = new Promise();
+
+        function callback(result) {
+          if (cb) return cb(result);
+          promise.resolve(result);
+        }
 
         function handleRequestResponse (error, response, body) {
           var result = {};
@@ -578,6 +585,9 @@ var Unirest = function (method, uri, headers, body, callback) {
         Request = Unirest.request($this.options, handleRequestResponse);
         Request.on('response', handleGZIPResponse);
 
+        Request.exec = function() {
+          return promise;
+        }
         if ($this._multipart.length && $this._stream)
           handleFormData(Request.form());
 
