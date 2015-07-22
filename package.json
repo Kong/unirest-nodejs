@@ -10,7 +10,6 @@
     "form-data": "^0.2.0",
     "mime": "~1.2.11",
     "node-promise": "^0.5.12",
-    "promise": "^7.0.3",
     "request": "~2.51.0"
   },
   "devDependencies": {
