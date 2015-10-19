@@ -2,7 +2,6 @@
 
 [![License][npm-license]][license-url]
 [![Downloads][npm-downloads]][npm-url]
-[![Dependencies][david-image]][david-url]
 [![Gitter][gitter-image]][gitter-url]
 
 ![][unirest-logo]
