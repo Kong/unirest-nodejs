@@ -1,4 +1,4 @@
-# Unirest for Node.js [![Build Status][travis-image]][travis-url] [![version][npm-version]][npm-url]
+# Unirest for Node.js [![Build Status][travis-image]][travis-url] 
 
 [![License][npm-license]][license-url]
 [![Downloads][npm-downloads]][npm-url]
