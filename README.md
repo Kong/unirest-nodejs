@@ -30,7 +30,7 @@ You're probably wondering how by using **Unirest** makes creating requests easie
 
 ```js
 unirest.post('http://mockbin.com/request')
-.header('Accept', 'application/json')
+.headers({'Accept': 'application/json', 'Content-Type': 'application/json'})
 .send({ "parameter": 23, "foo": "bar" })
 .end(function (response) {
   console.log(response.body);
