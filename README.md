@@ -43,7 +43,7 @@ Transferring file data has been simplified:
 
 ```js
 unirest.post('http://mockbin.com/request')
-.headers({'Accept': 'application/json'})
+.headers({'Content-Type': 'multipart/form-data'})
 .field('parameter', 'value') // Form field
 .attach('file', '/tmp/file') // Attachment
 .end(function (response) {
