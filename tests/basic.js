@@ -70,6 +70,14 @@ describe('Unirest', function () {
         done();
       });
     });
+
+    it('should be able to return the request time', function(done){
+      unirest.get('http://mockbin.com').time(true).end(function(response){
+        should(typeof response.elapsedTime).equal('number')
+        should((response.elapsedTime > 0),true)
+        done();
+      })
+    })
   });
 
   describe('GET request', function () {
