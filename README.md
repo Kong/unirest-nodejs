@@ -102,6 +102,13 @@ Returns a [Request](#request) object with the `method` option set to `HEAD`
 var Request = unirest.head('http://mockbin.com/request');
 ```
 
+### put
+Returns a [Request](#request) object with the `method` option set to `PUT`
+
+```js
+var Request = unirest.put('http://mockbin.com/request');
+```
+
 ### post
 Returns a [Request](#request) object with the `method` option set to `POST`
 
