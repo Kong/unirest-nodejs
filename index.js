@@ -386,9 +386,16 @@ var Unirest = function (method, uri, headers, body, callback) {
           result.noContent = 204 == status || 1223 == status;
           result.badRequest = 400 == status;
           result.unauthorized = 401 == status;
-          result.notAcceptable = 406 == status;
-          result.notFound = 404 == status;
+          result.paymentRequired = 402 == status;
           result.forbidden = 403 == status;
+          result.notFound = 404 == status;
+          result.methodNotAllowed = 405 == status;
+          result.notAcceptable = 406 == status;
+          result.conflict = 409 == status;
+          result.gone = 410 == status;
+          result.preconditionFailed = 412 == status;
+          result.unprocessableEntity = 422 == status;
+          result.tooManyRequests = 429 == status;
           result.error = (4 == type || 5 == type)
             ? function () {
                 var msg = 'got ' + result.status + ' response';
