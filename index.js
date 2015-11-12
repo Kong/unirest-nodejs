@@ -390,7 +390,7 @@ var Unirest = function (method, uri, headers, body, callback) {
           result.partialContent = 206 == status;
           result.multiStatus = 207 == status;
           result.alreadyReported = 208 == status;
-          result.iMUsed = 226 == status;
+          result.imUsed = 226 == status;
           result.multipleChoices = 300 == status;
           result.movedPermanently = 301 == status;
           result.found = 302 == status;
