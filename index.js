@@ -383,7 +383,6 @@ var Unirest = function (method, uri, headers, body, callback) {
           result.clientError = 4 == type;
           result.serverError = 5 == type;
           result.created = 201 == status;
-          result.created = 201 == status;
           result.accepted = 202 == status;
           result.nonAuthoritativeInformation = 203 == status;
           result.noContent = 204 == status || 1223 == status;
