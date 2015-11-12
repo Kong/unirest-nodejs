@@ -462,7 +462,9 @@ var Unirest = function (method, uri, headers, body, callback) {
         }
 
         function handleGZIPResponse (response) {
-          if (response.statusCode !== 204 && /^(deflate|gzip)$/.test(response.headers['content-encoding'])) {
+          var hasContent = response.body || response.headers['content-length'];
+
+          if (hasContent && /^(deflate|gzip)$/.test(response.headers['content-encoding'])) {
             var unzip = zlib.createUnzip();
             var stream = new Stream();
             var decoder, _on = response.on;
