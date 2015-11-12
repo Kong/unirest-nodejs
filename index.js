@@ -391,10 +391,21 @@ var Unirest = function (method, uri, headers, body, callback) {
           result.notFound = 404 == status;
           result.methodNotAllowed = 405 == status;
           result.notAcceptable = 406 == status;
+          result.proxyAuthenticationRequired = 407 == status;
+          result.requestTimeout = 408 == status;
           result.conflict = 409 == status;
           result.gone = 410 == status;
+          result.lengthRequired = 411 == status;
           result.preconditionFailed = 412 == status;
+          result.requestEntityTooLarge = 413 == status;
+          result.requestUriTooLong = 414 == status;
+          result.unsupportedMediaType = 415 == status;
+          result.requestedRangeNotSatisfiable = 416 == status;
+          result.expectationFailed = 417 == status;
           result.unprocessableEntity = 422 == status;
+          result.locked = 423 == status;
+          result.failedDependency = 424 == status;
+          result.upgradeRequired = 426 == status;
           result.tooManyRequests = 429 == status;
           result.error = (4 == type || 5 == type)
             ? function () {
