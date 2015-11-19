@@ -400,7 +400,7 @@ This object is modeled after the `request` libraries options that are passed alo
 * `aws` (`Object`) - See `Request.aws()` below.
 * `httpSignature` (`Object`) - See `Request.httpSignature()` Below.
 * `localAddress` (`String`) - See `Request.localAddress()` Below.
-* `pool` (`Object`) - See `Reuqest.pool()` Below.
+* `pool` (`Object`) - See `Request.pool()` Below.
 * `forever` (`Boolean`) - Default `undefined`; See `Request.forever()` Below
 
 ## Request Option Methods
