@@ -276,6 +276,22 @@ describe('Unirest', function () {
       });
     });
 
+    it('should correctly post JSON array.', function (done) {
+      var data = [{
+        is: 'unirest',
+        my: 'name',
+        hello: 'world'
+      }];
+
+      unirest.post('http://mockbin.com/echo').header('Content-Type', 'application/json').send(data).end(function (response) {
+        should(response.status).equal(200);
+        should(response.body).have.type('object');
+        should(JSON.stringify(response.body)).equal(JSON.stringify(data));
+        should(response.headers['content-type']).startWith('application/json');
+        done();
+      });
+    });
+
     it('should check for buffers', function (done) {
       unirest.post('http://mockbin.com/request')
       .headers({ 'Accept': 'application/json' })
