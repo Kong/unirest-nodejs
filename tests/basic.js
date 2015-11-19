@@ -138,6 +138,27 @@ describe('Unirest', function () {
       });
     });
 
+    it('should not fail when content-type header is specified.', function (done) {
+      var data = {
+        is: 'unirest',
+        my: 'name',
+        hello: 'world',
+        failing_to_encode_data: "this is a test"
+      };
+
+      unirest.post('http://mockbin.com/request').header('Content-Type', 'application/x-www-form-urlencoded').send(data).end(function (response) {
+        should(response.status).equal(200);
+        should(response.body.postData.params).have.type('object');
+        should(response.body.postData.params).have.property('is', data.is);
+        should(response.body.postData.params).have.property('my', data.my);
+        should(response.body.postData.params).have.property('hello', data.hello);
+        should(response.body.postData.params).have.property('failing_to_encode_data', data.failing_to_encode_data);
+        should(response.body.headers['content-length']).equal('74');
+        should(response.body.headers['content-type']).equal('application/x-www-form-urlencoded');
+        done();
+      });
+    });
+
     it('should correctly transform FORM data.', function (done) {
       var data = {
         lebron: false,
