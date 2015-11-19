@@ -462,9 +462,7 @@ var Unirest = function (method, uri, headers, body, callback) {
         }
 
         function handleGZIPResponse (response) {
-          var hasContent = response.body || response.headers['content-length'];
-
-          if (hasContent && /^(deflate|gzip)$/.test(response.headers['content-encoding'])) {
+          if (/^(deflate|gzip)$/.test(response.headers['content-encoding'])) {
             var unzip = zlib.createUnzip();
             var stream = new Stream();
             var decoder, _on = response.on;
@@ -474,6 +472,13 @@ var Unirest = function (method, uri, headers, body, callback) {
 
             // Make sure we emit prior to processing
             unzip.on('error', function (error) {
+              // Catch the parser error when there is no content
+              if (error.errno === zlib.Z_BUF_ERROR) {
+                stream.emit('end');
+
+                return;
+              }
+
               stream.emit('error', error);
             });
 
