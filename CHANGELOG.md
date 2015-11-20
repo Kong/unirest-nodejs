@@ -1,6 +1,6 @@
 # Changelog
 
-## Next (Master - Unstable)
+### Next (Master - Unstable)
 
 - linted code to adhere to `standard`
 - removed `Unirest.params`
