@@ -635,9 +635,7 @@ var Unirest = function (method, uri, headers, body, callback) {
       var key
       var i
 
-      options = options || {
-          attachment: false
-      }
+      options = options || { attachment: false }
 
       if (is(name).a(Object)) {
         for (key in name) {
@@ -833,7 +831,7 @@ Unirest.Response = {
     var field
     var val
 
-    // Trailing CLRF
+    // Trailing CRLF
     lines.pop()
 
     for (var i = 0, len = lines.length; i < len; ++i) {
