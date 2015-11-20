@@ -475,6 +475,12 @@ var Unirest = function (method, uri, headers, body, callback) {
 
             // Make sure we emit prior to processing
             unzip.on('error', function (error) {
+              // Catch the parser error when there is no content
+              if (error.errno === zlib.Z_BUF_ERROR) {
+                stream.emit('end')
+                return
+              }
+
               stream.emit('error', error)
             })
 
