@@ -482,7 +482,6 @@ var Unirest = function (method, uri, headers, body, callback) {
               }
 
               if (error.errno === zlib.Z_DATA_ERROR) {
-                console.log('Caught Z_DATA_ERROR');
                 stream.emit('end')
                 return
               }
