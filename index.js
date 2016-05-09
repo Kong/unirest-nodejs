@@ -545,6 +545,13 @@ var Unirest = function (method, uri, headers, body, callback) {
             $this.options.headers['content-type'] = 'multipart/form-data; boundary=' + form.getBoundary()
           }
 
+          function authn(auth) {
+              if (!auth) return null;
+              if (typeof auth === 'string') return auth;
+              if (auth.user && auth.pass) return auth.user + ':' + auth.pass;
+              return auth;
+          }
+
           return handleFormData(form).submit({
             protocol: parts.protocol,
             port: parts.port,
@@ -554,7 +561,7 @@ var Unirest = function (method, uri, headers, body, callback) {
             path: parts.path,
             method: $this.options.method,
             headers: $this.options.headers,
-            auth: $this.options.auth || parts.auth
+            auth: authn($this.options.auth || parts.auth)
           }, function (error, response) {
             var decoder = new StringDecoder('utf8')
 
