@@ -1,6 +1,6 @@
 {
   "name": "unirest",
-  "version": "0.5.0",
+  "version": "0.5.1",
   "description": "Simplified, lightweight HTTP client library",
   "main": "index.js",
   "directories": {
