@@ -329,6 +329,31 @@ var Unirest = function (method, uri, headers, body, callback) {
       },
 
       /**
+       * Instructs the Request to be retried if specified error status codes (4xx, 5xx, ETIMEDOUT) are returned.
+       * Retries are delayed with an exponential backoff.
+       * 
+       * @param {(err: Error) => boolean} [callback] - Invoked on response error. Return false to stop next request.
+       * @param {Object} [options] - Optional retry configuration to override defaults.
+       * @param {number} [options.attempts=3] - The number of retry attempts.
+       * @param {number} [options.delayInMs=250] - The delay in milliseconds (delayInMs *= delayMulti)
+       * @param {number} [options.delayMulti=2] - The multiplier of delayInMs after each attempt.
+       * @param {Array<string|number>} [options.statusCodes=["ETIMEDOUT", "5xx"]] - The status codes to retry on.
+       * @return {Object}
+       */
+      retry: function (callback, options) {
+
+        $this.options.retry = {
+          callback: typeof callback === "function" ? callback : null,
+          attempts: options && +options.attempts || 3,
+          delayInMs: options && +options.delayInMs || 250,
+          delayMulti: options && +options.delayMulti || 2,
+          statusCodes: (options && options.statusCodes || ["ETIMEDOUT", "5xx"]).slice(0)
+        };
+
+        return $this
+      },
+
+      /**
        * Sends HTTP Request and awaits Response finalization. Request compression and Response decompression occurs here.
        * Upon HTTP Response post-processing occurs and invokes `callback` with a single argument, the `[Response](#response)` object.
        *
@@ -336,10 +361,56 @@ var Unirest = function (method, uri, headers, body, callback) {
        * @return {Object}
        */
       end: function (callback) {
+        var self = this
         var Request
         var header
         var parts
         var form
+
+        function handleRetriableRequestResponse (result) {
+
+          // If retries is not defined or all attempts tried, return true to invoke end's callback.
+          if ($this.options.retry === undefined || $this.options.retry.attempts === 0) {
+            return true
+          }
+
+          // If status code is not listed, abort with return true to invoke end's callback.
+          var isStatusCodeDefined = (function (code, codes) {
+
+            if (codes.indexOf(code) !== -1) {
+              return true
+            }
+
+            return codes.reduce(function (p, c) {
+                return p || String(code).split("").every(function (ch, i) {
+                  return ch === "x" || ch === c[i]
+                })
+              }, false)
+
+          }(result.code || result.error && result.error.code, $this.options.retry.statusCodes))
+
+          if (!isStatusCodeDefined) {
+            return true
+          }
+
+          if ($this.options.retry.callback) {
+            var isContinue = $this.options.retry.callback(result)
+            // If retry callback returns false, stop retries and invoke end's callback.
+            if (isContinue === false) {
+              return true;
+            }
+          }
+
+          setTimeout(function () {
+            self.end(callback)
+          }, $this.options.retry.delayInMs)
+
+          $this.options.retry.attempts--
+          $this.options.retry.delayInMs *= $this.options.retry.delayMulti
+
+          // Return false to not invoke end's callback.
+          return false
+        }
 
         function handleRequestResponse (error, response, body) {
           var result = {}
@@ -351,7 +422,7 @@ var Unirest = function (method, uri, headers, body, callback) {
           if (error && !response) {
             result.error = error
 
-            if (callback) {
+            if (handleRetriableRequestResponse(result) && callback) {
               callback(result)
             }
 
@@ -367,7 +438,7 @@ var Unirest = function (method, uri, headers, body, callback) {
               message: 'No response found.'
             }
 
-            if (callback) {
+            if (handleRetriableRequestResponse(result) && callback) {
               callback(result)
             }
 
@@ -460,7 +531,7 @@ var Unirest = function (method, uri, headers, body, callback) {
 
           result.body = data
 
-          ;(callback) && callback(result)
+          ;(handleRetriableRequestResponse(result)) && (callback) && callback(result)
         }
 
         function handleGZIPResponse (response) {
