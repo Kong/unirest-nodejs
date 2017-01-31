@@ -187,7 +187,7 @@ var Unirest = function (method, uri, headers, body, callback) {
       header: function (field, value) {
         if (is(field).a(Object)) {
           for (var key in field) {
-            if (field.hasOwnProperty(key)) {
+            if (Object.prototype.hasOwnProperty.call(field, key)) {
               $this.header(key, field[key])
             }
           }
@@ -251,7 +251,7 @@ var Unirest = function (method, uri, headers, body, callback) {
 
             if ($this.options.body && is($this.options.body).a(Object)) {
               for (var key in data) {
-                if (data.hasOwnProperty(key)) {
+                if (Object.prototype.hasOwnProperty.call(data, key)) {
                   $this.options.body[key] = data[key]
                 }
               }
@@ -723,7 +723,7 @@ var Unirest = function (method, uri, headers, body, callback) {
 
       if (is(name).a(Object)) {
         for (key in name) {
-          if (name.hasOwnProperty(key)) {
+          if (Object.prototype.hasOwnProperty.call(name, key)) {
             handleField(key, name[key], options)
           }
         }
@@ -772,7 +772,7 @@ var Unirest = function (method, uri, headers, body, callback) {
     // Iterates over a list of option methods to generate the chaining
     // style of use you see in Superagent and jQuery.
     for (var x in Unirest.enum.options) {
-      if (Unirest.enum.options.hasOwnProperty(x)) {
+      if (Object.prototype.hasOwnProperty.call(Unirest.enum.options, x)) {
         var option = Unirest.enum.options[x]
         var reference = null
 
@@ -1146,7 +1146,7 @@ function does (value) {
 
     contain: function (field) {
       if (is(value).a(String)) return value.indexOf(field) > -1
-      if (is(value).a(Object)) return value.hasOwnProperty(field)
+      if (is(value).a(Object)) return Object.prototype.hasOwnProperty.call(value, field)
       if (is(value).a(Array)) return !!~arrayIndexOf(value, field)
       return false
     }
