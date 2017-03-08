@@ -70,6 +70,17 @@ describe('Unirest', function () {
         })
     })
 
+    it('should correctly parse JSON with toObservable.', function (done) {
+      var Request = unirest.get('http://mockbin.com/request')
+        .set('Accept', 'application/json')
+        .toObservable()
+        .subscribe(function (response) {
+          should(response.status).equal(200)
+          should(response.body).have.type('object')
+          done();
+        });
+    })
+
     it('should correctly handle refused connections.', function (done) {
       unirest.get('http://localhost:9999').timeout(200).end(function (response) {
         response.error.should.exist

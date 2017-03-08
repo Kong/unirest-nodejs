@@ -19,6 +19,7 @@ var zlib = require('zlib')
 var path = require('path')
 var URL = require('url')
 var fs = require('fs')
+var Rx = require('rx')
 
 /**
  * Define form mime type
@@ -331,7 +332,7 @@ var Unirest = function (method, uri, headers, body, callback) {
       /**
        * Instructs the Request to be retried if specified error status codes (4xx, 5xx, ETIMEDOUT) are returned.
        * Retries are delayed with an exponential backoff.
-       * 
+       *
        * @param {(err: Error) => boolean} [callback] - Invoked on response error. Return false to stop next request.
        * @param {Object} [options] - Optional retry configuration to override defaults.
        * @param {number} [options.attempts=3] - The number of retry attempts.
@@ -352,6 +353,10 @@ var Unirest = function (method, uri, headers, body, callback) {
 
         return $this
       },
+
+	  toObservable: function() {
+        return Rx.Observable.fromCallback(this.end)();
+	  },
 
       /**
        * Sends HTTP Request and awaits Response finalization. Request compression and Response decompression occurs here.
