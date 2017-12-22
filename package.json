@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "form-data": "^2.1.2",
-    "mime": "~1.3.4",
+    "mime": "~2.1.0",
     "request": "~2.79.0"
   },
   "devDependencies": {
