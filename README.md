@@ -632,6 +632,27 @@ unirest.get('http://mockbin.com/request').end(function (response) {
 });
 ```
 
+#### Request.then(Function callback)
+
+Invokes `Request.end` and returns a Promise chain.
+
+```js
+unirest.get('http://mockbin.com/request').then(function (response) {
+  ...
+});
+```
+
+Implements the promise chain for async/await
+
+```js
+... some async function
+
+var response = await unirest.get('http://mockbin.com/request');
+
+...
+```
+
+
 ## Request Aliases
 
 #### Request.set
