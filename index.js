@@ -354,6 +354,26 @@ var Unirest = function (method, uri, headers, body, callback) {
       },
 
       /**
+       * Proxies the call to end. This adds support for using promises as well as async/await.
+       * 
+       * @param  {Function} callback
+       * @return {Promise}
+      **/ 
+      then: function (callback) {
+        var self = this;
+        return new Promise(function (resolve, reject) {
+          self.end(function (result) {
+            try {
+              var returnValue = callback(result);
+              resolve(returnValue);
+            } catch (err) {
+              reject(err);
+            }
+          });
+        });
+      },
+
+      /**
        * Sends HTTP Request and awaits Response finalization. Request compression and Response decompression occurs here.
        * Upon HTTP Response post-processing occurs and invokes `callback` with a single argument, the `[Response](#response)` object.
        *
