@@ -9,7 +9,7 @@
 /**
  * Module Dependencies
  */
-
+var $Promise = global.Promise || require('bluebird').Promise
 var StringDecoder = require('string_decoder').StringDecoder
 var QueryString = require('querystring')
 var FormData = require('form-data')
@@ -361,7 +361,7 @@ var Unirest = function (method, uri, headers, body, callback) {
       **/ 
       then: function (callback) {
         var self = this;
-        return new Promise(function (resolve, reject) {
+        return new $Promise(function (resolve, reject) {
           self.end(function (result) {
             try {
               var returnValue = callback(result);

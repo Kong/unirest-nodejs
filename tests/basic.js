@@ -395,6 +395,7 @@ describe('Unirest', function () {
     })
   })
 
+
   describe('Using then', function () {
     var host, port, url
     var fixture = {
