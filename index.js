@@ -215,7 +215,7 @@ var Unirest = function (method, uri, headers, body, callback) {
       },
 
       /**
-       * Set _content-type_ header with type passed through `mime.lookup()` when necessary.
+       * Set _content-type_ header with type passed through `mime.getType()` when necessary.
        *
        * @param  {String} type
        * @return {Object}
@@ -223,7 +223,7 @@ var Unirest = function (method, uri, headers, body, callback) {
       type: function (type) {
         $this.header('Content-Type', does(type).contain('/')
           ? type
-          : mime.lookup(type))
+          : mime.getType(type))
         return $this
       },
 
@@ -331,7 +331,7 @@ var Unirest = function (method, uri, headers, body, callback) {
       /**
        * Instructs the Request to be retried if specified error status codes (4xx, 5xx, ETIMEDOUT) are returned.
        * Retries are delayed with an exponential backoff.
-       * 
+       *
        * @param {(err: Error) => boolean} [callback] - Invoked on response error. Return false to stop next request.
        * @param {Object} [options] - Optional retry configuration to override defaults.
        * @param {number} [options.attempts=3] - The number of retry attempts.
@@ -351,6 +351,24 @@ var Unirest = function (method, uri, headers, body, callback) {
         };
 
         return $this
+      },
+
+      /**
+       * Proxies the call to end. This adds support for using promises as well as async/await.
+       *
+       * @param  {Function} callback
+       * @return {Promise}
+       **/
+      then: function (callback) {
+        return new Promise((resolve, reject) => {
+          this.end(result => {
+            try {
+              resolve(callback(result))
+            } catch (err) {
+              reject(err)
+            }
+          })
+        })
       },
 
       /**

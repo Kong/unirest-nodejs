@@ -310,7 +310,7 @@ describe('Unirest', function () {
     it('should check for buffers', function (done) {
       unirest.post('http://mockbin.com/request')
       .headers({ 'Accept': 'application/json' })
-      .send(new Buffer([1, 2, 3]))
+      .send(Buffer.from([1, 2, 3]))
       .end(function (response) {
         should(response.body.bodySize).exists
         should(response.body.bodySize).equal(3)
@@ -321,7 +321,7 @@ describe('Unirest', function () {
     it('should correctly post a buffer with mime-type', function (done) {
       unirest.post('http://mockbin.com/request')
       .headers({ 'Content-Type': 'img/svg+xml' })
-      .send(new Buffer('<svg></svg>'))
+      .send(Buffer.from('<svg></svg>'))
       .end(function (response) {
         should(response.body.headers['content-type']).equal('img/svg+xml')
         done()
