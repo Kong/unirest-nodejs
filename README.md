@@ -7,7 +7,7 @@
 ![][unirest-logo]
 
 
-[Unirest](http://unirest.io) is a set of lightweight HTTP libraries available in multiple languages, built and maintained by [Mashape](https://github.com/Mashape), who also maintain the open-source API Gateway [Kong](https://github.com/Mashape/kong). 
+[Unirest](http://unirest.io) is a set of lightweight HTTP libraries available in multiple languages, built and maintained by [Kong](https://github.com/Kong), who also maintain the open-source API Gateway [Kong](https://github.com/Kong/kong). 
 
 
 ## Installing
@@ -29,12 +29,13 @@ var unirest = require('unirest');
 You're probably wondering how by using **Unirest** makes creating requests easier. Besides automatically supporting gzip, and parsing responses, lets start with a basic working example:
 
 ```js
-unirest.post('http://mockbin.com/request')
-.headers({'Accept': 'application/json', 'Content-Type': 'application/json'})
-.send({ "parameter": 23, "foo": "bar" })
-.end(function (response) {
-  console.log(response.body);
-});
+unirest
+  .post('http://mockbin.com/request')
+  .headers({'Accept': 'application/json', 'Content-Type': 'application/json'})
+  .send({ "parameter": 23, "foo": "bar" })
+  .then((response) => {
+    console.log(response.body)
+  })
 ```
 
 ## Uploading Files
@@ -42,24 +43,26 @@ unirest.post('http://mockbin.com/request')
 Transferring file data has been simplified:
 
 ```js
-unirest.post('http://mockbin.com/request')
-.headers({'Content-Type': 'multipart/form-data'})
-.field('parameter', 'value') // Form field
-.attach('file', '/tmp/file') // Attachment
-.end(function (response) {
-  console.log(response.body);
-});
+unirest
+  .post('http://mockbin.com/request')
+  .headers({'Content-Type': 'multipart/form-data'})
+  .field('parameter', 'value') // Form field
+  .attach('file', '/tmp/file') // Attachment
+  .then(function (response) {
+    console.log(response.body)
+  })
 ```
 
 ## Custom Entity Body
 
 ```js
-unirest.post('http://mockbin.com/request')
-.headers({'Accept': 'application/json'})
-.send(new Buffer([1,2,3]))
-.end(function (response) {
-  console.log(response.body);
-});
+unirest
+  .post('http://mockbin.com/request')
+  .headers({'Accept': 'application/json'})
+  .send(Buffer.from([1,2,3]))
+  .then(function (response) {
+    console.log(response.body)
+  })
 ```
 
 # Unirest
@@ -92,28 +95,28 @@ When no `callback` is present, the [Request](#request) object will be returned.
 Returns a [Request](#request) object with the `method` option set to `GET`
 
 ```js
-var Request = unirest.get('http://mockbin.com/request');
+var Request = unirest.get('http://mockbin.com/request')
 ```
 
 ### head
 Returns a [Request](#request) object with the `method` option set to `HEAD`
 
 ```js
-var Request = unirest.head('http://mockbin.com/request');
+let Request = unirest.head('http://mockbin.com/request')
 ```
 
 ### put
 Returns a [Request](#request) object with the `method` option set to `PUT`
 
 ```js
-var Request = unirest.put('http://mockbin.com/request');
+let Request = unirest.put('http://mockbin.com/request')
 ```
 
 ### post
 Returns a [Request](#request) object with the `method` option set to `POST`
 
 ```js
-var Request = unirest.post('http://mockbin.com/request');
+let Request = unirest.post('http://mockbin.com/request')
 ```
 
 ### patch
@@ -121,14 +124,14 @@ var Request = unirest.post('http://mockbin.com/request');
 Returns a [Request](#request) object with the `method` option set to `PATCH`
 
 ```js
-var Request = unirest.patch('http://mockbin.com/request');
+let Request = unirest.patch('http://mockbin.com/request')
 ```
 
 ### delete
 Returns a [Request](#request) object with the `method` option set to `DELETE`
 
 ```js
-var Request = unirest.delete('http://mockbin.com/request');
+let Request = unirest.delete('http://mockbin.com/request')
 ```
 
 ## unirest.jar()
@@ -136,9 +139,12 @@ var Request = unirest.delete('http://mockbin.com/request');
 Creates a container to store multiple cookies, i.e. a cookie jar.
 
 ```js
-var CookieJar = unirest.jar();
-CookieJar.add('key=value', '/'); // Cookie string, pathname / url
-unirest.get('http://mockbin.com/request').jar(CookieJar);
+let CookieJar = unirest.jar()
+CookieJar.add('key=value', '/')
+
+unirest
+  .get('http://mockbin.com/request')
+  .jar(CookieJar)
 ```
 
 ## unirest.cookie(String)
@@ -160,9 +166,11 @@ request module Superagent (which this library is modeled after slightly).
 ```js
 var Request = unirest.post('http://mockbin.com/request');
 
-Request.header('Accept', 'application/json').end(function (response) {
-  ...
-});
+Request
+  .header('Accept', 'application/json')
+  .end(function (response) {
+    ...
+  })
 ```
 
 ## Request Methods
@@ -184,13 +192,13 @@ Request.auth({
   user: 'Nijiko',
   pass: 'insecure',
   sendImmediately: true
-});
+})
 ```
 
 **Arguments**
 
 ```js
-Request.auth('Nijiko', 'insecure', true);
+Request.auth('Nijiko', 'insecure', true)
 ```
 
 #### Request.header(header[, value])
@@ -229,13 +237,15 @@ Similiar to `Request.multipart()` except it only allows one object to be passed 
 Each object is then appended to the `Request.options.multipart` array.
 
 ```js
-Request.part({
-  'content-type': 'application/json',
-  body: { foo: 'bar' }
-}).part({
-  'content-type': 'text/html',
-  body: '<strong>Hello World!</strong>'
-});
+Request
+  .part({
+    'content-type': 'application/json',
+    body: { foo: 'bar' }
+  })
+  .part({
+    'content-type': 'text/html',
+    body: '<strong>Hello World!</strong>'
+  })
 ```
 
 #### Request.query(Object) or (String)
@@ -245,14 +255,15 @@ Serializes argument passed to a querystring representation.
 Should `url` already contain a querystring, the representation will be appended to the `url`.
 
 ```js
-unirest.post('http://mockbin.com/request')
-.query('name=nijiko')
-.query({
-  pet: 'spot'
-})
-.end(function (response) {
-  console.log(response);
-});
+unirest
+  .post('http://mockbin.com/request')
+  .query('name=nijiko')
+  .query({
+    pet: 'spot'
+  })
+  .then((response) => {
+    console.log(response.body)
+  })
 ```
 
 #### Request.send(Object | String)
@@ -267,15 +278,16 @@ When mime-type is `application/x-www-form-urlencoded` data is appended rather th
 **JSON**
 
 ```js
-unirest.post('http://mockbin.com/request')
-.type('json')
-.send({
-  foo: 'bar',
-  hello: 3
-})
-.end(function (response) {
-  console.log(response.body);
-})
+unirest
+  .post('http://mockbin.com/request')
+  .type('json')
+  .send({
+    foo: 'bar',
+    hello: 3
+  })
+  .then((response) => {
+    console.log(response.body)
+  })
 ```
 
 **FORM Encoded**
@@ -283,23 +295,25 @@ unirest.post('http://mockbin.com/request')
 ```js
 // Body would be:
 // name=nijiko&pet=turtle
-unirest.post('http://mockbin.com/request')
-.send('name=nijiko')
-.send('pet=spot')
-.end(function (response) {
-  console.log(response.body);
-});
+unirest
+  .post('http://mockbin.com/request')
+  .send('name=nijiko')
+  .send('pet=spot')
+  .then((response) => {
+    console.log(response.body)
+  })
 ```
 
 **HTML / Other**
 
 ```js
-unirest.post('http://mockbin.com/request')
-.set('Content-Type', 'text/html')
-.send('<strong>Hello World!</strong>')
-.end(function (response) {
-  console.log(response.body);
-});
+unirest
+  .post('http://mockbin.com/request')
+  .set('Content-Type', 'text/html')
+  .send('<strong>Hello World!</strong>')
+  .then((response) => {
+    console.log(response.body)
+  })
 ```
 
 #### Request.type(String)
@@ -329,33 +343,35 @@ The following methods are sugar methods for attaching files, and form fields. In
 **Object**
 
 ```js
-unirest.post('http://mockbin.com/request')
-.header('Accept', 'application/json')
-.field({
-  'parameter': 'value'
-})
-.attach({
-  'file': 'dog.png',
-  'relative file': fs.createReadStream(path.join(__dirname, 'dog.png')),
-  'remote file': unirest.request('http://google.com/doodle.png')
-})
-.end(function (response) {
-  console.log(response.body);
-})
+unirest
+  .post('http://mockbin.com/request')
+  .header('Accept', 'application/json')
+  .field({
+    'parameter': 'value'
+  })
+  .attach({
+    'file': 'dog.png',
+    'relative file': fs.createReadStream(path.join(__dirname, 'dog.png')),
+    'remote file': unirest.request('http://google.com/doodle.png')
+  })
+  .then((response) => {
+    console.log(response.body)
+  })
 ```
 
 **Arguments**
 
 ```js
-unirest.post('http://mockbin.com/request')
-.header('Accept', 'application/json')
-.field('parameter', 'value') // Form field
-.attach('file', 'dog.png') // Attachment
-.attach('remote file', fs.createReadStream(path.join(__dirname, 'dog.png')))  // Same as above.
-.attach('remote file', unirest.request('http://google.com/doodle.png'))
-.end(function (response) {
-  console.log(response.body);
-});
+unirest
+  .post('http://mockbin.com/request')
+  .header('Accept', 'application/json')
+  .field('parameter', 'value') // Form field
+  .attach('file', 'dog.png') // Attachment
+  .attach('remote file', fs.createReadStream(path.join(__dirname, 'dog.png')))  // Same as above.
+  .attach('remote file', unirest.request('http://google.com/doodle.png'))
+  .then((response) => {
+    console.log(response.body)
+  })
 ```
 
 #### Request.field(Object) or (name, value)
@@ -430,7 +446,7 @@ When used `body` is set to the object passed as a `querystring` representation a
 ```js
 Request.form({
   key: 'value'
-});
+})
 ```
 
 #### Request.multipart(Array)
@@ -450,7 +466,7 @@ Request.multipart([{
 }, {
   'content-type': 'text/html',
   body: '<strong>Hello World!</strong>'
-}]);
+}])
 ```
 
 #### Request.maxRedirects(Number)
@@ -490,7 +506,7 @@ Request.encoding('utf-8')
 Sets `strictSSL` flag to require that SSL certificates be valid on `Request.options` based on given value.
 
 ```js
-Request.strictSSL(true);
+Request.strictSSL(true)
 ```
 
 #### Request.httpSignature(Object)
@@ -502,7 +518,7 @@ Sets `httpSignature`
 Sets `proxy`, HTTP Proxy to be set on `Request.options` based on value.
 
 ```js
-Request.proxy('http://localproxy.com');
+Request.proxy('http://localproxy.com')
 ```
 
 #### Request.secureProtocol(String)
@@ -510,9 +526,9 @@ Request.proxy('http://localproxy.com');
 Sets the secure protocol to use:
 
 ```js
-Request.secureProtocol('SSLv2_method');
+Request.secureProtocol('SSLv2_method')
 // or
-Request.secureProtocol('SSLv3_client_method');
+Request.secureProtocol('SSLv3_client_method')
 ```
 
 See [openssl.org](https://www.openssl.org/docs/ssl/SSL_CTX_new.html) for all possible values.
@@ -526,7 +542,7 @@ Request.aws({
   key: 'AWS_S3_KEY',
   secret: 'AWS_S3_SECRET',
   bucket: 'BUCKET NAME'
-});
+})
 ```
 
 #### Request.oauth(Object)
@@ -534,38 +550,44 @@ Request.aws({
 Sets `oauth`, list of oauth credentials, on `Request.options` based on given object.
 
 ```js
-var Request = unirest.get('https://api.twitter.com/oauth/request_token');
-
-Request.oauth({
-  callback: 'http://mysite.com/callback/',
-  consumer_key: 'CONSUMER_KEY',
-  consumer_secret: 'CONSUMER_SECRET'
-}).end(function (response) {
-  var access_token = response.body;
-
-  Request = unirest.post('https://api.twitter.com/oauth/access_token');
-  Request.oauth({
+unirest
+  .get('https://api.twitter.com/oauth/request_token')
+  .oauth({
+    callback: 'http://mysite.com/callback/',
     consumer_key: 'CONSUMER_KEY',
-    consumer_secret: 'CONSUMER_SECRET',
-    token: access_token.oauth_token,
-    verifier: token: access_token.oauth_verifier
-  }).end(function (response) {
-    var token = response.body;
-
-    Request = unirest.get('https://api.twitter.com/1/users/show.json');
-    Request.oauth({
-      consumer_key: 'CONSUMER_KEY',
-      consumer_secret: 'CONSUMER_SECRET',
-      token: token.oauth_token,
-      token_secret: token.oauth_token_secret
-    }).query({
-      screen_name: token.screen_name,
-      user_id: token.user_id
-    }).end(function (response) {
-      console.log(response.body);
-    });
+    consumer_secret: 'CONSUMER_SECRET'
   })
-});
+  .then(response => {
+    let access_token = response.body
+
+    return unirest
+      .post('https://api.twitter.com/oauth/access_token')
+      .oauth({
+        consumer_key: 'CONSUMER_KEY',
+        consumer_secret: 'CONSUMER_SECRET',
+        token: access_token.oauth_token,
+        verifier: token: access_token.oauth_verifier
+      })
+  })
+  .then((response) => {
+    var token = response.body
+
+    return unirest
+      .get('https://api.twitter.com/1/users/show.json')
+      .oauth({
+        consumer_key: 'CONSUMER_KEY',
+        consumer_secret: 'CONSUMER_SECRET',
+        token: token.oauth_token,
+        token_secret: token.oauth_token_secret
+      })
+      .query({
+        screen_name: token.screen_name,
+        user_id: token.user_id
+      })
+  })
+  .then((response) => {
+    console.log(response.body)
+  })
 ```
 
 #### Request.hawk(Object)
@@ -581,7 +603,7 @@ Request.hawk({
     algorithm: 'sha256',
     user: 'Steve'
   }
-});
+})
 ```
 
 #### Request.localAddress(String)
@@ -589,8 +611,8 @@ Request.hawk({
 Sets `localAddress`, local interface to bind for network connections, on `Request.options`
 
 ```js
-Request.localAddress('127.0.0.1');
-Request.localAddress('1.2.3.4');
+Request.localAddress('127.0.0.1')
+Request.localAddress('1.2.3.4')
 ```
 
 #### Request.jar(Boolean) or Request.jar(Jar)
@@ -621,15 +643,33 @@ Sets `forever` flag to use `forever-agent` module. When set to `true`,  default 
 Request.forever(true);
 ```
 
+#### Request.then(Function callback)
+
+Promise polyfill method. Wraps `Request.end` in a Promise and will resolve or 
+reject based on the result of the request.
+
+```js
+unirest
+  .get('http://mockbin.com/request')
+  .then((response) => {
+    console.log(response)
+  })
+  .catch(err => {
+    console.log(err)
+  })
+```
+
 #### Request.end(Function callback)
 
 Sends HTTP Request and awaits Response finalization. Request compression and Response decompression occurs here.
 Upon HTTP Response post-processing occurs and invokes `callback` with a single argument, the `[Response](#response)` object.
 
 ```js
-unirest.get('http://mockbin.com/request').end(function (response) {
-  ...
-});
+unirest
+  .get('http://mockbin.com/request')
+  .end((response) => {
+    console.log(response)
+  })
 ```
 
 ## Request Aliases
@@ -676,7 +716,7 @@ unirest.get('http://mockbin.com/request').end(function (response) {
 
 # Response
 
-Upon ending a request, and recieving a Response the object that is returned contains a number of helpful properties to ease coding pains.
+Upon ending a request, and receiving a Response the object that is returned contains a number of helpful properties to ease coding pains.
 
 ## General
 
@@ -746,27 +786,27 @@ unirest.get('http://google.com').jar(CookieJar).end(function (response) {
 
 ----
 
-Made with &#9829; from the [Mashape](https://www.mashape.com/) team
+Made with &#9829; from the [Kong](https://www.konghq.com/) team
 
 [unirest-logo]: http://cl.ly/image/2P373Y090s2O/Image%202015-10-12%20at%209.48.06%20PM.png
 
 
-[license-url]: https://github.com/Mashape/unirest-nodejs/blob/master/LICENSE
+[license-url]: https://github.com/Kong/unirest-nodejs/blob/master/LICENSE
 
-[gitter-url]: https://gitter.im/Mashape/unirest-nodejs
+[gitter-url]: https://gitter.im/Kong/unirest-nodejs
 [gitter-image]: https://img.shields.io/badge/Gitter-Join%20Chat-blue.svg?style=flat
 
-[travis-url]: https://travis-ci.org/Mashape/unirest-nodejs
-[travis-image]: https://img.shields.io/travis/Mashape/unirest-nodejs.svg?style=flat
+[travis-url]: https://travis-ci.org/Kong/unirest-nodejs
+[travis-image]: https://img.shields.io/travis/Kong/unirest-nodejs.svg?style=flat
 
 [npm-url]: https://www.npmjs.com/package/unirest
 [npm-license]: https://img.shields.io/npm/l/unirest.svg?style=flat
 [npm-version]: https://badge.fury.io/js/unirest.svg
 [npm-downloads]: https://img.shields.io/npm/dm/unirest.svg?style=flat
 
-[codeclimate-url]: https://codeclimate.com/github/Mashape/unirest-nodejs
-[codeclimate-quality]: https://img.shields.io/codeclimate/github/Mashape/unirest-nodejs.svg?style=flat
-[codeclimate-coverage]: https://img.shields.io/codeclimate/coverage/github/Mashape/unirest-nodejs.svg?style=flat
+[codeclimate-url]: https://codeclimate.com/github/Kong/unirest-nodejs
+[codeclimate-quality]: https://img.shields.io/codeclimate/github/Kong/unirest-nodejs.svg?style=flat
+[codeclimate-coverage]: https://img.shields.io/codeclimate/coverage/github/Kong/unirest-nodejs.svg?style=flat
 
-[david-url]: https://david-dm.org/mashape/unirest-nodejs
-[david-image]: https://img.shields.io/david/mashape/unirest-nodejs.svg?style=flat
+[david-url]: https://david-dm.org/Kong/unirest-nodejs
+[david-image]: https://img.shields.io/david/Kong/unirest-nodejs.svg?style=flat
