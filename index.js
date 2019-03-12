@@ -170,7 +170,7 @@ var Unirest = function (method, uri, headers, body, callback) {
       auth: function (user, password, sendImmediately) {
         $this.options.auth = (is(user).a(Object)) ? user : {
           user: user,
-          password: password,
+          pass: password,
           sendImmediately: sendImmediately
         }
 
