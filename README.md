@@ -3,12 +3,13 @@
 [![License][npm-license]][license-url]
 [![Downloads][npm-downloads]][npm-url]
 [![Gitter][gitter-image]][gitter-url]
+[![Not Maintained](https://img.shields.io/badge/Maintenance%20Level-Not%20Maintained-yellow.svg)](https://gist.github.com/cheerfulstoic/d107229326a01ff0f333a1d3476e068d)
+
 
 ![][unirest-logo]
 
 
-[Unirest](http://unirest.io) is a set of lightweight HTTP libraries available in multiple languages, built and maintained by [Kong](https://github.com/Kong), who also maintain the open-source API Gateway [Kong](https://github.com/Kong/kong). 
-
+[Unirest](http://unirest.io) is a set of lightweight HTTP libraries available in multiple languages.
 
 ## Installing
 
