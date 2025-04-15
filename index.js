@@ -39,6 +39,7 @@ var Unirest = function (method, uri, headers, body, callback) {
        * Stream Multipart form-data request
        *
        * @type {Boolean}
+       * @private
        */
       _stream: false,
 
@@ -86,6 +87,12 @@ var Unirest = function (method, uri, headers, body, callback) {
         headers: {}
       },
 
+      /**
+       * Determines whether a headers object has a key with the specified name.
+       * 
+       * @param {String} name
+       * @return {String|Boolean}
+       */
       hasHeader: function (name) {
         var headers
         var lowercaseHeaders
