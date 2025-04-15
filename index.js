@@ -25,7 +25,7 @@ var fs = require('fs')
  */
 mime.define({
   'application/x-www-form-urlencoded': ['form', 'urlencoded', 'form-data']
-})
+},true)
 
 /**
  * Initialize our Rest Container
